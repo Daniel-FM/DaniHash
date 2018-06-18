@@ -7,4 +7,4 @@ Na versão 1.0, lançada com a defesa do TCC, os seguintes pontos estão precisa
 
 -Desenho do Hashing Fechado faltando
 
--Posicionamento das árvores no desenho do hashing aberto/meio-aberto com problemas (árvores vizinhas se sobrepõem)
+-Posicionamento das árvores no desenho do hashing aberto/meio-aberto com problemas (árvores vizinhas se sobrepõem a partir de certa altura)

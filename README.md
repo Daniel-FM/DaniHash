@@ -1,4 +1,4 @@
-# DahiHash
+# DaniHash
 Simulador de tabelas hash. Feito como Trabalho de Conclusão de Curso para a UECE
 
 Na versão 1.0, lançada com a defesa do TCC, os seguintes pontos estão precisando de reparos e serão tratados em breve:

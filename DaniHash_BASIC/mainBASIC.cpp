@@ -2,7 +2,7 @@
  * File:   mainBASIC.cpp
  * Author: Daniel Franklin
  *
- * Created on 2018
+ * Created on 2013, 2018
  * Part of the DaniHash project
  */
 

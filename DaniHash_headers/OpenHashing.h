@@ -1,3 +1,11 @@
+/*
+ * File:   OpenHashing.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2013, 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef OPEN_HASHING_H_INCLUDED
 #define OPEN_HASHING_H_INCLUDED
 

@@ -1,3 +1,11 @@
+/*
+ * File:   ClosedHashing.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2013, 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef CLOSED_HASHING_H_INCLUDED
 #define CLOSED_HASHING_H_INCLUDED
 

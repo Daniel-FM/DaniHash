@@ -1,3 +1,11 @@
+/*
+ * File:   utilMenu.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef FUNCOES_AUXILIARES_MENU_H_INCLUDED
 #define FUNCOES_AUXILIARES_MENU_H_INCLUDED
 

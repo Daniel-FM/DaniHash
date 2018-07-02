@@ -1,3 +1,11 @@
+/*
+ * File:   Lista.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2013, 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef LISTA_H_INCLUDED
 #define LISTA_H_INCLUDED
 

@@ -1,3 +1,11 @@
+/*
+ * File:   utilDesenho.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef FUNCOES_AUXILIARES_DESENHO_H_INCLUDED
 #define FUNCOES_AUXILIARES_DESENHO_H_INCLUDED
 #include <SFML/Graphics.hpp>

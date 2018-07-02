@@ -1,3 +1,11 @@
+/*
+ * File:   ArvoreAVL.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef ARVORE_AVL_H_INCLUDED
 #define ARVORE_AVL_H_INCLUDED
 

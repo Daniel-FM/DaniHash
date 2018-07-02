@@ -1,3 +1,11 @@
+/*
+ * File:   HalfOpenHashing.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2013, 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef HALF_OPEN_HASHING_H_INCLUDED
 #define HALF_OPEN_HASHING_H_INCLUDED
 

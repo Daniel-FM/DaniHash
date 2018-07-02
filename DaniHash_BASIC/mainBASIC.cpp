@@ -1,3 +1,11 @@
+/*
+ * File:   mainBASIC.cpp
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #include <fstream>
 #include "../DaniHash_headers/utilGeral.h"
 #include "../DaniHash_headers/TabelaHash.h"
@@ -19,7 +27,7 @@ int main(){
 
         loopMenu = true;
         system("cls");
-        cout<<"***DANIHASH BASIC***\n";
+        cout<<"***DANIHASH BASIC v1.0.0***\n";
         atributos = pegaAtributosDaHash(true);
 
         Ohash* OH   = NULL;

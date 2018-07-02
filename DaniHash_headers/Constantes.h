@@ -1,3 +1,11 @@
+/*
+ * File:   Constantes.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED
 

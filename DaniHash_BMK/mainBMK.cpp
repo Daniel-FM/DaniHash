@@ -1,3 +1,11 @@
+/*
+ * File:   mainBMK.cpp
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #include <fstream>
 #include "../DaniHash_headers/utilGeral.h"
 #include "../DaniHash_headers/TabelaHash.h"
@@ -28,7 +36,7 @@ int main(){
 
         loopMenu = true;
         system("cls");
-        cout<<"***DANIHASH BMK***\n";
+        cout<<"***DANIHASH BMK v1.0.0***\n";
         atributos = pegaAtributosDaHash(false);
 
         Ohash* OH   = NULL;

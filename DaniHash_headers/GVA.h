@@ -1,3 +1,11 @@
+/*
+ * File:   GVA.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef GVA_H_INCLUDED
 #define GVA_H_INCLUDED
 #include <math.h>

@@ -1,3 +1,11 @@
+/*
+ * File:   TabelaHash.h
+ * Author: Daniel Franklin
+ *
+ * Created on 2018
+ * Part of the DaniHash project
+ */
+
 #ifndef TABELAHASH_H_INCLUDED
 #define TABELAHASH_H_INCLUDED
 

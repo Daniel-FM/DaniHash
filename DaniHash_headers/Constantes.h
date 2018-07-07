@@ -118,5 +118,5 @@ const string DEFAULT_FULLNAME_INS = FILEPATH_INS + DEFAULT_FILENAME_INS;
 
 const string BAD_ALLOC_MSG = "\nVazamento de memoria detectado. Recomenda-se que voce reinicie o programa, e tente fazer menos insercoes.";
 
-
+//
 #endif // CONSTANTES_H_INCLUDED

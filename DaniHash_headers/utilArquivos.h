@@ -226,5 +226,5 @@ void insereDeArquivo(string nomeDoArquivo, Ohash*& OH, Chash*& CH, HOhash*& HOH,
     system("pause>0");
 
 }
-
+//
 #endif // FUNCOES_AUXILIARES_ARQUIVOS_H_INCLUDED

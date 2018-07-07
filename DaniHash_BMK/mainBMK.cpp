@@ -13,12 +13,6 @@
 
 using namespace std;
 
-/*
-A fazer:
-
--Corrigir bugs na delecao da arvore
-
-*/
 int main(){
 
     srand ( time(NULL) );

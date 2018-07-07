@@ -503,5 +503,5 @@ class Chash{
         }
 
 };
-
+//
 #endif // CLOSED_HASHING_H_INCLUDED

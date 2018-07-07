@@ -281,5 +281,5 @@ Atributos pegaAtributosDaHash(bool trueBASIC_falseBMK){
     return atr;
 
 }
-
+//
 #endif // FUNCOES_AUXILIARES_MENU_H_INCLUDED

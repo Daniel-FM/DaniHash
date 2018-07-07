@@ -18,5 +18,5 @@
 #include "OpenHashing.h"
 #include "ClosedHashing.h"
 #include "HalfOpenHashing.h"
-
+//
 #endif // TABELAHASH_H_INCLUDED

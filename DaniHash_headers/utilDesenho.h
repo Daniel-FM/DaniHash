@@ -168,5 +168,5 @@ void eventHandler(RenderWindow* app){
 
 
 
-
+//
 #endif // FUNCOES_AUXILIARES_DESENHO_H_INCLUDED

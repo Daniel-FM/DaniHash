@@ -90,5 +90,5 @@ void printConstantes(){
     cout<<"FILEPATH_BMK          = "<<FILEPATH_BMK<<endl;
     system("pause>0");
 }
-
+//
 #endif // FUNCOES_AUXILIARES_GERAL_H_INCLUDED

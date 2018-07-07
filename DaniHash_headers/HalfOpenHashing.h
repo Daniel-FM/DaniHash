@@ -487,5 +487,5 @@ class HOhash{
 };
 
 
-
+//
 #endif // HALF_OPEN_HASHING_H_INCLUDED

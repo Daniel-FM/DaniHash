@@ -110,5 +110,5 @@ class lista{
         }
 };
 
-
+//
 #endif // LISTA_H_INCLUDED

@@ -100,5 +100,5 @@ int exponencial(int media){
 
     return (int) -media*ln;
 }
-
+//
 #endif // GVA_H_INCLUDED

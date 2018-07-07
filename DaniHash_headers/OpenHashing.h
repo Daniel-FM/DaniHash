@@ -327,5 +327,5 @@ class Ohash{
 
 };
 
-
+//
 #endif // OPEN_HASHING_H_INCLUDED

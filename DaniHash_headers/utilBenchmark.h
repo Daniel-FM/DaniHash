@@ -124,5 +124,5 @@ bool benchmarkComArquivoBenchmark(int opc){
         return false;
 
 }
-
+//
 #endif // FUNCOES_AUXILIARES_BENCHMARK_H_INCLUDED

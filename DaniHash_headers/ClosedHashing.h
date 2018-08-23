@@ -20,9 +20,7 @@ class no_ch{
             deleted = false;
         }
 
-        ~no_ch(){
-            //cout<<"no_deletado\n";
-        }
+        ~no_ch(){}
 
 };
 

@@ -16,7 +16,7 @@ const string nada = "";  //Somar pelo menos uma string permite que usemos o oper
 
 //Isto representa o conteudo padrao do arquivo INI, que sera escrito assim se um nao for encontrado
 const string INI_FILE = nada+
-                    "#A media passada para os Geradores de Variaveis Aleatorias\n"+
+                    "#A media passada para os Geradores de Valores Aleatorios\n"+
                     "MEDIA_CHAVE_BMK       =500000000\n\n"+
                     "#A quantidade maxima de insercoes feitas em um loop de um benchmark completo\n"+
                     "QTDMAX_INS            =200000\n\n"+

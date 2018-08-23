@@ -30,12 +30,9 @@ int main(){
 
         loopMenu = true;
         system("cls");
-        cout<<"***DANIHASH BMK v1.0.0***\n";
+        cout<<"***DANIHASH BMK v1.0.1***\n";
         atributos = pegaAtributosDaHash(false);
-
-        Ohash* OH   = NULL;
-        Chash* CH   = NULL;
-        HOhash* HOH = NULL;
+        TabelaHash* h;
 
         while (loopMenu){
 
@@ -56,7 +53,7 @@ int main(){
             switch (opcao){
 
                 case 1:
-                    instanciaHash(OH,CH,HOH,atributos.tipo,atributos.tamanho,atributos.limite);
+                    h = new TabelaHash(atributos.tipo,atributos.tamanho,atributos.limite);
 
                     comandoConsole = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
                     system(comandoConsole.c_str());
@@ -73,9 +70,9 @@ int main(){
                         num = 10;
                     }
 
-                    insereDeArquivo(nomeDoArquivo,OH,CH,HOH,num);
+                    h->inserirDeArquivo(nomeDoArquivo,num);
 
-                    destroiHash(OH,CH,HOH);
+                    delete h;
                     break;
 
                 case 2:
@@ -106,13 +103,13 @@ int main(){
                     resultadoBMK = inicializaResults();
 
                     try{
-                        instanciaHash(OH,CH,HOH,atributos.tipo,atributos.tamanho,atributos.limite);
-                        resultadoBMK = fazerBenchmarkINSERCAO(OH,CH,HOH,num,opcao,nomeDoArquivo);
+                        h = new TabelaHash(atributos.tipo,atributos.tamanho,atributos.limite);
+                        resultadoBMK = h->benchmarkINSERCAO(num,opcao,nomeDoArquivo);
 
                         if(respfinal == 10);
-                        tempoTotal_buscas = fazerBenchmarkBUSCA(OH,CH,HOH,0,nomeDoArquivo);
+                        tempoTotal_buscas = h->benchmarkBUSCA(0,nomeDoArquivo);
 
-                        destroiHash(OH,CH,HOH);
+                        delete h;
 
                         cout<<"\nTudo feito!\n\n";
                     }catch(bad_alloc &e){
@@ -163,10 +160,10 @@ int main(){
                             if (qtdInsercoes > QTDMAX_INS)
                                 qtdInsercoes = QTDMAX_INS;
 
-                            instanciaHash(OH,CH,HOH,atributos.tipo,atributos.tamanho,atributos.limite);
+                            h = new TabelaHash(atributos.tipo,atributos.tamanho,atributos.limite);
 
-                            resultadoBMK = fazerBenchmarkINSERCAO(OH,CH,HOH,qtdInsercoes, opcao, FILENAME_DUMMY);
-                            if ((opcao%10) == 0) tempoTotal_buscas += fazerBenchmarkBUSCA(OH,CH,HOH, opcao, FILENAME_DUMMY)/1000;
+                            resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, opcao, FILENAME_DUMMY);
+                            if ((opcao%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(opcao, FILENAME_DUMMY)/1000;
                             //destroiHash(OH,CH,HOH);
 
                             printNewPerc(qtdInsercoes,QTDMAX_INS);

@@ -10,16 +10,14 @@
 #define FUNCOES_AUXILIARES_ARQUIVOS_H_INCLUDED
 #include <dirent.h>
 
-//Foward declaration dos tipos de hashing
-class Ohash;
-class Chash;
-class HOhash;
+//Forward declaration dos tipos de hashing
+class GenericHash;
 
-//Foward declaration de algumas funcoes do utilMenu
-void fazerInsercao(Ohash*& OH, Chash*& CH, HOhash*& HOH, int valor, bool PI);
-int getColisoesDaInsercaoAtual(Ohash* OH, Chash* CH, HOhash* HOH);
-double fazerBenchmarkBUSCA(Ohash* OH, Chash* CH, HOhash* HOH, int opcao, string nomeDoArquivoINS);
-bool getFezRehashing(Ohash* OH, Chash* CH, HOhash* HOH);
+//Forward declaration de algumas funcoes do utilMenu
+void fazerInsercao(int valor, bool PI);
+int getColisoesDaInsercaoAtual();
+double fazerBenchmarkBUSCA(int opcao, string nomeDoArquivoINS);
+bool getFezRehashing();
 
 string setNomeDoArquivo(){
 
@@ -152,79 +150,5 @@ void inicializaDiretorioBMK(string filenameMontado){
     fileBMK.close();
 }
 
-void insereDeArquivo(string nomeDoArquivo, Ohash*& OH, Chash*& CH, HOhash*& HOH, int checagem){
-
-    /*
-    Checagem:
-    3  = insercao no DaniHashBASIC
-    2  = insercao no DaniHashBMK sem busca
-    10 = insercao no DaniHashBMK com busca
-    0  =
-    */
-
-    int numeroNaLinha, colisoes = 0, rehashings = 0, numeroDaLinha = 1;
-    string linha, substringINS;
-    ifstream fileREAD;
-    fileREAD.open(FILEPATH_INS+nomeDoArquivo);
-    double tempoINSERCOES = 0;
-
-    while(fileREAD){
-        getline(fileREAD, linha);
-        substringINS = linha.substr(0,4);
-
-        if(substringINS =="INS "){
-            try{
-                numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
-            }catch(invalid_argument &e){
-                cerr<<"\nProblema na linha "<<numeroDaLinha<<" do arquivo (invalid_argument).";
-                system("pause>0");
-                break;
-            }
-
-            benchmark b;
-            fazerInsercao(OH, CH, HOH, numeroNaLinha, false);
-            tempoINSERCOES += b.elapsed();
-
-            colisoes += getColisoesDaInsercaoAtual(OH,CH,HOH);
-
-            if (getFezRehashing(OH,CH,HOH) == true)
-                rehashings++;
-
-            numeroDaLinha++;
-
-        }else if (linha == ""){
-            break;
-        }else{
-            cerr<<"\nProblema na linha "<<numeroDaLinha<<" do arquivo (sem identificador \"INS \").";
-            system("pause>0");
-            checagem = 0;
-            break;
-        }
-    }
-    fileREAD.close();
-
-    if (checagem == 0) return;
-
-    if (checagem == 3){
-        printPause("\nInsercoes feitas!",true);
-    }
-
-    double tempoBUSCAS = 0;
-
-    if (checagem == 10){
-        tempoBUSCAS = fazerBenchmarkBUSCA(OH,CH,HOH,0,nomeDoArquivo);
-    }
-
-    cout<<"\nTudo feito!\n\n";
-    cout<<"Tempo insercoes: "<<tempoINSERCOES<<"ms\n";
-
-    if (checagem == 10)
-    cout<<"Tempo buscas:    "<<tempoBUSCAS<<"ms\n";
-
-    cout<<"Colisoes:        "<<colisoes<<"\n";
-    cout<<"Rehashings:      "<<rehashings<<"\n";
-    system("pause>0");
-
-}
 //
 #endif // FUNCOES_AUXILIARES_ARQUIVOS_H_INCLUDED

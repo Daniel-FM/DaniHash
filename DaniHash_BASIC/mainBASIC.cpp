@@ -27,20 +27,16 @@ int main(){
 
         loopMenu = true;
         system("cls");
-        cout<<"***DANIHASH BASIC v1.0.0***\n";
+        cout<<"***DANIHASH BASIC v1.0.1***\n";
         atributos = pegaAtributosDaHash(true);
 
-        Ohash* OH   = NULL;
-        Chash* CH   = NULL;
-        HOhash* HOH = NULL;
-
-        instanciaHash(OH,CH,HOH,atributos.tipo,atributos.tamanho,atributos.limite);
+        TabelaHash* h = new TabelaHash(atributos.tipo, atributos.tamanho, atributos.limite);
         inicializaDiretorioINS(DEFAULT_FILENAME_INS);
 
         while (loopMenu){
 
             system("cls");
-            cout<<"Fator de carga: "<<pegarFC(OH,CH,HOH)<<"\n\n";
+            cout<<"Fator de carga: "<<h->getFC()<<"\n\n";
             cout<<"O que deseja?\n\n";
             cout<<"1) Inserir um numero manualmente\n";
             cout<<"2) Ler e inserir numeros de um arquivo\n";
@@ -60,7 +56,7 @@ int main(){
 
                     valor = pegaResposta("\n\nQual numero?\n");
 
-                    fazerInsercao(OH,CH,HOH,valor,true);
+                    h->inserir(valor,true);
                     salvarArqInsTemp(valor);
 
                     break;
@@ -73,21 +69,21 @@ int main(){
                     nomeDoArquivo = setNomeDoArquivo();
                     if (nomeDoArquivo == "sair") break;
 
-                    insereDeArquivo(nomeDoArquivo,OH,CH,HOH,3);
+                    h->inserirDeArquivo(nomeDoArquivo,3);
 
                     break;
 
                 case 3:
                     num = pegaResposta("\n\nQue numero?\n");
 
-                    fazerRemocao(OH,CH,HOH,num);
+                    h->remover(num);
 
                     break;
 
                 case 4:
                     num = pegaResposta("\n\nQue numero?\n");
 
-                    posicao = fazerBusca(OH,CH,HOH,num,true);
+                    posicao = h->buscar(num,true);
                     if (posicao == -1)
                         printPause("O valor nao existe na tabela.",true);
                     else if (posicao == -2)
@@ -103,13 +99,13 @@ int main(){
 
                 case 5:
                     system("cls");
-                    fazerImpressao(OH,CH,HOH);
+                    h->imprimir();
                     break;
 
                 case 6:
                     num = pegaResposta("Quantos?\n");
                     for (i = 0; i < num; i++){
-                        fazerInsercao(OH,CH,HOH,i,false);
+                        h->inserir(i,false);
                         salvarArqInsTemp(i);
                     }
                     cout<<"\nValores inseridos!";
@@ -120,7 +116,7 @@ int main(){
                     num = pegaResposta("Quantos?\n");
                     for (i = 0; i < num; i++){
                         valor = rand()%999;
-                        fazerInsercao(OH,CH,HOH,valor,false);
+                        h->inserir(valor,false);
                         salvarArqInsTemp(valor);
                     }
                     cout<<"\nValores inseridos!";
@@ -128,11 +124,11 @@ int main(){
                     break;
 
                 case 8:
-                    chamarDesenho(OH,CH,HOH);
+                    h->desenhar();
                     break;
 
                 case 9:
-                    destroiHash(OH,CH,HOH);
+                    delete h;
                     fflush(stdin);
                     cout<<"\nEntre o nome do arquivo de insercao feito, sem \".ins\" (ou aperte apenas ENTER para manter o padrao):"<<endl;
                     if (cin.peek() != '\n') {                   //se o proximo caractere eh um newline

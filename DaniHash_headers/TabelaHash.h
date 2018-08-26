@@ -15,160 +15,20 @@
 #include "utilBenchmark.h"
 #include "utilArquivos.h"
 
-#include "OpenHashing.h"
-#include "ClosedHashing.h"
-#include "HalfOpenHashing.h"
-
 class TabelaHash{
 
     public:
 
-    Ohash* OH = NULL;
-    Chash* CH = NULL;
-    HOhash* HOH = NULL;
-
-    TabelaHash(int tipo, int tamanho, int limite){
-        instanciaHash(tipo, tamanho, limite);
-    }
-
-    void instanciaHash(int tipo, int tamanho, int limite){
-
-        if (tipo <= 2){
-            OH = new Ohash(tamanho, tipo);
-        }else if (tipo <= 5){
-            CH = new Chash(tamanho, tipo);
-        }else{
-            HOH = new HOhash(tamanho, tipo, limite);
-        }
-    }
-
-    void destroiHash(){
-
-        if (OH != NULL){
-            delete OH;
-        }else if (CH != NULL){
-            delete CH;
-        }else if (HOH != NULL){
-            delete HOH;
-        }
-
-    }
-
-    Results benchmarkINSERCAO(int qtdInsercoes, int opcao, string nomeDoArquivoINS){
-
-        if (OH != NULL)
-            return OH->benchmarkINSERCAO(qtdInsercoes, opcao, nomeDoArquivoINS);
-        else if (CH != NULL)
-            return CH->benchmarkINSERCAO(qtdInsercoes, opcao, nomeDoArquivoINS);
-        else if (HOH != NULL)
-            return HOH->benchmarkINSERCAO(qtdInsercoes, opcao, nomeDoArquivoINS);
-
-        return inicializaResults();
-    }
-
-    double benchmarkBUSCA(int opcao, string nomeDoArquivoINS){
-
-        if (OH != NULL)
-            return OH->benchmarkBUSCA(opcao, nomeDoArquivoINS);
-        else if (CH != NULL)
-            return CH->benchmarkBUSCA(opcao, nomeDoArquivoINS);
-        else if (HOH != NULL)
-            return HOH->benchmarkBUSCA(opcao, nomeDoArquivoINS);
-
-        return 0;
-    }
-
-    float getFC(){
-
-        if (OH != NULL)
-            return OH->getFC();
-        else if (CH != NULL)
-            return CH->getFC();
-        else if (HOH != NULL)
-            return HOH->getFC();
-
-        return 0;
-    }
-
-    void inserir(int valor, bool PI){
-
-        if (OH != NULL)
-            OH->inserir(valor, PI);
-        else if (CH != NULL)
-            CH->inserir(valor, CH->tabela, CH->TH, PI);
-        else if (HOH != NULL){
-            if (HOH->tipo == 6)
-                HOH->inserir_CTQ(valor, HOH->tabela, HOH->alt_max, PI);
-            else
-                HOH->inserir(valor, HOH->tabela, HOH->alt_max, PI);
-        }
-    }
-
-    void remover(int valor){
-
-        if (OH != NULL)
-            OH->remover(valor);
-        else if (CH != NULL)
-            CH->remover(valor);
-        else if (HOH != NULL)
-            HOH->remover(valor);
-    }
-
-    int buscar(int valor, bool PI){
-
-        if (OH != NULL)
-            return OH->buscar(valor,PI);
-        else if (CH != NULL)
-            return CH->buscar(valor,PI);
-        else if (HOH != NULL)
-            return HOH->buscar(valor,PI);
-
-        return -3;
-    }
-
-    void imprimir(){
-
-        if (OH != NULL)
-            OH->imprimir();
-        else if (CH != NULL)
-            CH->imprimir();
-        else if (HOH != NULL)
-            HOH->imprimir();
-    }
-
-
-    void desenhar(){
-        if (OH != NULL)
-            OH->preparar_janela();
-        else if (CH != NULL)
-            CH->preparar_janela();
-        else if (HOH != NULL)
-            HOH->preparar_janela();
-    }
-
-    int getColisoesDaInsercaoAtual(){
-
-        if (OH != NULL)
-            return 0;
-        else if (CH != NULL)
-            return CH->colisoesDaInsercaoAtual;
-        else if (HOH != NULL)
-            return HOH->colisoesDaInsercaoAtual;
-
-        return 0;
-    }
-
-    bool fezRehashing(){
-
-        if (OH != NULL)
-            return false;
-        else if (CH != NULL)
-            return CH->fezRehashing;
-        else if (HOH != NULL)
-            return HOH->fezRehashing;
-
-        return false;
-    }
+    virtual void inserir(int valor, bool PI)=0;
+    virtual void remover(int valor)=0;
+    virtual int buscar(int valor, bool PI)=0;
+    virtual void imprimir()=0;
+    virtual void preparar_janela()=0;
+    virtual Results benchmarkINSERCAO(int qtdInsercoes, int opcao, string nomeDoArquivoINS)=0;
+    virtual double benchmarkBUSCA(int opcao, string nomeDoArquivoINS)=0;
+    virtual float getFC()=0;
+    virtual int getColisoesDaInsercaoAtual()=0;
+    virtual bool getFezRehashing()=0;
 
     void inserirDeArquivo(string nomeDoArquivo, int checagem){
 
@@ -205,7 +65,7 @@ class TabelaHash{
 
                 colisoes += getColisoesDaInsercaoAtual();
 
-                if (this->fezRehashing() == true)
+                if (this->getFezRehashing() == true)
                     rehashings++;
 
                 numeroDaLinha++;
@@ -245,11 +105,80 @@ class TabelaHash{
 
     }
 
-    ~TabelaHash(){
-        destroiHash();
-    }
+    virtual ~TabelaHash(){}
 
 };
+
+struct Atributos{
+
+    public:
+
+    int tipo, tamanho, limite;
+};
+
+Atributos pegaAtributosDaHash(bool trueBASIC_falseBMK){
+    int type;
+    Atributos atr;
+
+    cout<<"Que tipo de hash?\n\n";
+    cout<<"1) Open Hashing com Lista\n";
+    cout<<"2) Open Hashing com Arvore\n";
+    cout<<"3) Closed Hashing\n";
+    cout<<"4) Half-Open Hashing\n\n";
+
+    type = pegaRespostaMinMax("Opcao: ",1,4);
+
+    if (type == 3){
+
+        system("cls");
+        cout<<"Escolha como lidar com colisoes:\n\n";
+        cout<<"3) Tentativa linear\n";
+        cout<<"4) Tentativa quadratica\n";
+        cout<<"5) Duplo hashing\n\n";
+
+        type = pegaRespostaMinMax("Opcao: ",3,5);
+    }else if (type == 4){
+
+        system("cls");
+        cout<<"Deseja que a hash utilize tentativa quadratica?\n\n";
+        cout<<"6) Sim, insercoes em arvores cheias contam como colisoes\n";
+        cout<<"7) Nao, pode continuar inserindo em arvores cheias\n\n";
+
+        type = pegaRespostaMinMax("Opcao: ",6,7);
+    }
+
+    atr.tipo = type;
+    atr.limite = 1; //so pra deixar inicializado com algum valor
+
+    if (trueBASIC_falseBMK == true){
+        atr.tamanho = pegaRespostaMin("\nTamanho da tabela: ", 1);
+
+        if (type >= 6)
+            atr.limite = pegaRespostaMin("Altura maxima das arvores: ", 1);
+
+    }else{
+        atr.tamanho = TAM_INICIAL_HASH_BMK;
+        atr.limite = ALT_MAX_BMK;
+    }
+
+    return atr;
+
+}
+
+#include "OpenHashing.h"
+#include "ClosedHashing.h"
+#include "HalfOpenHashing.h"
+
+TabelaHash* instanciaHash(Atributos attr){
+
+    if (attr.tipo <= 2)
+        return new Ohash(attr.tamanho,attr.tipo);
+    else if (attr.tipo <= 5)
+        return new Chash(attr.tamanho,attr.tipo);
+    else
+        return new HOhash(attr.tamanho,attr.tipo,attr.limite);
+
+}
 
 //
 #endif // TABELAHASH_H_INCLUDED

@@ -8,8 +8,8 @@
 
 #include <fstream>
 #include "../DaniHash_headers/utilGeral.h"
-#include "../DaniHash_headers/TabelaHash.h"
 #include "../DaniHash_headers/utilMenu.h"
+#include "../DaniHash_headers/TabelaHash.h"
 
 using namespace std;
 
@@ -30,7 +30,7 @@ int main(){
         cout<<"***DANIHASH BASIC v1.0.1***\n";
         atributos = pegaAtributosDaHash(true);
 
-        TabelaHash* h = new TabelaHash(atributos.tipo, atributos.tamanho, atributos.limite);
+        TabelaHash* h = instanciaHash(atributos);
         inicializaDiretorioINS(DEFAULT_FILENAME_INS);
 
         while (loopMenu){
@@ -124,13 +124,14 @@ int main(){
                     break;
 
                 case 8:
-                    h->desenhar();
+                    h->preparar_janela();
                     break;
 
                 case 9:
                     delete h;
                     fflush(stdin);
-                    cout<<"\nEntre o nome do arquivo de insercao feito, sem \".ins\" (ou aperte apenas ENTER para manter o padrao):"<<endl;
+                    cout<<"\nEntre o nome para o arquivo de insercao criado, sem \".ins\" "<<
+                            "(ou aperte apenas ENTER para manter o nome padrao):"<<endl;
                     if (cin.peek() != '\n') {                   //se o proximo caractere eh um newline
                         cin>>nomeDoArquivo;
                         str = "IF EXIST .\\"+FILEPATH_INS+nomeDoArquivo+".ins del "+FILEPATH_INS+nomeDoArquivo+".ins";

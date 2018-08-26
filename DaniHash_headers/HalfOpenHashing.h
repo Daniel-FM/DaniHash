@@ -26,7 +26,7 @@ int pode_inserir(arv_avl* a, int valor, int alt_max){
 
 }
 
-class HOhash{
+class HOhash: public TabelaHash{
 
     public:
 
@@ -67,42 +67,18 @@ class HOhash{
 
         }
 
-        /************************************************* INSERIR (SEM TENTATIVA QUADRATICA)  *****************************************************************/
+        //Foi necessario criar essa funcao de inserir "falsa" que chama a funcao de inserir real, pois a falsa eh
+        //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
+        //em todas as classes que a impelentam: no caso, (int valor, bool PI)
+        void inserir(int valor, bool PI){
+            Inserir(valor, tabela, alt_max, PI);
+        }
 
-        void inserir(int k, arv_avl* *tabela, int alt_max, bool PI){
-
-            if (RH_FLAG == false){
-                fezRehashing = false;
-            }
-            int H1 = k % TH;
-
-            tabela[H1]->raiz = tabela[H1]->inserir(k, tabela[H1]->raiz);
-            if (PI)
-                cout<<"\nA chave "<<k<<" foi inserida na posicao "<<H1<<"\n";
-
-            //Se a altura de uma arvore chegar ao valor maximo definido, ela eh considerada como "cheia"
-            if (tabela[H1]->getAltura(tabela[H1]->raiz) == alt_max){
-                if (tabela[H1]->cheia == false){        //Se ela tiver sido enchida agora
-                    tabela[H1]->cheia = true;           //Seta a flag que a identifica como cheia
-                    num_arvores_cheias++;               //Incrementa o numero de arvores cheias
-                }
-            }
-
-
-            //Checa se mais da metade das arvores da tabela estao cheias. Se sim, faz rehashing
-            if  ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-                if (PI)
-                    cout<<"O fator de carga ultrapassou o limiar definido como "<<LIMIAR_PARA_REHASHING<<". Vai fazer rehashing.\n";
-
-                RH_FLAG = true;
-                rehashing(PI);
-                fezRehashing = true;
-                RH_FLAG = false;
-            }
-            if (PI)
-                system("pause > 0");
-
-
+        void Inserir(int valor, arv_avl* *tab, int altmax, bool PI){
+            if (tipo == 6)
+                inserir_CTQ(valor, tab, altmax, PI);
+            else
+                inserir_STQ(valor, tab, altmax, PI);
         }
 
         /************************************************* INSERIR (COM TENTATIVA QUADRATICA) *****************************************************************/
@@ -169,6 +145,44 @@ class HOhash{
 
         }
 
+        /************************************************* INSERIR (SEM TENTATIVA QUADRATICA)  *****************************************************************/
+
+        void inserir_STQ(int k, arv_avl* *tabela, int alt_max, bool PI){
+
+            if (RH_FLAG == false){
+                fezRehashing = false;
+            }
+            int H1 = k % TH;
+
+            tabela[H1]->raiz = tabela[H1]->inserir(k, tabela[H1]->raiz);
+            if (PI)
+                cout<<"\nA chave "<<k<<" foi inserida na posicao "<<H1<<"\n";
+
+            //Se a altura de uma arvore chegar ao valor maximo definido, ela eh considerada como "cheia"
+            if (tabela[H1]->getAltura(tabela[H1]->raiz) == alt_max){
+                if (tabela[H1]->cheia == false){        //Se ela tiver sido enchida agora
+                    tabela[H1]->cheia = true;           //Seta a flag que a identifica como cheia
+                    num_arvores_cheias++;               //Incrementa o numero de arvores cheias
+                }
+            }
+
+
+            //Checa se mais da metade das arvores da tabela estao cheias. Se sim, faz rehashing
+            if  ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
+                if (PI)
+                    cout<<"O fator de carga ultrapassou o limiar definido como "<<LIMIAR_PARA_REHASHING<<". Vai fazer rehashing.\n";
+
+                RH_FLAG = true;
+                rehashing(PI);
+                fezRehashing = true;
+                RH_FLAG = false;
+            }
+            if (PI)
+                system("pause > 0");
+
+
+        }
+
         /************************************************* DELETAR *****************************************************************/
 
         void remover(int k){
@@ -226,7 +240,7 @@ class HOhash{
 
             if(no_que_vai_ser_inserido != NULL){
 
-                inserir(no_que_vai_ser_inserido->info, tabela_que_vai_receber, limit, PI);
+                Inserir(no_que_vai_ser_inserido->info, tabela_que_vai_receber, limit, PI);
 
                 insere_noavl(no_que_vai_ser_inserido->esq, tabela_que_vai_receber, limit, PI);
                 insere_noavl(no_que_vai_ser_inserido->dir, tabela_que_vai_receber, limit, PI);
@@ -241,7 +255,7 @@ class HOhash{
 
             for(int i = 0; i < TH; i++){
 
-                cout<< "Indice ["<<i<<"]:\t";
+                cout<< "["<<i<<"]:\t";
 
                 tabela[i]->imprimir(tabela[i]->raiz);
 
@@ -341,10 +355,7 @@ class HOhash{
 
                 benchmark b;
                 //Depois fazemos a insercao, medindo o tempo
-                if (tipo == 6)
-                    inserir_CTQ(valorParaInserir,tabela,alt_max,false);
-                else
-                    inserir(valorParaInserir,tabela,alt_max,false);
+                Inserir(valorParaInserir,tabela,alt_max,false);
                 tempo += b.elapsed();
 
                 resultado.colisoes += colisoesDaInsercaoAtual;
@@ -482,6 +493,16 @@ class HOhash{
             else
                 return (40 + 40*(alt-3));
 
+        }
+
+        /**************************** OUTRAS ********************************/
+
+        int getColisoesDaInsercaoAtual(){
+            return colisoesDaInsercaoAtual;
+        }
+
+        bool getFezRehashing(){
+            return fezRehashing;
         }
 
 };

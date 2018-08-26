@@ -51,7 +51,7 @@ bool DeletedOrNull(no_ch* no){
     return result;
 }
 
-class Chash{
+class Chash: public TabelaHash{
 
     public:
 
@@ -85,7 +85,14 @@ class Chash{
 
         /************************************************* INSERIR *****************************************************************/
 
-        void inserir(int k, no_ch* *Tabela, int TamTabela, bool PI){
+        //Foi necessario criar essa funcao de inserir "falsa" que chama a funcao de inserir real, pois a falsa eh
+        //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
+        //em todas as classes que a impelentam: no caso, (int valor, bool PI)
+        void inserir(int valor, bool PI){
+            Inserir(valor, tabela, TH, PI);
+        }
+
+        void Inserir(int k, no_ch* *Tabela, int TamTabela, bool PI){
 
             if (RH_FLAG == false){
                 colisoesDaInsercaoAtual = 0;
@@ -149,8 +156,8 @@ class Chash{
 
                 }
 
-                //DUPLO HASHING (FUNCAO 1)
-                else if (tipo == 5){
+                //DUPLO HASHING
+                else{
 
                     int H2 = r - (k % r);;
 
@@ -170,35 +177,6 @@ class Chash{
                         i++;
                     }
 
-                }
-
-                //DUPLO HASHING (FUNCAO 2)
-                else{
-
-                    int THaux = TamTabela;
-
-                    while (!DeletedOrNull(Tabela[Hfinal])){
-
-                        if (Tabela[Hfinal]->info_no == k){
-                            printPause("\nChave repetida!",PI);
-                            return;
-                        }
-
-                        THaux = pega_prox_prim_menor(THaux);
-                        Hfinal = k % THaux;
-                        colisoesDaInsercaoAtual++;
-
-                        //Se, enquanto h for 2, houver outra colisao, significa queo elemento nao pode
-                        //ser inserido, por isso a funcao retorna sem fazer mais nada.
-                        if (THaux <= 2){
-
-                            printPause("O numero nao pode ser inserido. Numero maximo de tentativas atingido.",PI);
-                            return;
-                        }
-
-                    }
-
-                    //Se saiu desse laco, significa que encontrou uma posParaInserir desocupada
                 }
 
                 //Despois de realizar um desses metodos, encontramos a posicao da tabela na qual nao
@@ -249,64 +227,19 @@ class Chash{
                 int i = 1;
 
                 //BUSCA USANDO TENTATIVA LINEAR
-                //if (tipo == 3){
-                    while (tabela[Hfinal] != NULL){
-                        if ((tabela[Hfinal]->deleted == false) && (tabela[Hfinal]->info_no == k)){
-                            return Hfinal;
-                        }
-
-                        if (i == TH){
-                            return -2;
-                        }
-
-                        Hfinal = (H1 + i) % TH;
-                        i++;
-
+                while (tabela[Hfinal] != NULL){
+                    if ((tabela[Hfinal]->deleted == false) && (tabela[Hfinal]->info_no == k)){
+                        return Hfinal;
                     }
-                //}
-                /*
-                //TENTATIVA QUADRATICA
-                else if (tipo == 4){
 
-                    while (tabela[Hfinal] != NULL){
-
-                        if ((tabela[Hfinal]->deleted == false) && (tabela[Hfinal]->info_no == k)){
-                            return Hfinal;
-                        }
-
-                        if (i == TH){
-                            return -2;
-                        }
-
-                        Hfinal = (int)(H1 + pow(i,2)) % TH;
-                        i++;
-
+                    if (i == TH){
+                        return -2;
                     }
+
+                    Hfinal = (H1 + i) % TH;
+                    i++;
 
                 }
-
-                //DUPLO HASHING
-                else if (tipo == 5){
-
-                    int r  = pega_prox_prim_menor(TH);
-                    int H2;
-
-                    while (tabela[Hfinal] != NULL){
-                        if ((tabela[Hfinal]->deleted == false) && (tabela[Hfinal]->info_no == k)){
-                            return Hfinal;
-                        }
-
-                        if (i == TH){
-                            return -2;
-                        }
-
-                        H2 = r - (k % r);
-                        Hfinal = (H1 + (i*H2)) % TH;
-
-                        i++;
-                    }
-
-                }*/
 
                 //Testa se foi o caso de ser nulo mesmo
                 if (tabela[Hfinal] == NULL)
@@ -338,7 +271,7 @@ class Chash{
             for (int i = 0; i < TH_antigo; i++){        //Vai percorrendo a tabela auxiliar, inserindo os elementos dela na nova tabela
 
                 if (tabela_dummy[i] != NULL)
-                    inserir(tabela_dummy[i]->info_no, tabela_nova, TH_novo, PI);
+                    Inserir(tabela_dummy[i]->info_no, tabela_nova, TH_novo, PI);
 
             }
 
@@ -389,9 +322,9 @@ class Chash{
             for(int i = 0; i < TH; i++){
 
                 if ((tabela[i] == NULL) || (tabela[i]->deleted == true))
-                    cout<< "Indice ["<<i<<"]:\n";
+                    cout<< "["<<i<<"]:\n";
                 else{
-                    cout<< "Indice ["<<i<<"]:\t"<<tabela[i]->info_no<<"\n";
+                    cout<< "["<<i<<"]:\t"<<tabela[i]->info_no<<"\n";
                 }
 
             }
@@ -422,7 +355,7 @@ class Chash{
                     fileINS<<"INS "<<valorParaInserir<<endl;
 
                 benchmark b;
-                inserir(valorParaInserir, tabela, TH, false);   //Depois fazemos a insercao, medindo o tempo
+                Inserir(valorParaInserir, tabela, TH, false);   //Depois fazemos a insercao, medindo o tempo
                 tempo += b.elapsed();
 
                 resultado.colisoes += colisoesDaInsercaoAtual;
@@ -498,6 +431,16 @@ class Chash{
 
             printPause("Comming soon!!!", true);
 
+        }
+
+        /**************************** OUTRAS ********************************/
+
+        int getColisoesDaInsercaoAtual(){
+            return colisoesDaInsercaoAtual;
+        }
+
+        bool getFezRehashing(){
+            return fezRehashing;
         }
 
 };

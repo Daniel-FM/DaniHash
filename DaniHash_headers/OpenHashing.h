@@ -9,7 +9,7 @@
 #ifndef OPEN_HASHING_H_INCLUDED
 #define OPEN_HASHING_H_INCLUDED
 
-class Ohash{
+class Ohash: public TabelaHash{
 
     public:
 
@@ -94,7 +94,7 @@ class Ohash{
 
             for(int i = 0; i < TH; i++){
 
-                cout<< "Indice ["<<i<<"]:\t";
+                cout<< "["<<i<<"]:\t";
 
                 if (tipo == 1)
                     tabelaL[i]->imprimir();
@@ -325,6 +325,15 @@ class Ohash{
 
         }
 
+        /**************************** OUTRAS ********************************/
+
+        int getColisoesDaInsercaoAtual(){
+            return 0;
+        }
+
+        bool getFezRehashing(){
+            return false;
+        }
 };
 
 //

@@ -8,8 +8,8 @@
 
 #include <fstream>
 #include "../DaniHash_headers/utilGeral.h"
-#include "../DaniHash_headers/TabelaHash.h"
 #include "../DaniHash_headers/utilMenu.h"
+#include "../DaniHash_headers/TabelaHash.h"
 
 using namespace std;
 
@@ -53,7 +53,7 @@ int main(){
             switch (opcao){
 
                 case 1:
-                    h = new TabelaHash(atributos.tipo,atributos.tamanho,atributos.limite);
+                    h = instanciaHash(atributos);
 
                     comandoConsole = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
                     system(comandoConsole.c_str());
@@ -103,7 +103,7 @@ int main(){
                     resultadoBMK = inicializaResults();
 
                     try{
-                        h = new TabelaHash(atributos.tipo,atributos.tamanho,atributos.limite);
+                        h = instanciaHash(atributos);
                         resultadoBMK = h->benchmarkINSERCAO(num,opcao,nomeDoArquivo);
 
                         if(respfinal == 10);
@@ -160,7 +160,7 @@ int main(){
                             if (qtdInsercoes > QTDMAX_INS)
                                 qtdInsercoes = QTDMAX_INS;
 
-                            h = new TabelaHash(atributos.tipo,atributos.tamanho,atributos.limite);
+                            h = instanciaHash(atributos);
 
                             resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, opcao, FILENAME_DUMMY);
                             if ((opcao%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(opcao, FILENAME_DUMMY)/1000;

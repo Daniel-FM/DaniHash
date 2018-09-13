@@ -69,7 +69,8 @@ int main(){
                     nomeDoArquivo = setNomeDoArquivo();
                     if (nomeDoArquivo == "sair") break;
 
-                    h->inserirDeArquivo(nomeDoArquivo,3);
+                    h->inserirDeArquivo(nomeDoArquivo);
+                    printPause("Insercoes feitas!",true);
 
                     break;
 

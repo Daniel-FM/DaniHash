@@ -64,13 +64,29 @@ int main(){
                     if (nomeDoArquivo == "sair") break;
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    num = pegaRespostaMinMax("",1,2);
+                    respfinal = pegaRespostaMinMax("",1,2);
 
-                    if (num == 1){
-                        num = 10;
+                    try{
+                        h = instanciaHash(atributos);
+                        resultadoBMK = h->inserirDeArquivo(nomeDoArquivo);
+
+                        if(respfinal == 1);
+                        tempoTotal_buscas = h->benchmarkBUSCA(0,nomeDoArquivo);
+
+                        delete h;
+
+                        cout<<"\nTudo feito!\n\n";
+                    }catch(bad_alloc &e){
+                        cerr<<BAD_ALLOC_MSG;
                     }
+                    cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
 
-                    h->inserirDeArquivo(nomeDoArquivo,num);
+                    if (respfinal == 10)
+                    cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
+
+                    cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
+                    cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
+                    system("pause>0");
 
                     delete h;
                     break;
@@ -100,7 +116,6 @@ int main(){
                     }
 
                     inicializaDiretorioINS(nomeDoArquivo);
-                    resultadoBMK = inicializaResults();
 
                     try{
                         h = instanciaHash(atributos);
@@ -148,8 +163,6 @@ int main(){
 
                     //E inicializa o diretorio do de buscas, caso isso tenha sido pedido
                     if ((opcao%10) == 0) inicializaDiretorioBMK(montarNomeDoArquivoBMK(atributos.tipo,opcao,false));
-
-                    resultadoBMK = inicializaResults();
 
                     cout<<"\nTrabalhando...    0%";
                     try{

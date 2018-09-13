@@ -30,21 +30,13 @@ class TabelaHash{
     virtual int getColisoesDaInsercaoAtual()=0;
     virtual bool getFezRehashing()=0;
 
-    void inserirDeArquivo(string nomeDoArquivo, int checagem){
+    Results inserirDeArquivo(string nomeDoArquivo){
 
-        /*
-        Checagem:
-        3  = insercao no DaniHashBASIC
-        2  = insercao no DaniHashBMK sem busca
-        10 = insercao no DaniHashBMK com busca
-        0  =
-        */
-
-        int numeroNaLinha, colisoes = 0, rehashings = 0, numeroDaLinha = 1;
+        int numeroNaLinha, numeroDaLinha = 1;
         string linha, substringINS;
         ifstream fileREAD;
         fileREAD.open(FILEPATH_INS+nomeDoArquivo);
-        double tempoINSERCOES = 0;
+        Results resultado = inicializaResults();
 
         while(fileREAD){
             getline(fileREAD, linha);
@@ -56,17 +48,18 @@ class TabelaHash{
                 }catch(invalid_argument &e){
                     cerr<<"\nProblema na linha "<<numeroDaLinha<<" do arquivo (invalid_argument).";
                     system("pause>0");
+                    resultado = inicializaResults();
                     break;
                 }
 
                 benchmark b;
                 this->inserir(numeroNaLinha, false);
-                tempoINSERCOES += b.elapsed();
+                resultado.tempoBMK += b.elapsed();
 
-                colisoes += getColisoesDaInsercaoAtual();
+                resultado.colisoes += getColisoesDaInsercaoAtual();
 
                 if (this->getFezRehashing() == true)
-                    rehashings++;
+                    resultado.rehashings++;
 
                 numeroDaLinha++;
 
@@ -75,34 +68,12 @@ class TabelaHash{
             }else{
                 cerr<<"\nProblema na linha "<<numeroDaLinha<<" do arquivo (sem identificador \"INS \").";
                 system("pause>0");
-                checagem = 0;
+                resultado = inicializaResults();
                 break;
             }
         }
         fileREAD.close();
-
-        if (checagem == 0) return;
-
-        if (checagem == 3){
-            printPause("\nInsercoes feitas!",true);
-        }
-
-        double tempoBUSCAS = 0;
-
-        if (checagem == 10){
-            tempoBUSCAS = this->benchmarkBUSCA(0,nomeDoArquivo);
-        }
-
-        cout<<"\nTudo feito!\n\n";
-        cout<<"Tempo insercoes: "<<tempoINSERCOES<<"ms\n";
-
-        if (checagem == 10)
-        cout<<"Tempo buscas:    "<<tempoBUSCAS<<"ms\n";
-
-        cout<<"Colisoes:        "<<colisoes<<"\n";
-        cout<<"Rehashings:      "<<rehashings<<"\n";
-        system("pause>0");
-
+        return resultado;
     }
 
     virtual ~TabelaHash(){}

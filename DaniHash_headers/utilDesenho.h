@@ -12,7 +12,6 @@
 
 using namespace sf;
 
-
 const int RAIO = 14;
 const int TAM_TEXTO_IND = 20;
 const int TAM_TEXTO_RET = 18;

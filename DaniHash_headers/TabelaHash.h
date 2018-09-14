@@ -46,10 +46,7 @@ class TabelaHash{
                 try{
                     numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
                 }catch(invalid_argument &e){
-                    cerr<<"\nProblema na linha "<<numeroDaLinha<<" do arquivo (invalid_argument).";
-                    system("pause>0");
-                    resultado = inicializaResults();
-                    break;
+                    throw arquivo_defeituoso(numeroDaLinha,1);
                 }
 
                 benchmark b;
@@ -66,10 +63,7 @@ class TabelaHash{
             }else if (linha == ""){
                 break;
             }else{
-                cerr<<"\nProblema na linha "<<numeroDaLinha<<" do arquivo (sem identificador \"INS \").";
-                system("pause>0");
-                resultado = inicializaResults();
-                break;
+                throw arquivo_defeituoso(numeroDaLinha,2);
             }
         }
         fileREAD.close();

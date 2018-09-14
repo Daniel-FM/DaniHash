@@ -9,6 +9,7 @@
 #ifndef FUNCOES_AUXILIARES_GERAL_H_INCLUDED
 #define FUNCOES_AUXILIARES_GERAL_H_INCLUDED
 #include <iostream>
+#include <exception>
 #include "Constantes.h"
 
 //Funcao para checar se um numero eh primo. Se so houver um divisor entre 1 e o numero/2
@@ -90,5 +91,30 @@ void printConstantes(){
     cout<<"FILEPATH_BMK          = "<<FILEPATH_BMK<<endl;
     system("pause>0");
 }
+
+struct arquivo_defeituoso : public exception {
+
+    int l = 0;
+    string t = "";
+
+    arquivo_defeituoso(int linha, int tipo){
+        l = linha;
+
+        if (tipo == 1)
+            t = "Caractere invalido";
+        else if (tipo == 2)
+            t = "Sem identificador \"INS\"";
+        else
+            t = "???";
+        //deixando assim para facilitar caso va adicionar outras razoes
+    }
+
+    //override do metodo virtual what(), de std::exception
+    const char * what () const throw () {
+        string str = ("\nProblema na linha " + to_string(l)) + (": " + t);
+        return str.c_str();
+    }
+};
+
 //
 #endif // FUNCOES_AUXILIARES_GERAL_H_INCLUDED

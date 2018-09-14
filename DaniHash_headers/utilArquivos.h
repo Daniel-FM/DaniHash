@@ -78,7 +78,8 @@ bool imprimeArquivosINS(){
         }
         closedir (dir);
     } else {
-        perror ("Nao foi possivel abrir o diretorio!");
+        cerr<<"Nao foi possivel abrir o diretorio!";
+        system("pause>0");
         return false;
     }
     return true;
@@ -117,7 +118,7 @@ string montarNomeDoArquivoBMK(int tipo, int opcao_insbmk, bool inserTRUE_buscaFA
     else
         fileName += "Ordenado_";
 
-    //Depois a indentificacao se eh benchmark de insercao ou de busca
+    //Depois a identificacao se eh benchmark de insercao ou de busca
     if (inserTRUE_buscaFALSE == true)
         fileName += "INSERCAO.bmk";
     else

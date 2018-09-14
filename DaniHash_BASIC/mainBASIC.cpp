@@ -69,8 +69,13 @@ int main(){
                     nomeDoArquivo = setNomeDoArquivo();
                     if (nomeDoArquivo == "sair") break;
 
-                    h->inserirDeArquivo(nomeDoArquivo);
-                    printPause("Insercoes feitas!",true);
+                    try{
+                        h->inserirDeArquivo(nomeDoArquivo);
+                        printPause("Insercoes feitas!",true);
+                    }catch(arquivo_defeituoso &e){
+                        cerr<<e.what();
+                        system("pause>0");
+                    }
 
                     break;
 

@@ -73,21 +73,21 @@ int main(){
                         if(respfinal == 1);
                         tempoTotal_buscas = h->benchmarkBUSCA(0,nomeDoArquivo);
 
-                        delete h;
-
                         cout<<"\nTudo feito!\n\n";
+                        cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
+
+                        if (respfinal == 10)
+                        cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
+
+                        cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
+                        cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
                     }catch(bad_alloc &e){
                         cerr<<BAD_ALLOC_MSG;
+                    }catch(arquivo_defeituoso &e){
+                        cerr<<e.what();
                     }
-                    cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
 
-                    if (respfinal == 10)
-                    cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
-
-                    cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
-                    cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
                     system("pause>0");
-
                     delete h;
                     break;
 
@@ -124,21 +124,21 @@ int main(){
                         if(respfinal == 10);
                         tempoTotal_buscas = h->benchmarkBUSCA(0,nomeDoArquivo);
 
-                        delete h;
-
                         cout<<"\nTudo feito!\n\n";
+                        cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
+
+                        if (respfinal == 10)
+                        cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
+
+                        cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
+                        cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
+
                     }catch(bad_alloc &e){
                         cerr<<BAD_ALLOC_MSG;
                     }
-                    cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
 
-                    if (respfinal == 10)
-                    cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
-
-                    cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
-                    cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
                     system("pause>0");
-
+                    delete h;
                     break;
 
                 case 6:
@@ -152,8 +152,8 @@ int main(){
                                         //(a variavel referente a opcao escolhida fica divisivel por 10)
                     }
 
-                    tempoTotal_insercoes = 0;  //O somatorio dos tempos de cada insercao do benchmark
-                    tempoTotal_buscas = 0;  //O somatorio dos tempos de cada busca do benchmark
+                    tempoTotal_insercoes = 0;   //O somatorio dos tempos de cada insercao do benchmark
+                    tempoTotal_buscas = 0;      //O somatorio dos tempos de cada busca do benchmark
                     tempoDecorrido = 0;         //O tempo real do processo inteiro de benchmark
                     rehashingsTotais = 0;
                     MAXcolisoes = 0;
@@ -174,10 +174,9 @@ int main(){
                                 qtdInsercoes = QTDMAX_INS;
 
                             h = instanciaHash(atributos);
-
                             resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, opcao, FILENAME_DUMMY);
                             if ((opcao%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(opcao, FILENAME_DUMMY)/1000;
-                            //destroiHash(OH,CH,HOH);
+                            delete h;
 
                             printNewPerc(qtdInsercoes,QTDMAX_INS);
 
@@ -192,24 +191,24 @@ int main(){
                                 qtdInsercoes += GAP_INS;
                         }
                         tempoDecorrido = b.elapsed();
+
                         cout<<"\n\nBenchmark completo!\n\n";
+                        /*o "tempo decorrido" indica o tempo real decorrido do inicio ao fim do processo de
+                        benchmark, pois inclui o tempo de leitura e escrita dos arquivos, o que eh muito mais
+                        evidente em benchmarks incluindo buscas.*/
+                        cout<<"Tempo decorrido: "<<tempoDecorrido/1000<<"s\n";
+                        cout<<"Tempo insercoes: "<<tempoTotal_insercoes<<"s\n";
+
+                        if ((opcao%10==0))
+                        cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"s\n";
+
+                        cout<<"MAX Colisoes:    "<<MAXcolisoes<<"\n";
+                        cout<<"Rehashings:      "<<rehashingsTotais<<"\n";
 
                     }catch(bad_alloc& ba){
                         cerr << BAD_ALLOC_MSG;
-                        system("pause>0");
                     }
 
-                    /*o "tempo decorrido" indica o tempo real decorrido do inicio ao fim do processo de
-                    benchmark, pois inclui o tempo de leitura e escrita dos arquivos, o que eh muito mais
-                    evidente em benchmarks incluindo buscas.*/
-                    cout<<"Tempo decorrido: "<<tempoDecorrido/1000<<"s\n";
-                    cout<<"Tempo insercoes: "<<tempoTotal_insercoes<<"s\n";
-
-                    if ((opcao%10==0))
-                    cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"s\n";
-
-                    cout<<"MAX Colisoes:    "<<MAXcolisoes<<"\n";
-                    cout<<"Rehashings:      "<<rehashingsTotais<<"\n";
                     system("pause>0");
                     break;
 

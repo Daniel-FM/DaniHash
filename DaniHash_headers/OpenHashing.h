@@ -62,7 +62,7 @@ class Ohash: public TabelaHash{
             if (tipo == 1)
                 tabelaL[chave]->inserir(valor);
             else
-                tabelaA[chave]->raiz = tabelaA[chave]->inserir(valor, tabelaA[chave]->raiz);
+                tabelaA[chave]->inserir(valor);
 
             if (PI){
                 cout<<"\nO valor "<<valor<<" foi inserido na chave "<<chave<<"\n";
@@ -99,7 +99,7 @@ class Ohash: public TabelaHash{
                 if (tipo == 1)
                     tabelaL[i]->imprimir();
                 else
-                    tabelaA[i]->imprimir(tabelaA[i]->raiz);
+                    tabelaA[i]->imprimir();
 
                 cout<<"\n";
 
@@ -117,9 +117,9 @@ class Ohash: public TabelaHash{
             bool encontrou = false;
 
             if (tipo == 1)
-                encontrou = tabelaL[chave]->buscar(valor, tabelaL[chave]->cabeca);
+                encontrou = tabelaL[chave]->buscar(valor);
             else
-                encontrou = tabelaA[chave]->buscar(valor, tabelaA[chave]->raiz);
+                encontrou = tabelaA[chave]->buscar(valor);
 
             if (encontrou){
                 return chave;
@@ -258,9 +258,9 @@ class Ohash: public TabelaHash{
 
                 /********** PRA DEPOIS DESENHAR A LISTA/ARVORE ABAIXO DO QUADRADO DO INDICE ************/
                 if (tipo == 1)
-                    desenha_lista(tabelaL[i], janela, x_no);
+                    desenha_lista(tabelaL[i], janela, x_no, 100);
                 else
-                    desenha_arvore(tabelaA[i]->raiz, janela, x_no, 100, distancia);
+                    desenha_arvore(tabelaA[i], janela, x_no, 100, distancia);
 
 
                 if (tipo == 1){
@@ -272,11 +272,11 @@ class Ohash: public TabelaHash{
 
                         //Esses ifs verificam a altura da arvore do indice atual e do indice posterior, para ver qual deve ser a distancia entre eles,
                         //para evitar arvores adjacentes se sobrepondo.
-                        if (( tabelaA[i]->getAltura(tabelaA[i]->raiz) <= 1 ) && ( tabelaA[i+1]->getAltura(tabelaA[i+1]->raiz) <= 1 )){
+                        if (( tabelaA[i]->getAltura() <= 1 ) && ( tabelaA[i+1]->getAltura() <= 1 )){
                             x_indice += 60;
                             x_no += 60;
                         }
-                        else if (( tabelaA[i]->getAltura(tabelaA[i]->raiz) <= 2 ) && ( tabelaA[i+1]->getAltura(tabelaA[i+1]->raiz) <= 2 )){
+                        else if (( tabelaA[i]->getAltura() <= 2 ) && ( tabelaA[i+1]->getAltura() <= 2 )){
                             x_indice += 120;
                             x_no += 120;
                         }
@@ -316,7 +316,7 @@ class Ohash: public TabelaHash{
         }
 
         int defineDistInicial(int i){
-            int alt = tabelaA[i]->getAltura(tabelaA[i]->raiz);
+            int alt = tabelaA[i]->getAltura();
 
             if (alt <= 3)
                 return 40;

@@ -9,19 +9,19 @@
 #ifndef HALF_OPEN_HASHING_H_INCLUDED
 #define HALF_OPEN_HASHING_H_INCLUDED
 
-int pode_inserir(arv_avl* a, int valor, int alt_max){
+bool pode_inserir(arv_avl* a, int valor, int alt_max){
 
     arv_avl* dummy = a;
 
-    dummy->raiz = dummy->inserir(valor, dummy->raiz);
+    dummy->inserir(valor);
 
-    if (dummy->getAltura(dummy->raiz) < alt_max){
+    if (dummy->getAltura() < alt_max){
         delete dummy;
-        return 1;
+        return true;
     }
     else{
         delete dummy;
-        return 0;
+        return false;
     }
 
 }
@@ -93,7 +93,7 @@ class HOhash: public TabelaHash{
             int Hfinal = H1;
 
             if ((tabela[Hfinal]->raiz == NULL) || (tabela[Hfinal]->raiz->altura < alt_max)){
-                tabela[Hfinal]->raiz = tabela[Hfinal]->inserir(k, tabela[Hfinal]->raiz);
+                tabela[Hfinal]->inserir(k);
             }else{
                 //Se a arvore do hash inicial estiver na altura maxima (uma arvore "cheia"), faz tentativa
                 //quadratica ate encontrar uma arvore que nao esteja cheia
@@ -113,14 +113,14 @@ class HOhash: public TabelaHash{
                     i++;
 
                 }
-                tabela[Hfinal]->raiz = tabela[Hfinal]->inserir(k, tabela[Hfinal]->raiz);
+                tabela[Hfinal]->inserir(k);
             }
 
             if (PI)
                 cout<<"\nA chave "<<k<<" foi inserida na posicao "<<Hfinal<<"\n";
 
             //Se a altura de uma arvore chegar ao valor maximo definido, ela eh considerada como "cheia"
-            if (tabela[Hfinal]->getAltura(tabela[Hfinal]->raiz) == alt_max){
+            if (tabela[Hfinal]->getAltura() == alt_max){
                 if (tabela[Hfinal]->cheia == false){        //Se ela tiver sido enchida agora
                     tabela[Hfinal]->cheia = true;           //Seta a flag que a identifica como cheia
                     num_arvores_cheias++;               //Incrementa o numero de arvores cheias
@@ -154,12 +154,12 @@ class HOhash: public TabelaHash{
             }
             int H1 = k % TH;
 
-            tabela[H1]->raiz = tabela[H1]->inserir(k, tabela[H1]->raiz);
+            tabela[H1]->inserir(k);
             if (PI)
                 cout<<"\nA chave "<<k<<" foi inserida na posicao "<<H1<<"\n";
 
             //Se a altura de uma arvore chegar ao valor maximo definido, ela eh considerada como "cheia"
-            if (tabela[H1]->getAltura(tabela[H1]->raiz) == alt_max){
+            if (tabela[H1]->getAltura() == alt_max){
                 if (tabela[H1]->cheia == false){        //Se ela tiver sido enchida agora
                     tabela[H1]->cheia = true;           //Seta a flag que a identifica como cheia
                     num_arvores_cheias++;               //Incrementa o numero de arvores cheias
@@ -257,7 +257,7 @@ class HOhash: public TabelaHash{
 
                 cout<< "["<<i<<"]:\t";
 
-                tabela[i]->imprimir(tabela[i]->raiz);
+                tabela[i]->imprimir();
 
                 cout<<"\n";
 
@@ -274,7 +274,7 @@ class HOhash: public TabelaHash{
             int chave = k % TH;
             bool encontrou = false;
 
-            encontrou = tabela[chave]->buscar(k, tabela[chave]->raiz);
+            encontrou = tabela[chave]->buscar(k);
 
             if (encontrou){
                 return chave;
@@ -298,7 +298,7 @@ class HOhash: public TabelaHash{
                 int i = 1;
                 while (tabela[Hfinal]->raiz != NULL){
 
-                    if (tabela[Hfinal]->buscar(k, tabela[Hfinal]->raiz) == true)
+                    if (tabela[Hfinal]->buscar(k) == true)
                         return Hfinal;
 
                     if (i == TH){
@@ -443,17 +443,17 @@ class HOhash: public TabelaHash{
 
                 /********** PRA DEPOIS DESENHAR A ARVORE ABAIXO DO QUADRADO DO INDICE ************/
 
-                desenha_arvore(tabela[i]->raiz, janela, x_no, 100, distancia);
+                desenha_arvore(tabela[i], janela, x_no, 100, distancia);
 
                 if (i < TH-1){
 
                     //Esses ifs verificam a altura da arvore do indice atual e do indice posterior, para ver qual deve ser a distancia entre eles,
                     //para evitar arvores adjacentes se sobrepondo.
-                    if (( tabela[i]->getAltura(tabela[i]->raiz) <= 1 ) && ( tabela[i+1]->getAltura(tabela[i+1]->raiz) <= 1 )){
+                    if (( tabela[i]->getAltura() <= 1 ) && ( tabela[i+1]->getAltura() <= 1 )){
                         x_indice += 60; //largura do quadrado grande + 4
                         x_no += 60;
                     }
-                    else if (( tabela[i]->getAltura(tabela[i]->raiz) <= 2 ) && ( tabela[i+1]->getAltura(tabela[i+1]->raiz) <= 2 )){
+                    else if (( tabela[i]->getAltura() <= 2 ) && ( tabela[i+1]->getAltura() <= 2 )){
                         x_indice += 120; //largura do quadrado grande + 4 (*2)
                         x_no += 120;
                     }
@@ -486,7 +486,7 @@ class HOhash: public TabelaHash{
         }
 
         int defineDistInicial(int i){
-            int alt = tabela[i]->getAltura(tabela[i]->raiz);
+            int alt = tabela[i]->getAltura();
 
             if (alt <= 3)
                 return 40;

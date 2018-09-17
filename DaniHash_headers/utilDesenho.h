@@ -84,9 +84,8 @@ void update_pos(RenderWindow* janela, int* move){
 
 }
 
-void desenha_lista(lista* l, RenderWindow* janela, int x){
-    no* noimpr = l->cabeca;
-    int y = 100; //30 + altura do quadrado grande - um pouquinho(2)
+void desenha_lista(lista* l, RenderWindow* janela, int x, int y){
+    no_lista* noimpr = l->getRaiz();
 
     while (noimpr != NULL){
 
@@ -100,7 +99,7 @@ void desenha_lista(lista* l, RenderWindow* janela, int x){
 
 }
 
-void desenha_arvore(no_avl* noimpr, RenderWindow* janela, int x, int y, int dist){
+void Desenha_arvore(no_avl* noimpr, RenderWindow* janela, int x, int y, int dist){
 
     if(noimpr != NULL){
 
@@ -114,7 +113,7 @@ void desenha_arvore(no_avl* noimpr, RenderWindow* janela, int x, int y, int dist
             desenha_texto(noimpr->info, x+3, y+3, janela, TAM_TEXTO_CIRC, Color::Red);
 
             //Chama a funcao para desenhar o filho esquerdo
-            desenha_arvore(noimpr->esq, janela, x-dist, y+60, dist/2);
+            Desenha_arvore(noimpr->esq, janela, x-dist, y+60, dist/2);
 
         }else{
 
@@ -134,7 +133,7 @@ void desenha_arvore(no_avl* noimpr, RenderWindow* janela, int x, int y, int dist
             desenha_texto(noimpr->info, x+3, y+3, janela,TAM_TEXTO_CIRC,Color::Red);
 
             //Chama a funcao para desenhar o filho direito
-            desenha_arvore(noimpr->dir, janela, x+dist, y+60, dist/2);
+            Desenha_arvore(noimpr->dir, janela, x+dist, y+60, dist/2);
 
         }else{
             if (noimpr->esq != NULL){
@@ -148,6 +147,11 @@ void desenha_arvore(no_avl* noimpr, RenderWindow* janela, int x, int y, int dist
 
     }
 
+}
+
+void desenha_arvore(arv_avl* arv, RenderWindow* janela, int x, int y, int dist){
+    no_avl* raiz = arv->getRaiz();
+    Desenha_arvore(raiz, janela, x, y, dist);
 }
 
 void eventHandler(RenderWindow* app){

@@ -9,7 +9,7 @@
 #ifndef TABELAHASH_H_INCLUDED
 #define TABELAHASH_H_INCLUDED
 
-#include "EstrAuxiliares.h"
+#include "EstruturaAuxiliar.h"
 
 #include "utilDesenho.h"
 #include "utilBenchmark.h"

@@ -9,7 +9,7 @@
 #ifndef ARVORE_AVL_H_INCLUDED
 #define ARVORE_AVL_H_INCLUDED
 
-class no_avl{
+class no_avl : public No{
     public:
 
     int info, altura;
@@ -30,7 +30,7 @@ class no_avl{
 
 };
 
-class arv_avl{
+class arv_avl : public EstruturaAuxiliar{
 
     public:
 
@@ -47,7 +47,11 @@ class arv_avl{
     }
 
     /********* FUNCOES PEQUENAS AUXILIARES *********/
-    int getAltura(no_avl* no){
+    int getAltura(){
+        return GetAltura(raiz);
+    }
+
+    int GetAltura(no_avl* no){
         if (no == NULL)
             return 0;       //Quando se trabalha com hashing, consideramos a altura de uma arvore vazia como 0
         else
@@ -55,17 +59,27 @@ class arv_avl{
     }
 
     int getFB(no_avl* no){
-        return getAltura(no->esq) - getAltura(no->dir); //O fator de balanceamento eh a diferenca das alturas dos filhos esquerdo e direito
+        return GetAltura(no->esq) - GetAltura(no->dir); //O fator de balanceamento eh a diferenca das alturas dos filhos esquerdo e direito
     }
 
+    bool isNull(){
+        if (raiz == NULL)
+            return true;
+        else
+            return false;
+    }
 
+    no_avl* getRaiz(){
+        return raiz;
+    }
 
     /************************************************ INSERIR *******************************************************/
 
-    //A insercao numa AVL eh recursiva, pois isso eh necessario para que possamos acessar
-    //os nos acima do no do pai apos a insercao ter sido feita (para fazer o balanceamento.
+    void inserir(int i){
+        raiz = Inserir(i, raiz);
+    }
 
-    no_avl* inserir(int novo_el, no_avl* no){
+    no_avl* Inserir(int novo_el, no_avl* no){
 
         if (no == NULL){
             no = new no_avl(novo_el);
@@ -74,9 +88,9 @@ class arv_avl{
             return no;                     //esse no ja existe na arvore
         }
         else if (novo_el < no->info)
-            no->esq = inserir(novo_el, no->esq);
+            no->esq = Inserir(novo_el, no->esq);
         else
-            no->dir = inserir(novo_el, no->dir);
+            no->dir = Inserir(novo_el, no->dir);
 
         no = balancear(no);
         return no;
@@ -104,7 +118,7 @@ class arv_avl{
 
         }
 
-        no->altura = maximo(getAltura(no->esq), getAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
+        no->altura = maximo(GetAltura(no->esq), GetAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
                                                                             //nao tiver sido feito nenhum balanceamento)
         return no;
     }
@@ -114,8 +128,8 @@ class arv_avl{
         no_avl* k1 = k2->esq;
         k2->esq = k1->dir;
         k1->dir = k2;
-        k2->altura = maximo(getAltura(k2->esq), getAltura(k2->dir)) + 1;
-        k1->altura = maximo(getAltura(k1->esq), k2->altura) + 1;
+        k2->altura = maximo(GetAltura(k2->esq), GetAltura(k2->dir)) + 1;
+        k1->altura = maximo(GetAltura(k1->esq), k2->altura) + 1;
         return k1;
     }
     /*
@@ -130,8 +144,8 @@ class arv_avl{
         no_avl* k2 = k1->dir;
         k1->dir = k2->esq;
         k2->esq = k1;
-        k1->altura = maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
-        k2->altura = maximo(getAltura(k2->dir), k1->altura) + 1;
+        k1->altura = maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
+        k2->altura = maximo(GetAltura(k2->dir), k1->altura) + 1;
         return k2;
     }
     /*
@@ -152,9 +166,9 @@ class arv_avl{
         k2->esq = k1;
         k2->dir = k3;
 
-        k1->altura = maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
-        k3->altura = maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
-        k2->altura = maximo(getAltura(k1), getAltura(k3)) + 1;
+        k1->altura = maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
+        k3->altura = maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
+        k2->altura = maximo(GetAltura(k1), GetAltura(k3)) + 1;
 
 
         return k2;
@@ -180,9 +194,9 @@ class arv_avl{
         k2->esq = k3;
         k2->dir = k1;
 
-        k3->altura = maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
-        k1->altura = maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
-        k2->altura = maximo(getAltura(k3), getAltura(k1)) + 1;
+        k3->altura = maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
+        k1->altura = maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
+        k2->altura = maximo(GetAltura(k3), GetAltura(k1)) + 1;
 
         return k2;
 
@@ -198,15 +212,15 @@ class arv_avl{
     */
     /*********************************************  DELETAR (TEM ERROS!) ***********************************************************************/
 
-    void remover(int data)
+    bool remover(int i)
     {
-        return Delete_data(data, raiz);
+        return Delete_data(i, raiz);
     }
 
-    void Delete_data(int data, no_avl *&node)
+    bool Delete_data(int data, no_avl *&node)
     {
 
-        if(node == NULL) return;
+        if(node == NULL) return false;
 
         if(data > node->info)
             Delete_data(data, node->dir);
@@ -217,11 +231,11 @@ class arv_avl{
             Search_4change(data, node);
         }
 
-        if(node == NULL) return;
+        if(node == NULL) return false;
 
         node = balancear(node);
 
-        return;
+        return true;
     }
 
     void Search_4change(int data, no_avl *&node)
@@ -298,28 +312,36 @@ class arv_avl{
 
     /**************************************  IMPRIMIR NO PROMPT DE COMANDO  *****************************************************************************/
 
-    void imprimir(no_avl* noimpr){              //Pre-ordem (R-E-D)
+    void imprimir(){
+        Imprimir(raiz);
+    }
+
+    void Imprimir(no_avl* noimpr){              //Pre-ordem (R-E-D)
 
         if(noimpr != NULL){
             cout<<noimpr->info<<", ";
-            imprimir(noimpr->esq);
-            imprimir(noimpr->dir);
+            Imprimir(noimpr->esq);
+            Imprimir(noimpr->dir);
         }
 
     }
 
     /**************************************  BUSCAR  *****************************************************************************/
 
-    bool buscar(int valor, no_avl* no_atual){
+    bool buscar(int i){
+        return Buscar(i, raiz);
+    }
+
+    bool Buscar(int valor, no_avl* no_atual){
 
         if (no_atual != NULL){
             if (no_atual->info == valor){
                 return true;
             }else{
                 if (valor < no_atual->info)
-                    return buscar(valor, no_atual->esq);
+                    return Buscar(valor, no_atual->esq);
                 else
-                    return buscar(valor, no_atual->dir);
+                    return Buscar(valor, no_atual->dir);
             }
         }
         return false;

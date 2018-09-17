@@ -10,9 +10,6 @@
 #define FUNCOES_AUXILIARES_ARQUIVOS_H_INCLUDED
 #include <dirent.h>
 
-//Forward declaration dos tipos de hashing
-class GenericHash;
-
 //Forward declaration de algumas funcoes do utilMenu
 void fazerInsercao(int valor, bool PI);
 int getColisoesDaInsercaoAtual();

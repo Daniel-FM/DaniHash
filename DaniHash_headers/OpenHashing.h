@@ -14,43 +14,31 @@ class Ohash: public TabelaHash{
     public:
 
         int TH, FC, tipo;
-        lista*   *tabelaL;
-        arv_avl* *tabelaA;
+        EstruturaAuxiliar* *tabela;
 
         Ohash(int tamanho, int type){
 
             TH = tamanho;
             tipo = type;
 
+            tabela = new EstruturaAuxiliar*[TH];
+
             if (tipo == 1){                     //Se o tipo tiver valor "1", eh criada uma tabela de listas
-
-                tabelaL = new lista* [TH];
-
                 for (int i = 0; i < TH; i++){
-                    tabelaL[i] = new lista();
+                    tabela[i] = new lista();
                 }
-
             }
             else{                               //Senao, eh criada uma tabela de arvores
-
-                tabelaA = new arv_avl* [TH];
-
                 for (int i = 0; i < TH; i++){
-                    tabelaA[i] = new arv_avl();
+                    tabela[i] = new arv_avl();
                 }
             }
 
         }
 
         ~Ohash(){
-            if (tipo == 1){
-                for (int i=0;i<TH;i++)
-                    delete tabelaL[i];
-            }
-            else{
-                for (int i=0;i<TH;i++)
-                    delete tabelaA[i];
-            }
+            for (int i=0;i<TH;i++)
+                delete tabela[i];
         }
 
         /************************************************* INSERIR *****************************************************************/
@@ -59,10 +47,7 @@ class Ohash: public TabelaHash{
 
             int chave = valor % TH;
 
-            if (tipo == 1)
-                tabelaL[chave]->inserir(valor);
-            else
-                tabelaA[chave]->inserir(valor);
+            tabela[chave]->inserir(valor);
 
             if (PI){
                 cout<<"\nO valor "<<valor<<" foi inserido na chave "<<chave<<"\n";
@@ -77,14 +62,10 @@ class Ohash: public TabelaHash{
 
             int chave = valor % TH;
 
-            if (tipo == 1){
-                if (tabelaL[chave]->remover(valor) == true)
-                    printPause("O valor foi deletado com sucesso da chave "+chave,true);
-                else
-                    printPause("O valor nao foi encontrado",true);
-            }else{
-                tabelaA[chave]->remover(valor);
-            }
+            if (tabela[chave]->remover(valor) == true)
+                printPause("O valor foi deletado com sucesso da chave "+chave,true);
+            else
+                printPause("O valor nao foi encontrado",true);
 
         }
 
@@ -96,10 +77,7 @@ class Ohash: public TabelaHash{
 
                 cout<< "["<<i<<"]:\t";
 
-                if (tipo == 1)
-                    tabelaL[i]->imprimir();
-                else
-                    tabelaA[i]->imprimir();
+                tabela[i]->imprimir();
 
                 cout<<"\n";
 
@@ -116,10 +94,7 @@ class Ohash: public TabelaHash{
             int chave = valor % TH;
             bool encontrou = false;
 
-            if (tipo == 1)
-                encontrou = tabelaL[chave]->buscar(valor);
-            else
-                encontrou = tabelaA[chave]->buscar(valor);
+            encontrou = tabela[chave]->buscar(valor);
 
             if (encontrou){
                 return chave;
@@ -136,8 +111,7 @@ class Ohash: public TabelaHash{
 
             int posOcupadas = 0;
             for (int i = 0; i < TH; i++){
-                if ((tipo == 1 && tabelaL[i]->cabeca != NULL) ||
-                    (tipo == 2 && tabelaA[i]->raiz != NULL)){
+                if (tabela[i]->getRaiz() != NULL){
                     posOcupadas++;
                 }
             }
@@ -258,13 +232,13 @@ class Ohash: public TabelaHash{
 
                 /********** PRA DEPOIS DESENHAR A LISTA/ARVORE ABAIXO DO QUADRADO DO INDICE ************/
                 if (tipo == 1)
-                    desenha_lista(tabelaL[i], janela, x_no, 100);
+                    desenha_lista(dynamic_cast<lista*>(tabela[i]), janela, x_no, 100);
                 else
-                    desenha_arvore(tabelaA[i], janela, x_no, 100, distancia);
-
+                    desenha_arvore(dynamic_cast<arv_avl*>(tabela[i]), janela, x_no, 100, distancia);
+                //Eh necessario fazer um dynamic casting para converter um objeto de classe derivada em um de classe base
 
                 if (tipo == 1){
-                    x_indice += 60; //largura do quadrado grande + 4
+                    x_indice += 60;
                     x_no += 60;
                 }else{
 
@@ -272,11 +246,11 @@ class Ohash: public TabelaHash{
 
                         //Esses ifs verificam a altura da arvore do indice atual e do indice posterior, para ver qual deve ser a distancia entre eles,
                         //para evitar arvores adjacentes se sobrepondo.
-                        if (( tabelaA[i]->getAltura() <= 1 ) && ( tabelaA[i+1]->getAltura() <= 1 )){
+                        if (( tabela[i]->getAltura() <= 1 ) && ( tabela[i+1]->getAltura() <= 1 )){
                             x_indice += 60;
                             x_no += 60;
                         }
-                        else if (( tabelaA[i]->getAltura() <= 2 ) && ( tabelaA[i+1]->getAltura() <= 2 )){
+                        else if (( tabela[i]->getAltura() <= 2 ) && ( tabela[i+1]->getAltura() <= 2 )){
                             x_indice += 120;
                             x_no += 120;
                         }
@@ -316,7 +290,7 @@ class Ohash: public TabelaHash{
         }
 
         int defineDistInicial(int i){
-            int alt = tabelaA[i]->getAltura();
+            int alt = tabela[i]->getAltura();
 
             if (alt <= 3)
                 return 40;

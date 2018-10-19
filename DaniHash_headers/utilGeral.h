@@ -14,38 +14,38 @@
 
 //Funcao para checar se um numero eh primo. Se so houver um divisor entre 1 e o numero/2
 //(que obviamente eh o numero 1), retorna 1.
-bool checa_primo(int i){
-    int cont_divisores = 0;
+bool checaPrimo(int i){
+    int contDivisores = 0;
 
     for (int dummy = 1; dummy < i/2; dummy++){
 
         if (i % dummy == 0)
-            cont_divisores++;
+            contDivisores++;
 
     }
 
-    if (cont_divisores == 1)
+    if (contDivisores == 1)
         return true;
     else
         return false;
 
 }
 
-int pega_prox_prim_maior(int n){
+int pegaProxPrimMaior(int n){
 
     do{
         n++;
-    }while (checa_primo(n) == false);
+    }while (checaPrimo(n) == false);
 
     return n;
 
 }
 
-int pega_prox_prim_menor(int n){
+int pegaProxPrimMenor(int n){
 
     do{
         n--;
-    }while ((checa_primo(n) == false) && (n > 1));
+    }while ((checaPrimo(n) == false) && (n > 1));
 
     return n;
 }
@@ -100,13 +100,16 @@ struct arquivo_defeituoso : public exception {
     arquivo_defeituoso(int linha, int tipo){
         l = linha;
 
-        if (tipo == 1)
-            t = "Caractere invalido";
-        else if (tipo == 2)
-            t = "Sem identificador \"INS\"";
-        else
-            t = "???";
-        //deixando assim para facilitar caso va adicionar outras razoes
+        switch (tipo){
+            case 1:
+                t = "Caractere invalido";
+                break;
+            case 2:
+                t = "Sem identificador \"INS\"";
+                break;
+            default:
+                t = "???";
+        }
     }
 
     //override do metodo virtual what(), de std::exception

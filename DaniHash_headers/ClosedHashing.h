@@ -67,7 +67,7 @@ class Chash: public TabelaHash{
             numPosOcupadas = 0;
             colisoesDaInsercaoAtual = 0;
             fezRehashing = false;
-            r = pega_prox_prim_menor(TH);   //valor usado em duplo hashing
+            r = pegaProxPrimMenor(TH);   //valor usado em duplo hashing
 
             tabela = new no_ch*[TH];
 
@@ -89,10 +89,10 @@ class Chash: public TabelaHash{
         //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
         //em todas as classes que a impelentam: no caso, (int valor, bool PI)
         void inserir(int valor, bool PI){
-            Inserir(valor, tabela, TH, PI);
+            inserir(valor, tabela, TH, PI);
         }
 
-        void Inserir(int k, no_ch* *Tabela, int TamTabela, bool PI){
+        void inserir(int k, no_ch* *Tabela, int TamTabela, bool PI){
 
             if (RH_FLAG == false){
                 colisoesDaInsercaoAtual = 0;
@@ -253,7 +253,7 @@ class Chash: public TabelaHash{
 
         void rehashing(bool PI){
 
-            int TH_novo = pega_prox_prim_maior(TH*2);
+            int TH_novo = pegaProxPrimMaior(TH*2);
             no_ch* *tabela_nova = new no_ch*[TH_novo];      //Cria a nova tabela, com o tamanho novo
             numPosOcupadas = 0;
 
@@ -266,12 +266,12 @@ class Chash: public TabelaHash{
             int TH_antigo = TH;
 
             TH = TH_novo;                   //Atualiza o tamanho da hashing
-            r = pega_prox_prim_menor(TH);   //e o proximo primo menor
+            r = pegaProxPrimMenor(TH);   //e o proximo primo menor
 
             for (int i = 0; i < TH_antigo; i++){        //Vai percorrendo a tabela auxiliar, inserindo os elementos dela na nova tabela
 
                 if (tabela_dummy[i] != NULL)
-                    Inserir(tabela_dummy[i]->info_no, tabela_nova, TH_novo, PI);
+                    inserir(tabela_dummy[i]->info_no, tabela_nova, TH_novo, PI);
 
             }
 
@@ -355,7 +355,7 @@ class Chash: public TabelaHash{
                     fileINS<<"INS "<<valorParaInserir<<endl;
 
                 benchmark b;
-                Inserir(valorParaInserir, tabela, TH, false);   //Depois fazemos a insercao, medindo o tempo
+                inserir(valorParaInserir, tabela, TH, false);   //Depois fazemos a insercao, medindo o tempo
                 tempo += b.elapsed();
 
                 resultado.colisoes += colisoesDaInsercaoAtual;
@@ -429,7 +429,7 @@ class Chash: public TabelaHash{
 
         void preparar_janela(){
 
-            printPause("Comming soon!!!", true);
+            printPause("Esta funcionalidade sera implementada em breve!", true);
 
         }
 

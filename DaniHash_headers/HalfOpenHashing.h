@@ -60,7 +60,7 @@ class HOhash: public TabelaHash{
 
         int pega_prox_prim(int n){
 
-            while (checa_primo(n) == false){
+            while (checaPrimo(n) == false){
                 n++;
             }
             return n;
@@ -71,10 +71,10 @@ class HOhash: public TabelaHash{
         //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
         //em todas as classes que a impelentam: no caso, (int valor, bool PI)
         void inserir(int valor, bool PI){
-            Inserir(valor, tabela, alt_max, PI);
+            inserir(valor, tabela, alt_max, PI);
         }
 
-        void Inserir(int valor, arv_avl* *tab, int altmax, bool PI){
+        void inserir(int valor, arv_avl* *tab, int altmax, bool PI){
             if (tipo == 6)
                 inserir_CTQ(valor, tab, altmax, PI);
             else
@@ -223,7 +223,7 @@ class HOhash: public TabelaHash{
             for (int i = 0; i < TH_antigo; i++){        //Vai percorrendo a tabela auxiliar, inserindo os elementos dela na nova tabela
 
                 if (tabela_dummy[i] != NULL){
-                    insere_noavl(tabela_dummy[i]->raiz, tabela_nova, TH_novo, PI);
+                    insereNoAVL(tabela_dummy[i]->raiz, tabela_nova, TH_novo, PI);
                 }
 
             }
@@ -236,14 +236,14 @@ class HOhash: public TabelaHash{
 
         /************************** FUNCAO PARA IR PERCORRENDO A ARVORE TODA, INSERINDO OS NOS DELA NA HASH *************************/
 
-        void insere_noavl(no_avl* no_que_vai_ser_inserido, arv_avl* *tabela_que_vai_receber, int limit, bool PI){
+        void insereNoAVL(no_avl* noQueVaiSerInserido, arv_avl* *tabela_que_vai_receber, int limit, bool PI){
 
-            if(no_que_vai_ser_inserido != NULL){
+            if(noQueVaiSerInserido != NULL){
 
-                Inserir(no_que_vai_ser_inserido->info, tabela_que_vai_receber, limit, PI);
+                inserir(noQueVaiSerInserido->info, tabela_que_vai_receber, limit, PI);
 
-                insere_noavl(no_que_vai_ser_inserido->esq, tabela_que_vai_receber, limit, PI);
-                insere_noavl(no_que_vai_ser_inserido->dir, tabela_que_vai_receber, limit, PI);
+                insereNoAVL(noQueVaiSerInserido->esq, tabela_que_vai_receber, limit, PI);
+                insereNoAVL(noQueVaiSerInserido->dir, tabela_que_vai_receber, limit, PI);
             }
 
         }
@@ -355,7 +355,7 @@ class HOhash: public TabelaHash{
 
                 benchmark b;
                 //Depois fazemos a insercao, medindo o tempo
-                Inserir(valorParaInserir,tabela,alt_max,false);
+                inserir(valorParaInserir,tabela,alt_max,false);
                 tempo += b.elapsed();
 
                 resultado.colisoes += colisoesDaInsercaoAtual;

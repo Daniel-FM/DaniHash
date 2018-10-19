@@ -27,7 +27,7 @@ int main(){
 
         loopMenu = true;
         system("cls");
-        cout<<"***DANIHASH BASIC v1.0.1***\n";
+        cout<<"***DANIHASH BASIC v1.0.2***\n";
         atributos = pegaAtributosDaHash(true);
 
         TabelaHash* h = instanciaHash(atributos);
@@ -162,7 +162,7 @@ int main(){
 
         }
 
-        cout<<"\nQuer fazer outra hashing? (1-Sim; 2-Nao)\n";
+        cout<<"\nDeseja voltar ao menu inicial? (1-Sim; 2-Nao)\n";
         respfinal = pegaRespostaMinMax("",1,2);
 
         if (respfinal == 2)

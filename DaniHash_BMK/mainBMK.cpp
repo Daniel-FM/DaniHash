@@ -30,7 +30,7 @@ int main(){
 
         loopMenu = true;
         system("cls");
-        cout<<"***DANIHASH BMK v1.0.1***\n";
+        cout<<"***DANIHASH BMK v1.0.2***\n";
         atributos = pegaAtributosDaHash(false);
         TabelaHash* h;
 

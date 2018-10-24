@@ -347,7 +347,7 @@ class Chash: public TabelaHash{
 
             for (int i = 0; i < quantidadeDeInsercoes; i++){
                 //Geramos a variavel aleatoria a ser inserida
-                valorParaInserir = GVA(opcao_insbmk,i);
+                valorParaInserir = GVA(opcao_insbmk);
 
                 if (valorParaInserir < 0) valorParaInserir = 0;
 

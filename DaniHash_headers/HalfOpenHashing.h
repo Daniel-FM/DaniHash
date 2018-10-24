@@ -58,15 +58,6 @@ class HOhash: public TabelaHash{
                 delete tabela[i];
         }
 
-        int pega_prox_prim(int n){
-
-            while (checaPrimo(n) == false){
-                n++;
-            }
-            return n;
-
-        }
-
         //Foi necessario criar essa funcao de inserir "falsa" que chama a funcao de inserir real, pois a falsa eh
         //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
         //em todas as classes que a impelentam: no caso, (int valor, bool PI)
@@ -207,7 +198,7 @@ class HOhash: public TabelaHash{
 
         void rehashing(bool PI){
 
-            int TH_novo = pega_prox_prim(TH*2);
+            int TH_novo = pegaProxPrimMaior(TH*2);
             arv_avl* *tabela_nova = new arv_avl*[TH_novo];  //Cria a nova tabela, com o tamanho novo
             num_arvores_cheias = 0;
             for (int i = 0; i < TH_novo; i++){          //Inicializa a nova tabela fazendo com arvores
@@ -346,7 +337,7 @@ class HOhash: public TabelaHash{
 
             for (int i = 0; i < quantidadeDeInsercoes; i++){
                 //Geramos a variavel aleatoria a ser inserida
-                valorParaInserir = GVA(opcao_insbmk,i);
+                valorParaInserir = GVA(opcao_insbmk);
 
                 if (valorParaInserir < 0) valorParaInserir = 0;
 

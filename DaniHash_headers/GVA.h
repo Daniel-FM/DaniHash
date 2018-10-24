@@ -100,5 +100,20 @@ int exponencial(int media){
 
     return (int) -media*ln;
 }
+
+int GVA(int opc){
+
+    if (querFazerUniforme(opc))
+        return uniforme(MEDIA_CHAVE_BMK);
+    else if (querFazerNormal(opc))
+        return normal(MEDIA_CHAVE_BMK,MEDIA_CHAVE_BMK/2.5);
+    else if (querFazerExponencial(opc))
+        return exponencial(MEDIA_CHAVE_BMK);
+    else
+        return MEDIA_CHAVE_BMK;
+
+}
+
+
 //
 #endif // GVA_H_INCLUDED

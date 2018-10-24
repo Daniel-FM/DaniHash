@@ -8,7 +8,6 @@
 
 #ifndef FUNCOES_AUXILIARES_BENCHMARK_H_INCLUDED
 #define FUNCOES_AUXILIARES_BENCHMARK_H_INCLUDED
-#include "GVA.h"
 #include <chrono>
 
 struct Results{
@@ -83,19 +82,6 @@ bool querFazerExponencial(int opc){
         return false;
 }
 
-int GVA(int opc, int i){
-
-    if (querFazerUniforme(opc))
-        return uniforme(MEDIA_CHAVE_BMK);
-    else if (querFazerNormal(opc))
-        return normal(MEDIA_CHAVE_BMK,MEDIA_CHAVE_BMK/2.5);
-    else if (querFazerExponencial(opc))
-        return exponencial(MEDIA_CHAVE_BMK);
-    else
-        return i;
-
-}
-
 bool benchmarkComArquivoDeInsercao(int opc){
 
     if ((opc == 2) ||       //Insercao de numeros ordenados
@@ -124,5 +110,7 @@ bool benchmarkComArquivoBenchmark(int opc){
         return false;
 
 }
+
+#include "GVA.h"
 //
 #endif // FUNCOES_AUXILIARES_BENCHMARK_H_INCLUDED

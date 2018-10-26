@@ -127,7 +127,7 @@ class Ohash: public TabelaHash{
             int valorParaInserir;
             double tempo = 0;
             ofstream fileINS;
-            Results resultado = inicializaResults();
+            Results resultado = Results::inicializaResults();
 
             if (benchmarkComArquivoDeInsercao(opcao_insbmk)){
                 fileINS.open(FILEPATH_INS+fileName_insercao, ios::app);
@@ -142,9 +142,9 @@ class Ohash: public TabelaHash{
                 if (benchmarkComArquivoDeInsercao(opcao_insbmk))
                     fileINS<<"INS "<<valorParaInserir<<endl;
 
-                benchmark b;
+                cronometro cron;
                 inserir(valorParaInserir,false);   //Depois fazemos a insercao, medindo o tempo
-                tempo += b.elapsed();
+                tempo += cron.tempoDecorrido();
             }
             resultado.tempoBMK = tempo;
 
@@ -155,7 +155,7 @@ class Ohash: public TabelaHash{
             if (benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
+                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
                 //Poe no arquivo o tempo da insercao
                 fileBMK<<quantidadeDeInsercoes<<"\t"<<tempo<<endl;
                 fileBMK.close();
@@ -183,9 +183,9 @@ class Ohash: public TabelaHash{
                     quantidadeDeBuscas++;
                     numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
 
-                    benchmark b;
+                    cronometro cron;
                     buscar(numeroNaLinha,false);
-                    tempo += b.elapsed();
+                    tempo += cron.tempoDecorrido();
 
                 }else if (linha == ""){
                     break;
@@ -199,7 +199,7 @@ class Ohash: public TabelaHash{
             if (benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
+                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
 
                 fileBMK<<quantidadeDeBuscas<<"\t"<<tempo<<endl;
                 fileBMK.close();

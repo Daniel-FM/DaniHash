@@ -103,14 +103,14 @@ int exponencial(int media){
 
 int GVA(int opc){
 
-    if (querFazerUniforme(opc))
-        return uniforme(MEDIA_CHAVE_BMK);
-    else if (querFazerNormal(opc))
-        return normal(MEDIA_CHAVE_BMK,MEDIA_CHAVE_BMK/2.5);
-    else if (querFazerExponencial(opc))
-        return exponencial(MEDIA_CHAVE_BMK);
+    if (dh::benchmark::querFazerUniforme(opc))
+        return uniforme(dh::constantes::MEDIA_CHAVE_BMK);
+    else if (dh::benchmark::querFazerNormal(opc))
+        return normal(dh::constantes::MEDIA_CHAVE_BMK,dh::constantes::MEDIA_CHAVE_BMK/2.5);
+    else if (dh::benchmark::querFazerExponencial(opc))
+        return exponencial(dh::constantes::MEDIA_CHAVE_BMK);
     else
-        return MEDIA_CHAVE_BMK;
+        return dh::constantes::MEDIA_CHAVE_BMK;
 
 }
 

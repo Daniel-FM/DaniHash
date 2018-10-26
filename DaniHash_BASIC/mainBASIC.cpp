@@ -12,6 +12,7 @@
 #include "../DaniHash_headers/TabelaHash.h"
 
 using namespace std;
+using namespace dh;
 
 int main(){
 
@@ -31,7 +32,7 @@ int main(){
         atributos = pegaAtributosDaHash(true);
 
         TabelaHash* h = instanciaHash(atributos);
-        inicializaDiretorioINS(DEFAULT_FILENAME_INS);
+        arquivos::inicializaDiretorioINS(DEFAULT_FILENAME_INS);
 
         while (loopMenu){
 
@@ -47,17 +48,17 @@ int main(){
             cout<<"7) Inserir varios numeros aleatorios\n";
             cout<<"8) Desenhar a hash em uma nova janela\n";
             cout<<"9) Sair\n\n";
-            opcao = pegaRespostaMinMax("Opcao: ",0,9);
+            opcao = menu::pegaRespostaMinMax("Opcao: ",0,9);
 
             switch (opcao){
 
                 case 1:
                     int valor;
 
-                    valor = pegaResposta("\n\nQual numero?\n");
+                    valor = menu::pegaResposta("\n\nQual numero?\n");
 
                     h->inserir(valor,true);
-                    salvarArqInsTemp(valor);
+                    arquivos::salvarArqInsTemp(valor);
 
                     break;
 
@@ -65,13 +66,13 @@ int main(){
                     str = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
                     system(str.c_str());
 
-                    if (!imprimeArquivosINS()) break;
-                    nomeDoArquivo = setNomeDoArquivo();
+                    if (!arquivos::imprimeArquivosINS()) break;
+                    nomeDoArquivo = arquivos::setNomeDoArquivo();
                     if (nomeDoArquivo == "sair") break;
 
                     try{
                         h->inserirDeArquivo(nomeDoArquivo);
-                        printPause("Insercoes feitas!",true);
+                        geral::printPause("Insercoes feitas!",true);
                     }catch(arquivo_defeituoso &e){
                         cerr<<e.what();
                         system("pause>0");
@@ -80,22 +81,22 @@ int main(){
                     break;
 
                 case 3:
-                    num = pegaResposta("\n\nQue numero?\n");
+                    num = menu::pegaResposta("\n\nQue numero?\n");
 
                     h->remover(num);
 
                     break;
 
                 case 4:
-                    num = pegaResposta("\n\nQue numero?\n");
+                    num = menu::pegaResposta("\n\nQue numero?\n");
 
                     posicao = h->buscar(num,true);
                     if (posicao == -1)
-                        printPause("O valor nao existe na tabela.",true);
+                        geral::printPause("O valor nao existe na tabela.",true);
                     else if (posicao == -2)
-                        printPause("Numero maximo de tentativas atingido. O valor nao foi encontrado.",true);
+                        geral::printPause("Numero maximo de tentativas atingido. O valor nao foi encontrado.",true);
                     else if (posicao == -3)
-                        printPause("NENHUMA TABELA FOI INSTANCIADA.",true);
+                        geral::printPause("NENHUMA TABELA FOI INSTANCIADA.",true);
                     else{
                         cout<<"O valor foi encontrado na posicao "<<posicao;
                         system("pause>0");
@@ -109,21 +110,21 @@ int main(){
                     break;
 
                 case 6:
-                    num = pegaResposta("Quantos?\n");
+                    num = menu::pegaResposta("Quantos?\n");
                     for (i = 0; i < num; i++){
                         h->inserir(i,false);
-                        salvarArqInsTemp(i);
+                        arquivos::salvarArqInsTemp(i);
                     }
                     cout<<"\nValores inseridos!";
                     system("pause>0");
                     break;
 
                 case 7:
-                    num = pegaResposta("Quantos?\n");
+                    num = menu::pegaResposta("Quantos?\n");
                     for (i = 0; i < num; i++){
                         valor = rand()%999;
                         h->inserir(valor,false);
-                        salvarArqInsTemp(valor);
+                        arquivos::salvarArqInsTemp(valor);
                     }
                     cout<<"\nValores inseridos!";
                     system("pause>0");
@@ -150,7 +151,7 @@ int main(){
                     break;
 
                 case 0:
-                    printConstantes();
+                    geral::printConstantes();
                     break;
 
                 default:
@@ -163,7 +164,7 @@ int main(){
         }
 
         cout<<"\nDeseja voltar ao menu inicial? (1-Sim; 2-Nao)\n";
-        respfinal = pegaRespostaMinMax("",1,2);
+        respfinal = menu::pegaRespostaMinMax("",1,2);
 
         if (respfinal == 2)
             loopPrograma = false;

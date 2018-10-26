@@ -12,6 +12,7 @@
 #include "../DaniHash_headers/TabelaHash.h"
 
 using namespace std;
+using namespace dh;
 
 int main(){
 
@@ -48,7 +49,7 @@ int main(){
             cout<<"7) Realizar benchmark completo (Normal)\n";
             cout<<"8) Realizar benchmark completo (Exponencial)\n";
             cout<<"9) Sair\n\n";
-            opcao = pegaRespostaMinMax("Opcao: ",0,9);
+            opcao = menu::pegaRespostaMinMax("Opcao: ",0,9);
 
             switch (opcao){
 
@@ -58,13 +59,13 @@ int main(){
                     comandoConsole = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
                     system(comandoConsole.c_str());
 
-                    if (!imprimeArquivosINS()) break;
+                    if (!arquivos::imprimeArquivosINS()) break;
 
-                    nomeDoArquivo = setNomeDoArquivo();
+                    nomeDoArquivo = arquivos::setNomeDoArquivo();
                     if (nomeDoArquivo == "sair") break;
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    respfinal = pegaRespostaMinMax("",1,2);
+                    respfinal = menu::pegaRespostaMinMax("",1,2);
 
                     try{
                         h = instanciaHash(atributos);
@@ -108,14 +109,14 @@ int main(){
                     }
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    respfinal = pegaRespostaMinMax("",1,2);
+                    respfinal = menu::pegaRespostaMinMax("",1,2);
 
                     if (respfinal == 1){
                         respfinal = 10;
-                        inicializaDiretorioINS(FILENAME_DUMMY);
+                        arquivos::inicializaDiretorioINS(FILENAME_DUMMY);
                     }
 
-                    inicializaDiretorioINS(nomeDoArquivo);
+                    arquivos::inicializaDiretorioINS(nomeDoArquivo);
 
                     try{
                         h = instanciaHash(atributos);
@@ -145,7 +146,7 @@ int main(){
                 case 7:
                 case 8:
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    num = pegaRespostaMinMax("",1,2);
+                    num = menu::pegaRespostaMinMax("",1,2);
 
                     if (num == 1){
                         opcao *= 10;    //Faz isso para poder identificar quando o benchmark inclui buscas
@@ -159,16 +160,16 @@ int main(){
                     MAXcolisoes = 0;
                     qtdInsercoes = 1;
                     //Inicializa o diretorio do arquivo de benchmark de insercoes
-                    inicializaDiretorioBMK(montarNomeDoArquivoBMK(atributos.tipo,opcao,true));
+                    arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,opcao,true));
 
                     //E inicializa o diretorio do de buscas, caso isso tenha sido pedido
-                    if ((opcao%10) == 0) inicializaDiretorioBMK(montarNomeDoArquivoBMK(atributos.tipo,opcao,false));
+                    if ((opcao%10) == 0) arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,opcao,false));
 
                     cout<<"\nTrabalhando...    0%";
                     try{
-                        benchmark b;
+                        benchmark::cronometro cron;
                         while (true){
-                            if ((opcao%10) == 0) inicializaDiretorioINS(FILENAME_DUMMY);
+                            if ((opcao%10) == 0) arquivos::inicializaDiretorioINS(FILENAME_DUMMY);
 
                             if (qtdInsercoes > QTDMAX_INS)
                                 qtdInsercoes = QTDMAX_INS;
@@ -190,7 +191,7 @@ int main(){
                             else
                                 qtdInsercoes += GAP_INS;
                         }
-                        tempoDecorrido = b.elapsed();
+                        tempoDecorrido = cron.tempoDecorrido();
 
                         cout<<"\n\nBenchmark completo!\n\n";
                         /*o "tempo decorrido" indica o tempo real decorrido do inicio ao fim do processo de
@@ -230,7 +231,7 @@ int main(){
         }
 
         cout<<"\nDeseja voltar ao menu inicial? (1-Sim; 2-Nao)\n";
-        respfinal = pegaRespostaMinMax("",1,2);
+        respfinal = menu::pegaRespostaMinMax("",1,2);
 
         if (respfinal == 2)
             loopPrograma = false;

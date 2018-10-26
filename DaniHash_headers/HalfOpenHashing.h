@@ -329,7 +329,7 @@ class HOhash: public TabelaHash{
             int valorParaInserir;
             double tempo = 0;
             ofstream fileINS;
-            Results resultado = inicializaResults();
+            Results resultado = Results::inicializaResults();
 
             if (benchmarkComArquivoDeInsercao(opcao_insbmk)){
                 fileINS.open(FILEPATH_INS+fileName_insercao, ios::app);
@@ -344,10 +344,10 @@ class HOhash: public TabelaHash{
                 if (benchmarkComArquivoDeInsercao(opcao_insbmk))
                     fileINS<<"INS "<<valorParaInserir<<endl;
 
-                benchmark b;
+                cronometro cron;
                 //Depois fazemos a insercao, medindo o tempo
                 inserir(valorParaInserir,tabela,alt_max,false);
-                tempo += b.elapsed();
+                tempo += cron.tempoDecorrido();
 
                 resultado.colisoes += colisoesDaInsercaoAtual;
                 if (fezRehashing == true)
@@ -362,7 +362,7 @@ class HOhash: public TabelaHash{
             if (benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
+                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
                 //Poe no arquivo o tempo da insercao
                 fileBMK<<quantidadeDeInsercoes<<"\t"<<tempo<<endl;
                 fileBMK.close();
@@ -390,9 +390,9 @@ class HOhash: public TabelaHash{
                     quantidadeDeBuscas++;
                     numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
 
-                    benchmark b;
+                    cronometro cron;
                     buscar(numeroNaLinha,false);
-                    tempo += b.elapsed();
+                    tempo += cron.tempoDecorrido();
 
                 }else if (linha == ""){
                     break;
@@ -406,7 +406,7 @@ class HOhash: public TabelaHash{
             if (benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
+                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
 
                 fileBMK<<quantidadeDeBuscas<<"\t"<<tempo<<endl;
                 fileBMK.close();

@@ -118,7 +118,7 @@ class arv_avl : public EstruturaAuxiliar{
 
         }
 
-        no->altura = maximo(GetAltura(no->esq), GetAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
+        no->altura = dh::geral::maximo(GetAltura(no->esq), GetAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
                                                                             //nao tiver sido feito nenhum balanceamento)
         return no;
     }
@@ -128,8 +128,8 @@ class arv_avl : public EstruturaAuxiliar{
         no_avl* k1 = k2->esq;
         k2->esq = k1->dir;
         k1->dir = k2;
-        k2->altura = maximo(GetAltura(k2->esq), GetAltura(k2->dir)) + 1;
-        k1->altura = maximo(GetAltura(k1->esq), k2->altura) + 1;
+        k2->altura = dh::geral::maximo(GetAltura(k2->esq), GetAltura(k2->dir)) + 1;
+        k1->altura = dh::geral::maximo(GetAltura(k1->esq), k2->altura) + 1;
         return k1;
     }
     /*
@@ -144,8 +144,8 @@ class arv_avl : public EstruturaAuxiliar{
         no_avl* k2 = k1->dir;
         k1->dir = k2->esq;
         k2->esq = k1;
-        k1->altura = maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
-        k2->altura = maximo(GetAltura(k2->dir), k1->altura) + 1;
+        k1->altura = dh::geral::maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
+        k2->altura = dh::geral::maximo(GetAltura(k2->dir), k1->altura) + 1;
         return k2;
     }
     /*
@@ -166,9 +166,9 @@ class arv_avl : public EstruturaAuxiliar{
         k2->esq = k1;
         k2->dir = k3;
 
-        k1->altura = maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
-        k3->altura = maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
-        k2->altura = maximo(GetAltura(k1), GetAltura(k3)) + 1;
+        k1->altura = dh::geral::maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
+        k3->altura = dh::geral::maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
+        k2->altura = dh::geral::maximo(GetAltura(k1), GetAltura(k3)) + 1;
 
 
         return k2;
@@ -194,9 +194,9 @@ class arv_avl : public EstruturaAuxiliar{
         k2->esq = k3;
         k2->dir = k1;
 
-        k3->altura = maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
-        k1->altura = maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
-        k2->altura = maximo(GetAltura(k3), GetAltura(k1)) + 1;
+        k3->altura = dh::geral::maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
+        k1->altura = dh::geral::maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
+        k2->altura = dh::geral::maximo(GetAltura(k3), GetAltura(k1)) + 1;
 
         return k2;
 

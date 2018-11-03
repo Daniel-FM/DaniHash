@@ -23,15 +23,8 @@ class Ohash: public TabelaHash{
             numPosOcupadas = 0;
             tabela = new EstruturaAuxiliar*[TH];
 
-            if (tipo == 1){                     //Se o tipo tiver valor "1", eh criada uma tabela de listas
-                for (int i = 0; i < TH; i++){
-                    tabela[i] = new lista();
-                }
-            }
-            else{                               //Senao, eh criada uma tabela de arvores
-                for (int i = 0; i < TH; i++){
-                    tabela[i] = new arv_avl();
-                }
+            for (int i = 0; i < TH; i++){
+                tabela[i] = instanciaEstrutura(tipo);
             }
 
         }
@@ -47,8 +40,12 @@ class Ohash: public TabelaHash{
 
             int chave = valor % TH;
 
+            //Checa se uma posicao anteriormente desocupada vai ficar ocupada agora
+            if (tabela[chave]->isNull())
+                numPosOcupadas++;
+
             tabela[chave]->inserir(valor);
-            numPosOcupadas++;
+
             if (PI){
                 cout<<"\nO valor "<<valor<<" foi inserido na chave "<<chave<<"\n";
                 system("pause>0");
@@ -63,7 +60,10 @@ class Ohash: public TabelaHash{
             int chave = valor % TH;
 
             if (tabela[chave]->remover(valor) == true){
-                numPosOcupadas--;
+                //Checa se uma posicao anteriormente ocupada vai ficar desocupada agora
+                if (tabela[chave]->isNull())
+                    numPosOcupadas--;
+
                 printPause("O valor foi deletado com sucesso da chave "+chave,true);
             }else
                 printPause("O valor nao foi encontrado",true);
@@ -116,30 +116,30 @@ class Ohash: public TabelaHash{
 
         /************************************************* DESENHO *****************************************************************/
 
-        void desenha_hash(RenderWindow* janela, int move){
+        void desenha_hash(RenderWindow* janela, int posAtual){
             int x_indice, x_no, distancia;
 
             if (tipo == 1){
-                x_indice = 6 + move;
-                x_no = 13 + move;
+                x_indice = 6 + posAtual;
+                x_no = 13 + posAtual;
             }else{
-                x_indice = 66 + move;
-                x_no = 79 + move;
+                x_indice = 66 + posAtual;
+                x_no = 79 + posAtual;
             }
 
             for(int i = 0; i < TH; i++){
                 if (tipo == 2) distancia = defineDistInicial(i);
 
                 /******* DESENHA O QUADRADO DO INDICE E O NUMERO DENTRO DELE ***********/
-                desenha_linha(x_indice + 27, 40, x_indice + 27, 100, janela);      //antes, desenha a linha que vai ligar o indice ao no abaixo dele
-                desenha_retangulo(x_indice, 30, 54, 54, Color(255, 127, 39), janela);
-                desenha_texto(i, x_indice + 10, 40, janela, TAM_TEXTO_IND, Color::White);     //e o numero do indice dentro dele
+                desenhaLinha(x_indice + 27, 40, x_indice + 27, 100, janela);      //antes, desenha a linha que vai ligar o indice ao no abaixo dele
+                desenhaRetangulo(x_indice, 30, 54, 54, Color(255, 127, 39), janela);
+                desenhaTexto(i, x_indice + 10, 40, janela, TAM_TEXTO_IND, Color::White);     //e o numero do indice dentro dele
 
                 /********** PRA DEPOIS DESENHAR A LISTA/ARVORE ABAIXO DO QUADRADO DO INDICE ************/
                 if (tipo == 1)
-                    desenha_lista(dynamic_cast<lista*>(tabela[i]), janela, x_no, 100);
+                    desenhaLista(dynamic_cast<lista*>(tabela[i]), janela, x_no, 100);
                 else
-                    desenha_arvore(dynamic_cast<arv_avl*>(tabela[i]), janela, x_no, 100, distancia);
+                    desenhaAVL(dynamic_cast<arv_avl*>(tabela[i]), janela, x_no, 100, distancia);
                 //Eh necessario fazer um dynamic casting para converter um objeto de classe derivada em um de classe base
 
                 if (tipo == 1){
@@ -172,7 +172,7 @@ class Ohash: public TabelaHash{
         void preparar_janela(){
 
             unsigned int w;
-            int move = 0;
+            int posAtual = 0;
 
             if (tipo == 1)
                 w = TH * 61;
@@ -182,13 +182,13 @@ class Ohash: public TabelaHash{
             if (w > VideoMode::getDesktopMode().width)
                 w = VideoMode::getDesktopMode().width;
 
-            RenderWindow* janela = new RenderWindow(VideoMode(w,500),"Half-Open Hashing");
+            RenderWindow* janela = new RenderWindow(VideoMode(w,500),"Open Hashing");
 
             while (janela->isOpen()){
                 eventHandler(janela);
                 janela->clear(Color::White);
-                update_pos(janela, &move);
-                desenha_hash(janela, move);
+                update_pos(janela, &posAtual);
+                desenha_hash(janela, posAtual);
                 janela->display();
             }
 

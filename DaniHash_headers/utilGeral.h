@@ -19,20 +19,13 @@ namespace geral{
     //Funcao para checar se um numero eh primo. Se so houver um divisor entre 1 e o numero/2
     //(que obviamente eh o numero 1), retorna 1.
     bool checaPrimo(int i){
-        int contDivisores = 0;
 
-        for (int dummy = 1; dummy < i/2; dummy++){
-
+        for (int dummy = 2; dummy < i/2; dummy++){
             if (i % dummy == 0)
-                contDivisores++;
-
+                return false;
         }
 
-        if (contDivisores == 1)
-            return true;
-        else
-            return false;
-
+        return true;
     }
 
     int pegaProxPrimMaior(int n){

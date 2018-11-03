@@ -30,7 +30,7 @@ class HOhash: public TabelaHash{
 
     public:
 
-        int TH, tipo, alt_max, num_arvores_cheias, colisoesDaInsercaoAtual;
+        int TH, tipo, altMax, numArvoresCheias, colisoesDaInsercaoAtual;
         bool fezRehashing, RH_FLAG;
         arv_avl* *tabela;
 
@@ -38,9 +38,9 @@ class HOhash: public TabelaHash{
 
             TH = tamanho;
             tipo = type;
-            alt_max = limit;
+            altMax = limit;
             colisoesDaInsercaoAtual = 0;
-            num_arvores_cheias = 0;
+            numArvoresCheias = 0;
             fezRehashing = false;
             RH_FLAG = false;
 
@@ -62,7 +62,7 @@ class HOhash: public TabelaHash{
         //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
         //em todas as classes que a impelentam: no caso, (int valor, bool PI)
         void inserir(int valor, bool PI){
-            inserir(valor, tabela, alt_max, PI);
+            inserir(valor, tabela, altMax, PI);
         }
 
         void inserir(int valor, arv_avl* *tab, int altmax, bool PI){
@@ -114,7 +114,7 @@ class HOhash: public TabelaHash{
             if (tabela[Hfinal]->getAltura() == alt_max){
                 if (tabela[Hfinal]->cheia == false){        //Se ela tiver sido enchida agora
                     tabela[Hfinal]->cheia = true;           //Seta a flag que a identifica como cheia
-                    num_arvores_cheias++;               //Incrementa o numero de arvores cheias
+                    numArvoresCheias++;               //Incrementa o numero de arvores cheias
                     if (PI) cout<<"Arvore atingiu altura maxima.\n";
                 }
             }
@@ -153,7 +153,7 @@ class HOhash: public TabelaHash{
             if (tabela[H1]->getAltura() == alt_max){
                 if (tabela[H1]->cheia == false){        //Se ela tiver sido enchida agora
                     tabela[H1]->cheia = true;           //Seta a flag que a identifica como cheia
-                    num_arvores_cheias++;               //Incrementa o numero de arvores cheias
+                    numArvoresCheias++;               //Incrementa o numero de arvores cheias
                 }
             }
 
@@ -183,10 +183,10 @@ class HOhash: public TabelaHash{
             tabela[H1]->remover(k);
 
             //Checa se eh uma arvore que era cheia, e agora nao esta mais cheia
-            if (tabela[H1]->raiz->altura < alt_max){
+            if (tabela[H1]->raiz->altura < altMax){
                 if (tabela[H1]->cheia == true){
                     tabela[H1]->cheia = false;
-                    num_arvores_cheias--;
+                    numArvoresCheias--;
                 }
             }
 
@@ -200,7 +200,7 @@ class HOhash: public TabelaHash{
 
             int TH_novo = pegaProxPrimMaior(TH*2);
             arv_avl* *tabela_nova = new arv_avl*[TH_novo];  //Cria a nova tabela, com o tamanho novo
-            num_arvores_cheias = 0;
+            numArvoresCheias = 0;
             for (int i = 0; i < TH_novo; i++){          //Inicializa a nova tabela fazendo com arvores
 
                 tabela_nova[i] = new arv_avl();
@@ -317,29 +317,29 @@ class HOhash: public TabelaHash{
 
         float getFC(){
 
-            return (float)num_arvores_cheias/TH;       //Para obter um float atraves da divisao de inteiros, eu tenho que converter um desses
+            return (float)numArvoresCheias/TH;       //Para obter um float atraves da divisao de inteiros, eu tenho que converter um desses
                                                     //inteiros para float
         }
 
         /************************************************* DESENHO *****************************************************************/
 
-        void desenha_hash(RenderWindow* janela, int move){
+        void desenha_hash(RenderWindow* janela, int posAtual){
             int x_indice, x_no, distancia;
 
-            x_indice = 66 + move;
-            x_no = 80 + move;      //posicao inicial = 13 + 60 + um pouquinho, por causa que do encolhimento do desenho do no da arvore
+            x_indice = 66 + posAtual;
+            x_no = 80 + posAtual;      //posicao inicial = 13 + 60 + um pouquinho, por causa que do encolhimento do desenho do no da arvore
 
             for(int i = 0; i < TH; i++){
                 distancia = defineDistInicial(i);
 
                 /******* DESENHA O QUADRADO DO INDICE E O NUMERO DENTRO DELE ***********/
-                desenha_linha(x_indice + 27, 40, x_indice + 27, 100, janela);   //antes, desenha a linha que vai ligar o indice ao no abaixo dele
-                desenha_retangulo(x_indice, 30, 54, 54, Color(255, 127, 39), janela);        //desenha o quadrado
-                desenha_texto(i, x_indice + 10, 40, janela, TAM_TEXTO_IND, Color::White);     //e o numero do indice dentro dele
+                desenhaLinha(x_indice + 27, 40, x_indice + 27, 100, janela);   //antes, desenha a linha que vai ligar o indice ao no abaixo dele
+                desenhaRetangulo(x_indice, 30, 54, 54, Color(255, 127, 39), janela);        //desenha o quadrado
+                desenhaTexto(i, x_indice + 10, 40, janela, TAM_TEXTO_IND, Color::White);     //e o numero do indice dentro dele
 
                 /********** PRA DEPOIS DESENHAR A ARVORE ABAIXO DO QUADRADO DO INDICE ************/
 
-                desenha_arvore(tabela[i], janela, x_no, 100, distancia);
+                desenhaAVL(tabela[i], janela, x_no, 100, distancia);
 
                 if (i < TH-1){
 
@@ -365,7 +365,7 @@ class HOhash: public TabelaHash{
         void preparar_janela(){
 
             unsigned int w = TH * 175;
-            int move = 0;
+            int posAtual = 0;
             if (w > VideoMode::getDesktopMode().width)
                 w = VideoMode::getDesktopMode().width;
 
@@ -374,8 +374,8 @@ class HOhash: public TabelaHash{
             while (janela->isOpen()){
                 eventHandler(janela);
                 janela->clear(Color::White);
-                update_pos(janela, &move);
-                desenha_hash(janela, move);
+                update_pos(janela, &posAtual);
+                desenha_hash(janela, posAtual);
                 janela->display();
             }
 

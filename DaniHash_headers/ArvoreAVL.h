@@ -48,10 +48,10 @@ class arv_avl : public EstruturaAuxiliar{
 
     /********* FUNCOES PEQUENAS AUXILIARES *********/
     int getAltura(){
-        return GetAltura(raiz);
+        return getAltura(raiz);
     }
 
-    int GetAltura(no_avl* no){
+    int getAltura(no_avl* no){
         if (no == NULL)
             return 0;       //Quando se trabalha com hashing, consideramos a altura de uma arvore vazia como 0
         else
@@ -59,7 +59,7 @@ class arv_avl : public EstruturaAuxiliar{
     }
 
     int getFB(no_avl* no){
-        return GetAltura(no->esq) - GetAltura(no->dir); //O fator de balanceamento eh a diferenca das alturas dos filhos esquerdo e direito
+        return getAltura(no->esq) - getAltura(no->dir); //O fator de balanceamento eh a diferenca das alturas dos filhos esquerdo e direito
     }
 
     bool isNull(){
@@ -118,7 +118,7 @@ class arv_avl : public EstruturaAuxiliar{
 
         }
 
-        no->altura = dh::geral::maximo(GetAltura(no->esq), GetAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
+        no->altura = dh::geral::maximo(getAltura(no->esq), getAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
                                                                             //nao tiver sido feito nenhum balanceamento)
         return no;
     }
@@ -128,8 +128,8 @@ class arv_avl : public EstruturaAuxiliar{
         no_avl* k1 = k2->esq;
         k2->esq = k1->dir;
         k1->dir = k2;
-        k2->altura = dh::geral::maximo(GetAltura(k2->esq), GetAltura(k2->dir)) + 1;
-        k1->altura = dh::geral::maximo(GetAltura(k1->esq), k2->altura) + 1;
+        k2->altura = dh::geral::maximo(getAltura(k2->esq), getAltura(k2->dir)) + 1;
+        k1->altura = dh::geral::maximo(getAltura(k1->esq), k2->altura) + 1;
         return k1;
     }
     /*
@@ -144,8 +144,8 @@ class arv_avl : public EstruturaAuxiliar{
         no_avl* k2 = k1->dir;
         k1->dir = k2->esq;
         k2->esq = k1;
-        k1->altura = dh::geral::maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
-        k2->altura = dh::geral::maximo(GetAltura(k2->dir), k1->altura) + 1;
+        k1->altura = dh::geral::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
+        k2->altura = dh::geral::maximo(getAltura(k2->dir), k1->altura) + 1;
         return k2;
     }
     /*
@@ -166,9 +166,9 @@ class arv_avl : public EstruturaAuxiliar{
         k2->esq = k1;
         k2->dir = k3;
 
-        k1->altura = dh::geral::maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
-        k3->altura = dh::geral::maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
-        k2->altura = dh::geral::maximo(GetAltura(k1), GetAltura(k3)) + 1;
+        k1->altura = dh::geral::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
+        k3->altura = dh::geral::maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
+        k2->altura = dh::geral::maximo(getAltura(k1), getAltura(k3)) + 1;
 
 
         return k2;
@@ -194,9 +194,9 @@ class arv_avl : public EstruturaAuxiliar{
         k2->esq = k3;
         k2->dir = k1;
 
-        k3->altura = dh::geral::maximo(GetAltura(k3->esq), GetAltura(k3->dir)) + 1;
-        k1->altura = dh::geral::maximo(GetAltura(k1->esq), GetAltura(k1->dir)) + 1;
-        k2->altura = dh::geral::maximo(GetAltura(k3), GetAltura(k1)) + 1;
+        k3->altura = dh::geral::maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
+        k1->altura = dh::geral::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
+        k2->altura = dh::geral::maximo(getAltura(k3), getAltura(k1)) + 1;
 
         return k2;
 
@@ -313,15 +313,15 @@ class arv_avl : public EstruturaAuxiliar{
     /**************************************  IMPRIMIR NO PROMPT DE COMANDO  *****************************************************************************/
 
     void imprimir(){
-        Imprimir(raiz);
+        imprimir(raiz);
     }
 
-    void Imprimir(no_avl* noimpr){              //Pre-ordem (R-E-D)
+    void imprimir(no_avl* noimpr){              //Pre-ordem (R-E-D)
 
         if(noimpr != NULL){
             cout<<noimpr->info<<", ";
-            Imprimir(noimpr->esq);
-            Imprimir(noimpr->dir);
+            imprimir(noimpr->esq);
+            imprimir(noimpr->dir);
         }
 
     }
@@ -329,19 +329,19 @@ class arv_avl : public EstruturaAuxiliar{
     /**************************************  BUSCAR  *****************************************************************************/
 
     bool buscar(int i){
-        return Buscar(i, raiz);
+        return buscar(i, raiz);
     }
 
-    bool Buscar(int valor, no_avl* no_atual){
+    bool buscar(int valor, no_avl* no_atual){
 
         if (no_atual != NULL){
             if (no_atual->info == valor){
                 return true;
             }else{
                 if (valor < no_atual->info)
-                    return Buscar(valor, no_atual->esq);
+                    return buscar(valor, no_atual->esq);
                 else
-                    return Buscar(valor, no_atual->dir);
+                    return buscar(valor, no_atual->dir);
             }
         }
         return false;

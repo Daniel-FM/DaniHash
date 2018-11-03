@@ -22,14 +22,14 @@ namespace benchmark{
         int rehashings;
         double tempoBMK;
 
-        static Results inicializaResults(){
+        Results(){
+            inicializaResults();
+        }
 
-            Results retorno;
-            retorno.colisoes = 0;
-            retorno.rehashings = 0;
-            retorno.tempoBMK = 0;
-
-            return retorno;
+        void inicializaResults(){
+            colisoes = 0;
+            rehashings = 0;
+            tempoBMK = 0;
         }
     };
 

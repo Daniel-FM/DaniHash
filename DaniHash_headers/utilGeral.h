@@ -99,33 +99,6 @@ namespace geral{
 };
 };
 
-struct arquivo_defeituoso : public exception {
-
-    int l = 0;
-    string t = "";
-
-    arquivo_defeituoso(int linha, int tipo){
-        l = linha;
-
-        switch (tipo){
-            case 1:
-                t = "Caractere invalido";
-                break;
-            case 2:
-                t = "Sem identificador \"INS\"";
-                break;
-            default:
-                t = "???";
-        }
-    }
-
-    //override do metodo virtual what(), de std::exception
-    const char * what () const throw () {
-        string str = ("\nProblema na linha " + to_string(l)) + (": " + t);
-        return str.c_str();
-    }
-};
-
 
 //
 #endif // FUNCOES_AUXILIARES_GERAL_H_INCLUDED

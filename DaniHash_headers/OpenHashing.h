@@ -13,14 +13,14 @@ class Ohash: public TabelaHash{
 
     public:
 
-        int TH, FC, tipo;
+        int TH, tipo, numPosOcupadas;
         EstruturaAuxiliar* *tabela;
 
         Ohash(int tamanho, int type){
 
             TH = tamanho;
             tipo = type;
-
+            numPosOcupadas = 0;
             tabela = new EstruturaAuxiliar*[TH];
 
             if (tipo == 1){                     //Se o tipo tiver valor "1", eh criada uma tabela de listas
@@ -48,7 +48,7 @@ class Ohash: public TabelaHash{
             int chave = valor % TH;
 
             tabela[chave]->inserir(valor);
-
+            numPosOcupadas++;
             if (PI){
                 cout<<"\nO valor "<<valor<<" foi inserido na chave "<<chave<<"\n";
                 system("pause>0");
@@ -62,9 +62,10 @@ class Ohash: public TabelaHash{
 
             int chave = valor % TH;
 
-            if (tabela[chave]->remover(valor) == true)
+            if (tabela[chave]->remover(valor) == true){
+                numPosOcupadas--;
                 printPause("O valor foi deletado com sucesso da chave "+chave,true);
-            else
+            }else
                 printPause("O valor nao foi encontrado",true);
 
         }
@@ -109,104 +110,8 @@ class Ohash: public TabelaHash{
 
         float getFC(){
 
-            int posOcupadas = 0;
-            for (int i = 0; i < TH; i++){
-                if (tabela[i]->getRaiz() != NULL){
-                    posOcupadas++;
-                }
-            }
-
-            return (float)posOcupadas /TH;       //Para obter um float atraves da divisao de inteiros, eu tenho que converter um desses
+            return (float)numPosOcupadas /TH;       //Para obter um float atraves da divisao de inteiros, eu tenho que converter um desses
                                                 //inteiros para float
-        }
-
-
-        /************************************************* INSERCAO MEDINDO TEMPO *****************************************************************/
-
-        Results benchmarkINSERCAO(int quantidadeDeInsercoes, int opcao_insbmk, string fileName_insercao){
-            int valorParaInserir;
-            double tempo = 0;
-            ofstream fileINS;
-            Results resultado = Results::inicializaResults();
-
-            if (benchmarkComArquivoDeInsercao(opcao_insbmk)){
-                fileINS.open(FILEPATH_INS+fileName_insercao, ios::app);
-            }
-
-            for (int i = 0; i < quantidadeDeInsercoes; i++){
-                //Geramos a variavel aleatoria a ser inserida
-                valorParaInserir = GVA(opcao_insbmk);
-
-                if (valorParaInserir < 0) valorParaInserir = 0;
-
-                if (benchmarkComArquivoDeInsercao(opcao_insbmk))
-                    fileINS<<"INS "<<valorParaInserir<<endl;
-
-                cronometro cron;
-                inserir(valorParaInserir,false);   //Depois fazemos a insercao, medindo o tempo
-                tempo += cron.tempoDecorrido();
-            }
-            resultado.tempoBMK = tempo;
-
-            if (benchmarkComArquivoDeInsercao(opcao_insbmk))
-                fileINS.close();
-
-            //Se for um benchmark completo, inclui uma adicao ao arquivo com os tempos do bmk atual
-            if (benchmarkComArquivoBenchmark(opcao_insbmk)){
-                ofstream fileBMK;
-
-                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
-                //Poe no arquivo o tempo da insercao
-                fileBMK<<quantidadeDeInsercoes<<"\t"<<tempo<<endl;
-                fileBMK.close();
-            }
-
-            return resultado;
-        }
-
-
-        /************************************************* BUSCA MEDINDO TEMPO *****************************************************************/
-
-        double benchmarkBUSCA(int opcao_insbmk, string fileName_insercao){
-            //Praticamente igual ao benchmark de insercao, mas usando a operacao de busca
-            int numeroNaLinha, quantidadeDeBuscas = 0;
-            double tempo = 0;
-            string linha, ins_str;
-
-            ifstream fileREAD;
-            fileREAD.open(FILEPATH_INS+fileName_insercao);  //Abre o arquivo de insercao gerado antes, pra saber o que deve ser buscado
-
-            while(fileREAD){
-                getline(fileREAD, linha);
-                ins_str = linha.substr(0,3);
-                if(ins_str=="INS"){
-                    quantidadeDeBuscas++;
-                    numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
-
-                    cronometro cron;
-                    buscar(numeroNaLinha,false);
-                    tempo += cron.tempoDecorrido();
-
-                }else if (linha == ""){
-                    break;
-                }else{
-                    cout<<"Arquivo com problema!"<<endl;
-                    break;
-                }
-            }
-            fileREAD.close();
-
-            if (benchmarkComArquivoBenchmark(opcao_insbmk)){
-                ofstream fileBMK;
-
-                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
-
-                fileBMK<<quantidadeDeBuscas<<"\t"<<tempo<<endl;
-                fileBMK.close();
-            }
-
-            return tempo;
-
         }
 
         /************************************************* DESENHO *****************************************************************/

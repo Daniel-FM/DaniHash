@@ -12,108 +12,112 @@
 #include <sys/time.h>
 //#define M_E 2.718281828459
 
-int getZ1(){
+namespace dh{
+namespace gva{
 
-    timeval TV;
-    double db_TV;
+    int getZ1(){
 
-    gettimeofday(&TV,NULL);
-    db_TV = TV.tv_usec;
+        timeval TV;
+        double db_TV;
 
-    //Pegamos o seed inicial com o numero de microssegundos atuais do relogio
-    int seed = (int)db_TV;
+        gettimeofday(&TV,NULL);
+        db_TV = TV.tv_usec;
 
-    return seed;
+        //Pegamos o seed inicial com o numero de microssegundos atuais do relogio
+        int seed = (int)db_TV;
 
-}
+        return seed;
 
-//A variavel global que muda a cada chamada de getRand(),
-//fazendo o periodo de numeros pseudo-aleatorios entre 0 e 1.
-int z = getZ1();
+    }
 
-float getRand(){
+    //A variavel global que muda a cada chamada de getRand(),
+    //fazendo o periodo de numeros pseudo-aleatorios entre 0 e 1.
+    int z = getZ1();
 
-    int a = 16807;          //7^5 (primo sugerido para periodo completo)
-    int m = 2147483647;     //2^31 (int maximo) - 1
-    int q = 127773;         //(m div a)
-    int r = 2836;           //(m mod a)
+    float getU(){
 
-    int hi = z/q;
-    int lo = z%q;
+        int a = 16807;          //7^5 (primo sugerido para periodo completo)
+        int m = 2147483647;     //2^31 (int maximo) - 1
+        int q = 127773;         //(m div a)
+        int r = 2836;           //(m mod a)
 
-    int test = (a * lo) - (r * hi);
+        int hi = z/q;
+        int lo = z%q;
 
-    if (test > 0)
-        z = test;
-    else
-        z = test+m;
+        int test = (a * lo) - (r * hi);
 
-    return (float)z/m;
+        if (test > 0)
+            z = test;
+        else
+            z = test+m;
 
-}
+        return (float)z/m;
 
-int uniforme(int media){
+    }
 
-    float u = getRand();
+    int uniforme(int media){
 
-    //Numero maximo (media*2) multiplicado por um numero entre 0 e 1,
-    //resultando em um numero entre 0 e o maximo.
-    return (int)2*media*u;
+        float u = getU();
 
-}
+        //Numero maximo (media*2) multiplicado por um numero entre 0 e 1,
+        //resultando em um numero entre 0 e o maximo.
+        return (int)2*media*u;
 
-int normal(int media, float desvio){
+    }
 
-    while (true){
+    int normal(int media, float desvio){
 
-        float u1 = getRand();
-        float u2 = getRand();
+        while (true){
 
-        float x  = (float) -log(u1);
+            float u1 = getU();
+            float u2 = getU();
 
-        //                    2
-        //              -(x-1)
-        //             e
-        //Se   u2 > _________     , recomeca a funcao
-        //             2
-        if (   u2 > pow(M_E, -(  pow((x-1),2))/2  )   ){
-            continue;
-        }
+            float x  = (float) -log(u1);
 
-        float u3 = getRand();
+            //                    2
+            //              -(x-1)
+            //             e
+            //Se   u2 > _________     , recomeca a funcao
+            //             2
+            if (   u2 > pow(M_E, -(  pow((x-1),2))/2  )   ){
+                continue;
+            }
 
-        if ( u3 > 0.5){
-            return (unsigned int) (media + desvio*x);
-        }
-        else{
-            return (unsigned int) (media - desvio*x);
+            float u3 = getU();
+
+            if ( u3 > 0.5){
+                return (unsigned int) (media + desvio*x);
+            }
+            else{
+                return (unsigned int) (media - desvio*x);
+            }
+
         }
 
     }
 
-}
+    int exponencial(int media){
 
-int exponencial(int media){
+        float u  = getU();
+        float ln = (float) log(u);
 
-    float u  = getRand();
-    float ln = (float) log(u);
+        return (int) -media*ln;
+    }
 
-    return (int) -media*ln;
-}
+    int getRand(int opc){
 
-int GVA(int opc){
+        if (dh::benchmark::querFazerUniforme(opc))
+            return uniforme(dh::constantes::MEDIA_CHAVE_BMK);
+        else if (dh::benchmark::querFazerNormal(opc))
+            return normal(dh::constantes::MEDIA_CHAVE_BMK,dh::constantes::MEDIA_CHAVE_BMK/2.5);
+        else if (dh::benchmark::querFazerExponencial(opc))
+            return exponencial(dh::constantes::MEDIA_CHAVE_BMK);
+        else
+            return dh::constantes::MEDIA_CHAVE_BMK;
 
-    if (dh::benchmark::querFazerUniforme(opc))
-        return uniforme(dh::constantes::MEDIA_CHAVE_BMK);
-    else if (dh::benchmark::querFazerNormal(opc))
-        return normal(dh::constantes::MEDIA_CHAVE_BMK,dh::constantes::MEDIA_CHAVE_BMK/2.5);
-    else if (dh::benchmark::querFazerExponencial(opc))
-        return exponencial(dh::constantes::MEDIA_CHAVE_BMK);
-    else
-        return dh::constantes::MEDIA_CHAVE_BMK;
-
-}
-
+    }
+};
+};
 
 //
 #endif // GVA_H_INCLUDED

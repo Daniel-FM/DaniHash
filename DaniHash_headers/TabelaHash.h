@@ -18,10 +18,12 @@
 namespace dh{
 
     using namespace dh::benchmark;
+    using namespace dh::arquivos;
     using namespace dh::desenho;
     using namespace dh::geral;
     using namespace dh::menu;
     using namespace dh::constantes;
+    using namespace dh::gva;
 
     class TabelaHash{
 
@@ -91,7 +93,7 @@ namespace dh{
 
             for (int i = 0; i < quantidadeDeInsercoes; i++){
                 //Geramos a variavel aleatoria a ser inserida
-                valorParaInserir = GVA(opcao_insbmk);
+                valorParaInserir = getRand(opcao_insbmk);
 
                 if (valorParaInserir < 0) valorParaInserir = 0;
 
@@ -115,7 +117,7 @@ namespace dh{
             if (benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
+                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
                 //Poe no arquivo o tempo da insercao
                 fileBMK<<quantidadeDeInsercoes<<"\t"<<tempo<<endl;
                 fileBMK.close();
@@ -156,7 +158,7 @@ namespace dh{
             if (benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+dh::arquivos::montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
+                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
 
                 fileBMK<<quantidadeDeBuscas<<"\t"<<tempo<<endl;
                 fileBMK.close();

@@ -36,7 +36,7 @@ namespace dh{
         virtual void remover(int valor)=0;
         virtual int buscar(int valor, bool PI)=0;
         virtual void imprimir()=0;
-        virtual void preparar_janela()=0;
+        virtual void desenha_hash()=0;
         virtual float getFC()=0;
         virtual int getColisoesDaInsercaoAtual()=0;
         virtual bool getFezRehashing()=0;
@@ -235,11 +235,11 @@ namespace dh{
     TabelaHash* instanciaHash(Atributos attr){
 
         if (attr.tipo <= 2)
-            return new Ohash(attr.tamanho,attr.tipo);
+            return new dh::Ohash(attr.tamanho,attr.tipo);
         else if (attr.tipo <= 5)
-            return new Chash(attr.tamanho,attr.tipo);
+            return new dh::Chash(attr.tamanho,attr.tipo);
         else
-            return new HOhash(attr.tamanho,attr.tipo,attr.limite);
+            return new dh::HOhash(attr.tamanho,attr.tipo,attr.limite);
 
     }
 };

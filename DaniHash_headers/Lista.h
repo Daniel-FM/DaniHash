@@ -31,14 +31,11 @@ class no_lista : public No{
 
 class lista : public EstruturaAuxiliar{
 
-    public:
-
     no_lista* cabeca;
-    int num_nos;
 
+    public:
     lista(){
         cabeca = NULL;
-        num_nos = 0;
     }
 
     ~lista(){
@@ -51,7 +48,6 @@ class lista : public EstruturaAuxiliar{
 
         novono->prox = cabeca;
         cabeca = novono;
-        num_nos++;
     }
 
     bool remover(int i){
@@ -78,8 +74,6 @@ class lista : public EstruturaAuxiliar{
 
         delete dummy;
 
-        num_nos--;
-
         return true;
 
 
@@ -102,6 +96,7 @@ class lista : public EstruturaAuxiliar{
         return Buscar(i,cabeca);
     }
 
+    private:
     bool Buscar(int valor, no_lista* no_atual){
         if (no_atual != NULL){
             if (no_atual->info == valor){
@@ -113,10 +108,14 @@ class lista : public EstruturaAuxiliar{
         return false;
     }
 
-    //Ja que essa funcao nao sera usada para listas, mas precisamos sobrescreve-la,
-    //apenas retornamos um valor qualquer.
     int getAltura(){
-        return -1;
+        int alt = 0;
+        no_lista* dummy = this->getRaiz();
+        while (dummy != NULL){
+            alt++;
+            dummy = dummy->prox;
+        }
+        return alt;
     }
 
     bool isNull(){

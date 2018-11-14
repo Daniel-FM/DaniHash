@@ -9,6 +9,7 @@
 #ifndef CLOSED_HASHING_H_INCLUDED
 #define CLOSED_HASHING_H_INCLUDED
 
+namespace dh{
 class no_ch{
 
     public:
@@ -335,7 +336,7 @@ class Chash: public TabelaHash{
 
         /************************************************* DESENHO *****************************************************************/
 
-        void preparar_janela(){
+        void desenha_hash(){
 
             printPause("Esta funcionalidade sera implementada em breve!", true);
 
@@ -351,6 +352,7 @@ class Chash: public TabelaHash{
             return fezRehashing;
         }
 
+};
 };
 //
 #endif // CLOSED_HASHING_H_INCLUDED

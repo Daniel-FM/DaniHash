@@ -131,7 +131,7 @@ int main(){
                     break;
 
                 case 8:
-                    h->preparar_janela();
+                    h->desenha_hash();
                     break;
 
                 case 9:

@@ -10,9 +10,10 @@
 #define ARVORE_AVL_H_INCLUDED
 
 class no_avl : public No{
-    public:
 
+    public:
     int info, altura;
+
     no_avl* esq;
     no_avl* dir;
 
@@ -32,14 +33,11 @@ class no_avl : public No{
 
 class arv_avl : public EstruturaAuxiliar{
 
-    public:
-
     no_avl* raiz;
-    bool cheia;
 
+    public:
     arv_avl(){
         raiz = NULL;
-        cheia = false;
     }
 
     ~arv_avl(){
@@ -79,6 +77,7 @@ class arv_avl : public EstruturaAuxiliar{
         raiz = Inserir(i, raiz);
     }
 
+    private:
     no_avl* Inserir(int novo_el, no_avl* no){
 
         if (no == NULL){
@@ -211,12 +210,13 @@ class arv_avl : public EstruturaAuxiliar{
            b    c
     */
     /*********************************************  DELETAR (TEM ERROS!) ***********************************************************************/
-
+    public:
     bool remover(int i)
     {
         return Delete_data(i, raiz);
     }
 
+    private:
     bool Delete_data(int data, no_avl *&node)
     {
 
@@ -311,11 +311,12 @@ class arv_avl : public EstruturaAuxiliar{
 
 
     /**************************************  IMPRIMIR NO PROMPT DE COMANDO  *****************************************************************************/
-
+    public:
     void imprimir(){
         imprimir(raiz);
     }
 
+    private:
     void imprimir(no_avl* noimpr){              //Pre-ordem (R-E-D)
 
         if(noimpr != NULL){
@@ -327,11 +328,11 @@ class arv_avl : public EstruturaAuxiliar{
     }
 
     /**************************************  BUSCAR  *****************************************************************************/
-
+    public:
     bool buscar(int i){
         return buscar(i, raiz);
     }
-
+    private:
     bool buscar(int valor, no_avl* no_atual){
 
         if (no_atual != NULL){

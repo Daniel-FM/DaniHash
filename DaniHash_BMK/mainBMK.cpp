@@ -69,7 +69,7 @@ int main(){
 
                     try{
                         h = instanciaHash(atributos);
-                        resultadoBMK = h->inserirDeArquivo(nomeDoArquivo);
+                        resultadoBMK = h->inserirDeArquivo(nomeDoArquivo, false);
 
                         if(respfinal == 1);
                         tempoTotal_buscas = h->benchmarkBUSCA(0,nomeDoArquivo);

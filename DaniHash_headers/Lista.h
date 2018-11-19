@@ -108,6 +108,7 @@ class lista : public EstruturaAuxiliar{
         return false;
     }
 
+    public:
     int getAltura(){
         int alt = 0;
         no_lista* dummy = this->getRaiz();

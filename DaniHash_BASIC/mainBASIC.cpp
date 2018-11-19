@@ -71,7 +71,7 @@ int main(){
                     if (nomeDoArquivo == "sair") break;
 
                     try{
-                        h->inserirDeArquivo(nomeDoArquivo);
+                        h->inserirDeArquivo(nomeDoArquivo, true);
                         geral::printPause("Insercoes feitas!",true);
                     }catch(arquivo_defeituoso &e){
                         cerr<<e.what();

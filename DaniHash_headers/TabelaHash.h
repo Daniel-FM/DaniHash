@@ -41,7 +41,7 @@ namespace dh{
         virtual int getColisoesDaInsercaoAtual()=0;
         virtual bool getFezRehashing()=0;
 
-        Results inserirDeArquivo(string nomeDoArquivo){
+        Results inserirDeArquivo(string nomeDoArquivo, bool PI){
 
             int numeroNaLinha, numeroDaLinha = 1;
             string linha, substringINS;
@@ -61,7 +61,7 @@ namespace dh{
                     }
 
                     cronometro cron;
-                    this->inserir(numeroNaLinha, false);
+                    this->inserir(numeroNaLinha, PI);
                     resultado.tempoBMK += cron.tempoDecorrido();
 
                     resultado.colisoes += getColisoesDaInsercaoAtual();

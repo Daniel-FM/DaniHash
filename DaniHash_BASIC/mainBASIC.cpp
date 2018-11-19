@@ -72,7 +72,7 @@ int main(){
 
                     try{
                         h->inserirDeArquivo(nomeDoArquivo, true);
-                        geral::printPause("Insercoes feitas!",true);
+                        geral::printPause("\nInsercoes feitas!",true);
                     }catch(arquivo_defeituoso &e){
                         cerr<<e.what();
                         system("pause>0");
@@ -92,13 +92,13 @@ int main(){
 
                     posicao = h->buscar(num,true);
                     if (posicao == -1)
-                        geral::printPause("O valor nao existe na tabela.",true);
+                        geral::printPause("A chave nao existe na tabela.",true);
                     else if (posicao == -2)
-                        geral::printPause("Numero maximo de tentativas atingido. O valor nao foi encontrado.",true);
+                        geral::printPause("Numero maximo de tentativas atingido. A chave nao foi encontrada.",true);
                     else if (posicao == -3)
                         geral::printPause("NENHUMA TABELA FOI INSTANCIADA.",true);
                     else{
-                        cout<<"O valor foi encontrado na posicao "<<posicao;
+                        cout<<"A chave foi encontrada na posicao "<<posicao;
                         system("pause>0");
                     }
 

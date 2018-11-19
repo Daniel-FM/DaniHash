@@ -67,16 +67,16 @@ class HOhash: public TabelaHash{
     /************************************************* INSERIR (FUNCAO BASE) *****************************************************************/
     //Foi necessario criar essa funcao de inserir "falsa" que chama a funcao de inserir real, pois a falsa eh
     //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
-    //em todas as classes que a impelentam: no caso, (int valor, bool PI)
-    void inserir(int valor, bool PI){
-        inserir(valor, tabela, PI);
+    //em todas as classes que a impelentam: no caso, (int chave, bool PI)
+    void inserir(int chave, bool PI){
+        inserir(chave, tabela, PI);
     }
 
-    void inserir(int valor, arv_avl* *tab, bool PI){
+    void inserir(int chave, arv_avl* *tab, bool PI){
         if (tipo == 6)
-            inserir_CTQ(valor, tab, PI);
+            inserir_CTQ(chave, tab, PI);
         else
-            inserir_STQ(valor, tab, PI);
+            inserir_STQ(chave, tab, PI);
     }
 
     /************************************************* INSERIR (COM TENTATIVA QUADRATICA) *****************************************************************/
@@ -95,14 +95,13 @@ class HOhash: public TabelaHash{
         }else{
             //Se a arvore do hash inicial estiver na altura maxima (uma arvore "cheia"), faz tentativa
             //quadratica ate encontrar uma arvore que nao esteja cheia
-            if (PI)
-                cout<<"\nA arvore na posicao "<<Hfinal<<" estava na altura maxima, por isso vou fazer tentativa quadratica.\n";
+            printPause(PI,"\nA arvore na posicao ",Hfinal," estava na altura maxima, por isso vou fazer tentativa quadratica.");
 
             int i = 1;
             while ((tabela[Hfinal]->getRaiz() != NULL) && arvoreCheia(tabela[Hfinal])){
 
                 if (i == TH){
-                    printPause("A chave nao pode ser inserida. Numero maximo de tentativas atingido.",PI);
+                    printPause(PI,"A chave nao pode ser inserida. Numero maximo de tentativas atingido.");
                     return;
                 }
                 Hfinal = (int)(k + pow(i,2)) % TH;
@@ -114,28 +113,24 @@ class HOhash: public TabelaHash{
             tabela[Hfinal]->inserir(k);
         }
 
-        if (PI)
-            cout<<"\nA chave "<<k<<" foi inserida na posicao "<<Hfinal<<"\n";
+        printPause(PI,"\nA chave ",k," foi inserida na posicao ",Hfinal);
 
         //Se a altura de uma arvore chegar ao valor maximo definido
         if (arvoreCheia(tabela[Hfinal])){
             numArvoresCheias++;               //Incrementa o numero de arvores cheias
-            if (PI) cout<<"Arvore atingiu altura maxima.\n";
+            printPause(PI,"Arvore atingiu altura maxima.\n");
         }
 
         //Checa se mais da metade das arvores da tabela estao cheias. Se sim, faz rehashing
         if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-            if (PI)
-                cout<<"O fator de carga ultrapassou o limiar definido como "<<LIMIAR_PARA_REHASHING<<". Vai fazer rehashing.\n";
+            printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Vai fazer rehashing.\n");
 
             RH_FLAG = true;
             rehashing(PI);
             fezRehashing = true;
             RH_FLAG = false;
-            if (PI) cout<<"Rehashing concluido.\n";
+            printPause(PI,"Rehashing concluido.\n");
         }
-        if (PI)
-            system("pause > 0");
 
 
     }
@@ -151,30 +146,26 @@ class HOhash: public TabelaHash{
         bool eraCheia = (tabela[H1]->getAltura() >= altMax);
 
         tabela[H1]->inserir(k);
-        if (PI)
-            cout<<"\nA chave "<<k<<" foi inserida na posicao "<<H1<<"\n";
+        printPause(PI,"\nA chave ",k," foi inserida na posicao ",H1);
 
         //Se a altura de uma arvore chegar ao valor maximo definido
         if (arvoreCheia(tabela[H1])){
             if (!eraCheia){                     //Se ela tiver sido enchida agora
                 numArvoresCheias++;               //Incrementa o numero de arvores cheias
-                geral::printPause("Esta arvore agora esta cheia.",PI);
+                geral::printPause(PI,"Esta arvore agora esta cheia.");
             }
         }
 
 
         //Checa se mais da metade das arvores da tabela estao cheias. Se sim, faz rehashing
         if  ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-            if (PI)
-                cout<<"O fator de carga ultrapassou o limiar definido como "<<LIMIAR_PARA_REHASHING<<". Vai fazer rehashing.\n";
+            printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Vai fazer rehashing.");
 
             RH_FLAG = true;
             rehashing(PI);
             fezRehashing = true;
             RH_FLAG = false;
         }
-        if (PI)
-            system("pause > 0");
 
 
     }

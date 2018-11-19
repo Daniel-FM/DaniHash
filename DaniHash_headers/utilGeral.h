@@ -54,14 +54,37 @@ namespace geral{
             return b;
     }
 
-    void printPause(string texto, bool podeImprimir){
+    /************* FUNCOES DE IMPRESSAO CONDICIONAL COM E SEM PAUSA *************/
 
-        if (podeImprimir){
-            cout<<texto<<"\n";
-            system("pause>0");
-        }
-
+    template <typename T>
+    void printPause(T t){
+        system("pause>0");
     }
+
+    template <typename T>
+    void printNoPause(T t){}
+
+    //Funcao recursiva, que aceita uma quantidade indefinida de
+    //tipos genericos (tendo pelo menos 1 bool no inicio).
+    //Aquelas duas de cima sao chamadas quando so resta um argumento no conjunto, que
+    //eh a variavel booleana (ou seja, pode parar de imprimir)
+    template<typename T, typename... Args>
+    void printPause(bool pode, T t, Args... args){
+        if (pode){
+            cout<<t<<endl ;
+            printPause(pode, args...) ;
+        }
+    }
+
+    template<typename T, typename... Args>
+    void printNoPause(bool pode, T t, Args... args){
+        if (pode){
+            cout <<t<<endl ;
+            printNoPause(pode, args...) ;
+        }
+    }
+
+
 
     void printNewPerc(int dividendo, int divisor){
 

@@ -37,37 +37,34 @@ class Ohash: public TabelaHash{
 
     /************************************************* INSERIR *****************************************************************/
 
-    void inserir(int valor, bool PI){
+    void inserir(int chave, bool PI){
 
-        int chave = valor % TH;
+        int h = chave % TH;
 
         //Checa se uma posicao anteriormente desocupada vai ficar ocupada agora
-        if (tabela[chave]->isNull())
+        if (tabela[h]->isNull())
             numPosOcupadas++;
 
-        tabela[chave]->inserir(valor);
+        tabela[h]->inserir(chave);
 
-        if (PI){
-            cout<<"\nO valor "<<valor<<" foi inserido na chave "<<chave<<"\n";
-            system("pause>0");
-        }
+        printPause(PI,"\nA chave ",chave," foi inserida no indice ",h);
 
     }
 
     /************************************************* REMOVER *****************************************************************/
 
-    void remover(int valor){
+    void remover(int chave){
 
-        int chave = valor % TH;
+        int h = chave % TH;
 
-        if (tabela[chave]->remover(valor) == true){
+        if (tabela[h]->remover(chave) == true){
             //Checa se uma posicao anteriormente ocupada vai ficar desocupada agora
-            if (tabela[chave]->isNull())
+            if (tabela[h]->isNull())
                 numPosOcupadas--;
 
-            printPause("O valor foi deletado com sucesso da chave "+chave,true);
+            printPause(true,"A chave foi deletada com sucesso da chave ",h);
         }else
-            printPause("O valor nao foi encontrado",true);
+            printPause(true,"A chave nao foi encontrada");
 
     }
 
@@ -91,15 +88,15 @@ class Ohash: public TabelaHash{
 
     /************************************************* BUSCAR *****************************************************************/
 
-    int buscar(int valor, bool PI){
+    int buscar(int chave, bool PI){
 
-        int chave = valor % TH;
+        int h = chave % TH;
         bool encontrou = false;
 
-        encontrou = tabela[chave]->buscar(valor);
+        encontrou = tabela[h]->buscar(chave);
 
         if (encontrou){
-            return chave;
+            return h;
         } else{
             return -2;
         }

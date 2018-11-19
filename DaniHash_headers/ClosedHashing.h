@@ -88,11 +88,13 @@ class Chash: public TabelaHash{
 
         //Foi necessario criar essa funcao de inserir "falsa" que chama a funcao de inserir real, pois a falsa eh
         //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
-        //em todas as classes que a impelentam: no caso, (int valor, bool PI)
-        void inserir(int valor, bool PI){
-            inserir(valor, tabela, TH, PI);
+        //em todas as classes que a implementam: no caso, (int chave, bool PI)
+        public:
+        void inserir(int chave, bool PI){
+            inserir(chave, tabela, TH, PI);
         }
 
+        private:
         void inserir(int k, no_ch* *Tabela, int TamTabela, bool PI){
 
             if (RH_FLAG == false){
@@ -109,6 +111,7 @@ class Chash: public TabelaHash{
                 if (Tabela[Hfinal] != NULL)
                     delete Tabela[Hfinal];
 
+                printNoPause(PI,k," % ",TamTabela," = ",H1);
                 Tabela[Hfinal] = new no_ch(k);
             }
             else{
@@ -118,12 +121,12 @@ class Chash: public TabelaHash{
                 if (tipo == 3){
                     while (!DeletedOrNull(Tabela[Hfinal])){
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause("Chave repetida!",PI);
+                            printPause(PI,"\nA chave ",k," ja existe na tabela.");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause("O numero nao pode ser inserido. Numero maximo de tentativas atingido.",PI);
+                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.");
                             return;
                         }
                         Hfinal = (H1 + i) % TamTabela;
@@ -140,12 +143,12 @@ class Chash: public TabelaHash{
                     while (!DeletedOrNull(Tabela[Hfinal])){
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause("Chave repetida!",PI);
+                            printPause(PI,"\nA chave ",k," ja existe na tabela.");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause("O numero nao pode ser inserido. Numero maximo de tentativas atingido.",PI);
+                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.");
                             return;
                         }
                         Hfinal = (int)(H1 + pow(i,2)) % TamTabela;
@@ -164,12 +167,12 @@ class Chash: public TabelaHash{
 
                     while (!DeletedOrNull(Tabela[Hfinal])){
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause("Chave repetida!",PI);
+                            printPause(PI,"\nA chave ",k," ja existe na tabela.");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause("O numero nao pode ser inserido. Numero maximo de tentativas atingido.",PI);
+                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.");
                             return;
                         }
                         Hfinal = (H1 + (i*H2)) % TamTabela;
@@ -195,28 +198,23 @@ class Chash: public TabelaHash{
             numPosOcupadas++;
 
             //Ai, depois que inseriu, imprime
-            if (PI){
-                cout<<"\nO valor "<<k<<" foi inserido na posicao "<<Hfinal<<".\n";
-                system("pause>0");
-            }
+            printPause(PI,"\nA chave ",k," foi inserida no indice ",Hfinal);
 
             //Checa se mais da metade das arvores da Tabela estao cheias. Se sim, faz rehashing
             if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-                if (PI)
-                    cout<<"O fator de carga ultrapassou o limiar definido como "<<LIMIAR_PARA_REHASHING<<". Vai fazer rehashing.\n";
+                printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Vai fazer rehashing.");
 
                 RH_FLAG = true;
                 rehashing(PI);
                 fezRehashing = true;
                 RH_FLAG = false;
             }
-            if (PI)
-                system("pause > 0");
 
         }
 
         /*************************************************** BUSCAR *************************************************************/
 
+        public:
         int buscar(int k, bool PI){
 
             int H1 = k % TH;
@@ -247,7 +245,7 @@ class Chash: public TabelaHash{
                     return -2;
             }
 
-            //Se nao tiver sido, retorna a posicao final
+            //Se nao tiver sido, retorna o indice final
             return Hfinal;
         }
         /*************************************************** REHASHING *************************************************************/
@@ -286,11 +284,11 @@ class Chash: public TabelaHash{
 
         /************************************************* REMOVER *****************************************************************/
 
-        void remover(int valor){
+        void remover(int chave){
             int posParaRemover;
 
-            //Pegamos a posicao onde o valor esta
-            posParaRemover = buscar(valor, false);
+            //Pegamos o indice onde a chave esta
+            posParaRemover = buscar(chave, false);
 
             //Depois que encontramos a posParaRemover, "deletamos" o no (nao podemos simplesmente setar ele como NULL, pois
             //iria impossibilitar que nos que foram inseridos em posicoes a frente dele escolhidos por tratamento de colisao
@@ -299,10 +297,9 @@ class Chash: public TabelaHash{
                 tabela[posParaRemover]->deleted = true;
                 numPosOcupadas--;
 
-                cout<<"O valor foi removido da posicao "<<posParaRemover<<"\n";
-                system("pause>0");
+                printPause(true,"A chave foi removida do indice ",posParaRemover);
             }else
-                printPause("O valor nao foi encontrado na tabela.",true);
+                printPause(true,"A chave nao foi encontrada na tabela.");
 
         }
 
@@ -338,7 +335,7 @@ class Chash: public TabelaHash{
 
         void desenha_hash(){
 
-            printPause("Esta funcionalidade sera implementada em breve!", true);
+            printPause(true,"Esta funcionalidade sera implementada em breve!");
 
         }
 

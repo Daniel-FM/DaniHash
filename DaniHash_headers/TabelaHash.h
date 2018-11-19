@@ -32,9 +32,9 @@ namespace dh{
         int TH, tipo, colisoesDaIntercaoAtual;
         bool fezRehashing;
 
-        virtual void inserir(int valor, bool PI)=0;
-        virtual void remover(int valor)=0;
-        virtual int buscar(int valor, bool PI)=0;
+        virtual void inserir(int chave, bool PI)=0;
+        virtual void remover(int chave)=0;
+        virtual int buscar(int chave, bool PI)=0;
         virtual void imprimir()=0;
         virtual void desenha_hash()=0;
         virtual float getFC()=0;
@@ -82,7 +82,7 @@ namespace dh{
         }
 
         Results benchmarkINSERCAO(int quantidadeDeInsercoes, int opcao_insbmk, string fileName_insercao){
-            int valorParaInserir;
+            int chaveParaInserir;
             double tempo = 0;
             ofstream fileINS;
             Results resultado;
@@ -93,15 +93,15 @@ namespace dh{
 
             for (int i = 0; i < quantidadeDeInsercoes; i++){
                 //Geramos a variavel aleatoria a ser inserida
-                valorParaInserir = getRand(opcao_insbmk);
+                chaveParaInserir = getRand(opcao_insbmk);
 
-                if (valorParaInserir < 0) valorParaInserir = 0;
+                if (chaveParaInserir < 0) chaveParaInserir = 0;
 
                 if (benchmarkComArquivoDeInsercao(opcao_insbmk))
-                    fileINS<<"INS "<<valorParaInserir<<endl;
+                    fileINS<<"INS "<<chaveParaInserir<<endl;
 
                 cronometro cron;
-                inserir(valorParaInserir, false);   //Depois fazemos a insercao, medindo o tempo
+                inserir(chaveParaInserir, false);   //Depois fazemos a insercao, medindo o tempo
                 tempo += cron.tempoDecorrido();
 
                 resultado.colisoes += getColisoesDaInsercaoAtual();

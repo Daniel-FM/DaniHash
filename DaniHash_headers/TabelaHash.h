@@ -227,10 +227,13 @@ namespace dh{
         return atr;
 
     }
+};
 
-    #include "OpenHashing.h"
-    #include "ClosedHashing.h"
-    #include "HalfOpenHashing.h"
+#include "OpenHashing.h"
+#include "ClosedHashing.h"
+#include "HalfOpenHashing.h"
+
+namespace dh{
 
     TabelaHash* instanciaHash(Atributos attr){
 
@@ -243,5 +246,6 @@ namespace dh{
 
     }
 };
+
 //
 #endif // TABELAHASH_H_INCLUDED

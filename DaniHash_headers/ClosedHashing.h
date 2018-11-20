@@ -103,6 +103,8 @@ class Chash: public TabelaHash{
             }
 
             int H1 = k % TamTabela;
+            printNoPauseNoNewline(PI,k," % ",TamTabela," = ",H1);
+
             int Hfinal = H1;
 
             if (DeletedOrNull(Tabela[Hfinal])){
@@ -111,7 +113,6 @@ class Chash: public TabelaHash{
                 if (Tabela[Hfinal] != NULL)
                     delete Tabela[Hfinal];
 
-                printNoPause(PI,k," % ",TamTabela," = ",H1);
                 Tabela[Hfinal] = new no_ch(k);
             }
             else{
@@ -120,16 +121,19 @@ class Chash: public TabelaHash{
                 //TENTATIVA LINEAR
                 if (tipo == 3){
                     while (!DeletedOrNull(Tabela[Hfinal])){
+                        printNoPause(PI," (Colisao)");
+
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"\nA chave ",k," ja existe na tabela.");
+                            printPause(PI,"A chave ",k," ja existe na tabela (indice ",Hfinal,").\n");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.");
+                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
                             return;
                         }
                         Hfinal = (H1 + i) % TamTabela;
+                        printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TamTabela," = ",Hfinal);
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -141,17 +145,19 @@ class Chash: public TabelaHash{
                 else if (tipo == 4){
 
                     while (!DeletedOrNull(Tabela[Hfinal])){
+                        printNoPause(PI," (Colisao)");
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"\nA chave ",k," ja existe na tabela.");
+                            printPause(PI,"A chave ",k," ja existe na tabela (indice ",Hfinal,").\n");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.");
+                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
                             return;
                         }
                         Hfinal = (int)(H1 + pow(i,2)) % TamTabela;
+                        printNoPauseNoNewline(PI,"(",H1," + ",i,"^2) % ",TamTabela," = ",Hfinal);
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -163,19 +169,23 @@ class Chash: public TabelaHash{
                 //DUPLO HASHING
                 else{
 
-                    int H2 = r - (k % r);;
+                    int H2 = r - (k % r);
+                    printNoPauseNoNewline(PI,"\n[H2 = ",r," - (",k," % ",r,") = ",H2,"] ");
 
                     while (!DeletedOrNull(Tabela[Hfinal])){
+                        printNoPause(PI,"(Colisao)");
+
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"\nA chave ",k," ja existe na tabela.");
+                            printPause(PI,"A chave ",k," ja existe na tabela.\n");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.");
+                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
                             return;
                         }
                         Hfinal = (H1 + (i*H2)) % TamTabela;
+                        printNoPauseNoNewline(PI,"(",H1," + ",i,"*",H2,") % ",TamTabela," = ",Hfinal," ");
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -198,11 +208,11 @@ class Chash: public TabelaHash{
             numPosOcupadas++;
 
             //Ai, depois que inseriu, imprime
-            printPause(PI,"\nA chave ",k," foi inserida no indice ",Hfinal);
+            printPause(PI,"\nA chave ",k," foi inserida no indice ",Hfinal,"\n");
 
             //Checa se mais da metade das arvores da Tabela estao cheias. Se sim, faz rehashing
             if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-                printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Vai fazer rehashing.");
+                printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Vai fazer rehashing.\n");
 
                 RH_FLAG = true;
                 rehashing(PI);
@@ -279,6 +289,7 @@ class Chash: public TabelaHash{
             for (int i=0;i<TH_antigo;i++)
                 delete tabela_dummy[i];         //Deleta a tabela auxilia
 
+            printPause(PI,"Rehashing concluido.\n");
         }
 
 

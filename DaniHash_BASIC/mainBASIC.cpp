@@ -72,7 +72,7 @@ int main(){
 
                     try{
                         h->inserirDeArquivo(nomeDoArquivo, true);
-                        geral::printPause("\nInsercoes feitas!",true);
+                        geral::printPause(true, "\nInsercoes feitas!");
                     }catch(arquivo_defeituoso &e){
                         cerr<<e.what();
                         system("pause>0");
@@ -92,15 +92,14 @@ int main(){
 
                     posicao = h->buscar(num,true);
                     if (posicao == -1)
-                        geral::printPause("A chave nao existe na tabela.",true);
+                        geral::printPause(true,"A chave nao existe na tabela.");
                     else if (posicao == -2)
-                        geral::printPause("Numero maximo de tentativas atingido. A chave nao foi encontrada.",true);
+                        geral::printPause(true,"Numero maximo de tentativas atingido. A chave nao foi encontrada.");
                     else if (posicao == -3)
-                        geral::printPause("NENHUMA TABELA FOI INSTANCIADA.",true);
-                    else{
-                        cout<<"A chave foi encontrada na posicao "<<posicao;
-                        system("pause>0");
-                    }
+                        geral::printPause(true,"NENHUMA TABELA FOI INSTANCIADA.");
+                    else
+                        geral::printPause(true,"A chave foi encontrada na posicao ",posicao);
+
 
                     break;
 
@@ -115,7 +114,7 @@ int main(){
                         h->inserir(i,false);
                         arquivos::salvarArqInsTemp(i);
                     }
-                    cout<<"\nValores inseridos!";
+                    geral::printPause("\nValores inseridos!");
                     system("pause>0");
                     break;
 
@@ -126,8 +125,7 @@ int main(){
                         h->inserir(valor,false);
                         arquivos::salvarArqInsTemp(valor);
                     }
-                    cout<<"\nValores inseridos!";
-                    system("pause>0");
+                    geral::printPause("\nValores inseridos!");
                     break;
 
                 case 8:
@@ -156,8 +154,7 @@ int main(){
 
                 default:
 
-                    cout<<"\n\nOpcao invalida!";
-                    system("pause>0");
+                    geral::printPause("\n\nOpcao invalida!");
 
             }
 

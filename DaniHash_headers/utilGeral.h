@@ -59,19 +59,26 @@ namespace geral{
     template <typename T>
     void printPause(T t){
         system("pause>0");
+        cout<<"\n";
     }
 
     template <typename T>
-    void printNoPause(T t){}
+    void printNoPause(T t){
+        cout<<"\n";
+    }
 
-    //Funcao recursiva, que aceita uma quantidade indefinida de
+    template <typename T>
+    void printNoPauseNoNewline(T t){
+    }
+
+    //Funcoes recursivas, que aceitam uma quantidade indefinida de
     //tipos genericos (tendo pelo menos 1 bool no inicio).
-    //Aquelas duas de cima sao chamadas quando so resta um argumento no conjunto, que
-    //eh a variavel booleana (ou seja, pode parar de imprimir)
+    //Aquelas de cima sao chamadas quando so resta um argumento no conjunto, que
+    //eh a variavel booleana (ou seja, ja imprimiu todas as variaveis que queremos)
     template<typename T, typename... Args>
     void printPause(bool pode, T t, Args... args){
         if (pode){
-            cout<<t<<endl ;
+            cout<<t ;
             printPause(pode, args...) ;
         }
     }
@@ -79,8 +86,16 @@ namespace geral{
     template<typename T, typename... Args>
     void printNoPause(bool pode, T t, Args... args){
         if (pode){
-            cout <<t<<endl ;
+            cout<<t ;
             printNoPause(pode, args...) ;
+        }
+    }
+
+    template<typename T, typename... Args>
+    void printNoPauseNoNewline(bool pode, T t, Args... args){
+        if (pode){
+            cout<<t ;
+            printNoPauseNoNewline(pode, args...) ;
         }
     }
 

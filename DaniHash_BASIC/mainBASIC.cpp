@@ -72,7 +72,7 @@ int main(){
 
                     try{
                         h->inserirDeArquivo(nomeDoArquivo, true);
-                        geral::printPause(true, "\nInsercoes feitas!");
+                        geral::printPause(true, "Insercoes concluidas!");
                     }catch(arquivo_defeituoso &e){
                         cerr<<e.what();
                         system("pause>0");
@@ -114,7 +114,7 @@ int main(){
                         h->inserir(i,false);
                         arquivos::salvarArqInsTemp(i);
                     }
-                    geral::printPause("\nValores inseridos!");
+                    geral::printPause(true,"\nValores inseridos!");
                     system("pause>0");
                     break;
 
@@ -125,7 +125,7 @@ int main(){
                         h->inserir(valor,false);
                         arquivos::salvarArqInsTemp(valor);
                     }
-                    geral::printPause("\nValores inseridos!");
+                    geral::printPause(true,"\nValores inseridos!");
                     break;
 
                 case 8:

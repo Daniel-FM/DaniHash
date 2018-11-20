@@ -71,7 +71,7 @@ namespace geral{
     void printNoPauseNoNewline(T t){
     }
 
-    //Funcoes recursivas, que aceitam uma quantidade indefinida de
+    //Funcoes recursivas para impressao, que aceitam uma quantidade indefinida de
     //tipos genericos (tendo pelo menos 1 bool no inicio).
     //Aquelas de cima sao chamadas quando so resta um argumento no conjunto, que
     //eh a variavel booleana (ou seja, ja imprimiu todas as variaveis que queremos)

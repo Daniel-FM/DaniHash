@@ -40,14 +40,14 @@ class Ohash: public TabelaHash{
     void inserir(int chave, bool PI){
 
         int h = chave % TH;
-
+        printNoPause(PI,chave," % ",TH," = ",h);
         //Checa se uma posicao anteriormente desocupada vai ficar ocupada agora
         if (tabela[h]->isNull())
             numPosOcupadas++;
 
         tabela[h]->inserir(chave);
 
-        printPause(PI,"\nA chave ",chave," foi inserida no indice ",h);
+        printPause(PI,"A chave ",chave," foi inserida no indice ",h,".\n");
 
     }
 
@@ -56,15 +56,16 @@ class Ohash: public TabelaHash{
     void remover(int chave){
 
         int h = chave % TH;
+        printNoPause(true,chave," % ",TH," = ",h);
 
         if (tabela[h]->remover(chave) == true){
             //Checa se uma posicao anteriormente ocupada vai ficar desocupada agora
             if (tabela[h]->isNull())
                 numPosOcupadas--;
 
-            printPause(true,"A chave foi deletada com sucesso da chave ",h);
+            printPause(true,"A chave foi deletada com sucesso do indice ",h,".");
         }else
-            printPause(true,"A chave nao foi encontrada");
+            printPause(true,"A chave nao foi encontrada.");
 
     }
 

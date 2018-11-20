@@ -72,6 +72,7 @@ class HOhash: public TabelaHash{
         inserir(chave, tabela, PI);
     }
 
+    private:
     void inserir(int chave, arv_avl* *tab, bool PI){
         if (tipo == 6)
             inserir_CTQ(chave, tab, PI);
@@ -79,8 +80,8 @@ class HOhash: public TabelaHash{
             inserir_STQ(chave, tab, PI);
     }
 
-    /************************************************* INSERIR (COM TENTATIVA QUADRATICA) *****************************************************************/
 
+    /************************************************* INSERIR (COM TENTATIVA QUADRATICA) *****************************************************************/
     void inserir_CTQ(int k, arv_avl* *tabela, bool PI){
 
         if (RH_FLAG == false){
@@ -171,7 +172,7 @@ class HOhash: public TabelaHash{
     }
 
     /************************************************* DELETAR *****************************************************************/
-
+    public:
     void remover(int k){
 
         int H1 = k % TH;
@@ -191,7 +192,7 @@ class HOhash: public TabelaHash{
     }
 
     /************************************************* REHASHING *****************************************************************/
-
+    private:
     void rehashing(bool PI){
 
         int TH_novo = pegaProxPrimMaior(TH*2);
@@ -237,7 +238,7 @@ class HOhash: public TabelaHash{
 
 
     /************************************************* IMPRIMIR *****************************************************************/
-
+    public:
     void imprimir(){
 
         for(int i = 0; i < TH; i++){
@@ -319,7 +320,7 @@ class HOhash: public TabelaHash{
 
 
     /**************************** OUTRAS ********************************/
-
+    private:
     int getColisoesDaInsercaoAtual(){
         return colisoesDaInsercaoAtual;
     }
@@ -330,7 +331,7 @@ class HOhash: public TabelaHash{
 
 
     /************************************************* DESENHO *****************************************************************/
-
+    public:
     void desenha_hash(){
 
         unsigned int w = TH * 175;

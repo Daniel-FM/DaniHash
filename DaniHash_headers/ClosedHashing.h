@@ -103,7 +103,7 @@ class Chash: public TabelaHash{
             }
 
             int H1 = k % TamTabela;
-            printNoPauseNoNewline(PI,k," % ",TamTabela," = ",H1);
+            printNoPauseNoNewline(PI,k," % ",TamTabela," = ",H1,"\t\t");
 
             int Hfinal = H1;
 
@@ -170,22 +170,24 @@ class Chash: public TabelaHash{
                 else{
 
                     int H2 = r - (k % r);
-                    printNoPauseNoNewline(PI,"\n[H2 = ",r," - (",k," % ",r,") = ",H2,"] ");
+                    bool printOnce = PI;
 
                     while (!DeletedOrNull(Tabela[Hfinal])){
-                        printNoPause(PI,"(Colisao)");
+                        printNoPauseNoNewline(PI,"(Colisao)");
+                        printNoPauseNoNewline(printOnce," \t\t[H2 = ",r," - (",k," % ",r,") = ",H2,"]");
+                        printOnce = false;
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"A chave ",k," ja existe na tabela.\n");
+                            printPause(PI,"\nA chave ",k," ja existe na tabela.\n");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
+                            printPause(PI,"\nA chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
                             return;
                         }
                         Hfinal = (H1 + (i*H2)) % TamTabela;
-                        printNoPauseNoNewline(PI,"(",H1," + ",i,"*",H2,") % ",TamTabela," = ",Hfinal," ");
+                        printNoPauseNoNewline(PI,"\n(",H1," + ",i,"*",H2,") % ",TamTabela," = ",Hfinal,"\t");
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -212,7 +214,7 @@ class Chash: public TabelaHash{
 
             //Checa se mais da metade das arvores da Tabela estao cheias. Se sim, faz rehashing
             if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-                printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Vai fazer rehashing.\n");
+                printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Sera feito rehashing.\n");
 
                 RH_FLAG = true;
                 rehashing(PI);

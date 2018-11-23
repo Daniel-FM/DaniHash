@@ -10,22 +10,6 @@
 #define HALF_OPEN_HASHING_H_INCLUDED
 
 namespace dh{
-bool pode_inserir(arv_avl* a, int valor, int alt_max){
-
-    arv_avl* dummy = a;
-
-    dummy->inserir(valor);
-
-    if (dummy->getAltura() < alt_max){
-        delete dummy;
-        return true;
-    }
-    else{
-        delete dummy;
-        return false;
-    }
-
-}
 
 class HOhash: public TabelaHash{
 
@@ -63,68 +47,87 @@ class HOhash: public TabelaHash{
         return (arv->getAltura() >= altMax);
     }
 
+    //Uma arvora nao-cheia eh chamada de "vaga"
+    bool VagaOrNull(arv_avl* arv){
+
+        bool result = true;
+
+        if (arv != NULL){
+            if (arvoreCheia(arv))
+                result = false;
+        }
+
+        return result;
+    }
 
     /************************************************* INSERIR (FUNCAO BASE) *****************************************************************/
     //Foi necessario criar essa funcao de inserir "falsa" que chama a funcao de inserir real, pois a falsa eh
     //a funcao abstrata da classe TabelaHash que eh chamada no programa, e que precisa ter os mesmos argumentos
     //em todas as classes que a impelentam: no caso, (int chave, bool PI)
     void inserir(int chave, bool PI){
-        inserir(chave, tabela, PI);
+        inserir(chave, this->tabela, PI);
     }
 
     private:
-    void inserir(int chave, arv_avl* *tab, bool PI){
+    void inserir(int chave, arv_avl* *tabela_, bool PI){
         if (tipo == 6)
-            inserir_CTQ(chave, tab, PI);
+            inserir_CTQ(chave, tabela_, PI);
         else
-            inserir_STQ(chave, tab, PI);
+            inserir_STQ(chave, tabela_, PI);
     }
 
 
     /************************************************* INSERIR (COM TENTATIVA QUADRATICA) *****************************************************************/
-    void inserir_CTQ(int k, arv_avl* *tabela, bool PI){
+    void inserir_CTQ(int k, arv_avl* *tabela_, bool PI){
 
         if (RH_FLAG == false){
             colisoesDaInsercaoAtual = 0;
             fezRehashing = false;
         }
         int H1 = k % TH;
+        printNoPauseNoNewline(PI,k," % ",TH," = ",H1,"\t\t");
+
         int Hfinal = H1;
 
-        if (tabela[Hfinal]->isNull() || !arvoreCheia(tabela[Hfinal])){
-            tabela[Hfinal]->inserir(k);
+        if (VagaOrNull(tabela_[Hfinal])){
+            tabela_[Hfinal]->inserir(k);
         }else{
             //Se a arvore do hash inicial estiver na altura maxima (uma arvore "cheia"), faz tentativa
             //quadratica ate encontrar uma arvore que nao esteja cheia
-            printPause(PI,"\nA arvore na posicao ",Hfinal," estava na altura maxima, por isso vou fazer tentativa quadratica.");
 
             int i = 1;
-            while ((tabela[Hfinal]->getRaiz() != NULL) && arvoreCheia(tabela[Hfinal])){
+            while (!VagaOrNull(tabela_[Hfinal])){
 
                 if (i == TH){
                     printPause(PI,"A chave nao pode ser inserida. Numero maximo de tentativas atingido.");
                     return;
                 }
+                printNoPause(PI," (Colisao)");
+
                 Hfinal = (int)(k + pow(i,2)) % TH;
+                printNoPauseNoNewline(PI,"(",H1," + ",i,"^2) % ",TH," = ",Hfinal,"\t");
 
                 colisoesDaInsercaoAtual++;
                 i++;
 
             }
-            tabela[Hfinal]->inserir(k);
+            tabela_[Hfinal]->inserir(k);
         }
 
-        printPause(PI,"\nA chave ",k," foi inserida na posicao ",Hfinal);
+        printNoPauseNoNewline(PI,"\nA chave ",k," foi inserida na posicao ",Hfinal,".");
 
         //Se a altura de uma arvore chegar ao valor maximo definido
-        if (arvoreCheia(tabela[Hfinal])){
+        if (arvoreCheia(tabela_[Hfinal])){
             numArvoresCheias++;               //Incrementa o numero de arvores cheias
-            printPause(PI,"Arvore atingiu altura maxima.\n");
+            printNoPauseNoNewline(PI," A arvore agora esta cheia.");
         }
+
+        printPause(PI,"\n");
 
         //Checa se mais da metade das arvores da tabela estao cheias. Se sim, faz rehashing
         if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-            printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Vai fazer rehashing.\n");
+            printPause(PI,"O fator de carga ultrapassou o limiar definido como ",
+                       LIMIAR_PARA_REHASHING,". Vai fazer rehashing.\n");
 
             RH_FLAG = true;
             rehashing(PI);
@@ -138,19 +141,19 @@ class HOhash: public TabelaHash{
 
     /************************************************* INSERIR (SEM TENTATIVA QUADRATICA)  *****************************************************************/
 
-    void inserir_STQ(int k, arv_avl* *tabela, bool PI){
+    void inserir_STQ(int k, arv_avl* *tabela_, bool PI){
 
         if (RH_FLAG == false){
             fezRehashing = false;
         }
         int H1 = k % TH;
-        bool eraCheia = (tabela[H1]->getAltura() >= altMax);
+        bool eraCheia = (tabela_[H1]->getAltura() >= altMax);
 
-        tabela[H1]->inserir(k);
+        tabela_[H1]->inserir(k);
         printPause(PI,"\nA chave ",k," foi inserida na posicao ",H1);
 
         //Se a altura de uma arvore chegar ao valor maximo definido
-        if (arvoreCheia(tabela[H1])){
+        if (arvoreCheia(tabela_[H1])){
             if (!eraCheia){                     //Se ela tiver sido enchida agora
                 numArvoresCheias++;               //Incrementa o numero de arvores cheias
                 geral::printPause(PI,"Esta arvore agora esta cheia.");
@@ -187,7 +190,7 @@ class HOhash: public TabelaHash{
             }
         }
 
-        system("pause>0");
+        printPause(true,"A chave ",k," foi removida da arvore no indice ",H1,".");
 
     }
 
@@ -204,18 +207,18 @@ class HOhash: public TabelaHash{
 
         }
 
-        arv_avl* *tabela_dummy = tabela;       //Cria uma tabela auxiliar, que recebe os elementos da antiga
+        arv_avl* *tabela_dummy = this->tabela;       //Cria uma tabela auxiliar, que recebe os elementos da antiga
         int TH_antigo = TH;
 
         TH = TH_novo;               //Atualiza o tamanho da hashing
         for (int i = 0; i < TH_antigo; i++){        //Vai percorrendo a tabela auxiliar, inserindo os elementos dela na nova tabela
 
             if (tabela_dummy[i] != NULL){
-                insereNoAVL(tabela_dummy[i]->getRaiz(), tabela_nova, PI);
+                insereAvlNaHash(tabela_dummy[i]->getRaiz(), tabela_nova, PI);
             }
 
         }
-        tabela = tabela_nova;          //A tabela antiga agora eh a tabela nova
+        this->tabela = tabela_nova;          //A tabela antiga agora eh a tabela nova
 
         for (int i=0;i<TH_antigo;i++)
             delete tabela_dummy[i];         //Deleta a tabela auxiliar
@@ -224,14 +227,14 @@ class HOhash: public TabelaHash{
 
     /************************** FUNCAO PARA IR PERCORRENDO A ARVORE TODA, INSERINDO OS NOS DELA NA HASH *************************/
 
-    void insereNoAVL(no_avl* noQueVaiSerInserido, arv_avl* *tabela_que_vai_receber, bool PI){
+    void insereAvlNaHash(no_avl* noAtualParaInserir, arv_avl* *tabelaQueVaiReceber, bool PI){
 
-        if(noQueVaiSerInserido != NULL){
+        if(noAtualParaInserir != NULL){
 
-            inserir(noQueVaiSerInserido->info, tabela_que_vai_receber, PI);
+            inserir(noAtualParaInserir->info, tabelaQueVaiReceber, PI);
 
-            insereNoAVL(noQueVaiSerInserido->esq, tabela_que_vai_receber, PI);
-            insereNoAVL(noQueVaiSerInserido->dir, tabela_que_vai_receber, PI);
+            insereAvlNaHash(noAtualParaInserir->esq, tabelaQueVaiReceber, PI);
+            insereAvlNaHash(noAtualParaInserir->dir, tabelaQueVaiReceber, PI);
         }
 
     }
@@ -244,9 +247,7 @@ class HOhash: public TabelaHash{
         for(int i = 0; i < TH; i++){
 
             cout<< "["<<i<<"]:\t";
-
             tabela[i]->imprimir();
-
             cout<<"\n";
 
         }
@@ -328,7 +329,6 @@ class HOhash: public TabelaHash{
     bool getFezRehashing(){
         return fezRehashing;
     }
-
 
     /************************************************* DESENHO *****************************************************************/
     public:

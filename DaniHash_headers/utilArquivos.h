@@ -15,25 +15,6 @@ namespace dh
 
 namespace arquivos{
 
-    string setNomeDoArquivo(){
-
-        string nome = "";
-
-        fflush(stdin);
-        cout<<"\nEntre o nome do arquivo que deseja usar, sem \".ins\" (ou aperte apenas ENTER para cancelar):\n";
-
-        if (cin.peek() == '\n') {     //se o proximo caractere eh um newline
-            nome = "sair";
-            return nome;
-        } else{
-            cin>>nome;
-            nome += ".ins";
-        }
-
-        return nome;
-
-    }
-
     void salvarArqInsTemp(int valor){
 
         ofstream fileWRITE;

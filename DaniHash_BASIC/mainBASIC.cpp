@@ -55,7 +55,7 @@ int main(){
                 case 1:
                     int valor;
 
-                    valor = menu::pegaResposta("\n\nQual numero?\n");
+                    valor = menu::pegaRespostaInt("\n\nQual numero?\n");
 
                     h->inserir(valor,true);
                     arquivos::salvarArqInsTemp(valor);
@@ -67,12 +67,20 @@ int main(){
                     system(str.c_str());
 
                     if (!arquivos::imprimeArquivosINS()) break;
-                    nomeDoArquivo = arquivos::setNomeDoArquivo();
-                    if (nomeDoArquivo == "sair") break;
+
+                    nomeDoArquivo = menu::pegaRespostaStr(
+                        "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
+                    if (nomeDoArquivo == "")
+                        break;
+                    else
+                        nomeDoArquivo += ".ins";
 
                     try{
-                        h->inserirDeArquivo(nomeDoArquivo, true);
-                        geral::printPause(true, "Insercoes concluidas!");
+                        Results r = h->inserirDeArquivo(nomeDoArquivo, true);
+                        geral::printNoPauseNoNewline(true, "Insercoes concluidas!");
+                        geral::printNoPause(true, " (",r.colisoes," colisoes, ",
+                                          r.rehashings," rehashings)");
+                        menu::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
                     }catch(arquivo_defeituoso &e){
                         cerr<<e.what();
                         system("pause>0");
@@ -81,14 +89,14 @@ int main(){
                     break;
 
                 case 3:
-                    num = menu::pegaResposta("\n\nQue numero?\n");
+                    num = menu::pegaRespostaInt("\n\nQue numero?\n");
 
                     h->remover(num);
 
                     break;
 
                 case 4:
-                    num = menu::pegaResposta("\n\nQue numero?\n");
+                    num = menu::pegaRespostaInt("\n\nQue numero?\n");
 
                     posicao = h->buscar(num,true);
                     if (posicao == -1)
@@ -109,7 +117,7 @@ int main(){
                     break;
 
                 case 6:
-                    num = menu::pegaResposta("Quantos?\n");
+                    num = menu::pegaRespostaInt("Quantos?\n");
                     for (i = 0; i < num; i++){
                         h->inserir(i,false);
                         arquivos::salvarArqInsTemp(i);
@@ -119,7 +127,7 @@ int main(){
                     break;
 
                 case 7:
-                    num = menu::pegaResposta("Quantos?\n");
+                    num = menu::pegaRespostaInt("Quantos?\n");
                     for (i = 0; i < num; i++){
                         valor = rand()%999;
                         h->inserir(valor,false);
@@ -134,11 +142,10 @@ int main(){
 
                 case 9:
                     delete h;
-                    fflush(stdin);
-                    cout<<"\nEntre o nome para o arquivo de insercao criado, sem \".ins\" "<<
-                            "(ou aperte apenas ENTER para manter o nome padrao):"<<endl;
-                    if (cin.peek() != '\n') {                   //se o proximo caractere eh um newline
-                        cin>>nomeDoArquivo;
+                    nomeDoArquivo = menu::pegaRespostaStr( nada+
+                            "\nEntre o nome para o arquivo de insercao criado "+
+                            "(ou aperte apenas ENTER para manter o nome padrao): \n");
+                    if (nomeDoArquivo != "") {
                         str = "IF EXIST .\\"+FILEPATH_INS+nomeDoArquivo+".ins del "+FILEPATH_INS+nomeDoArquivo+".ins";
                         system(str.c_str());
 

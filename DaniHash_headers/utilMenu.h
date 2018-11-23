@@ -71,7 +71,7 @@ namespace menu{
 
     }
 
-    int pegaResposta(string pedido){
+    int pegaRespostaInt(string pedido){
         int resposta;
 
         while (true){
@@ -88,6 +88,20 @@ namespace menu{
             return resposta;
         }
 
+    }
+
+    string pegaRespostaStr(string pedido){
+        string resposta;
+
+        fflush(stdin);
+        cout<<pedido;
+        if (cin.peek() == '\n') {     //se o proximo caractere eh um newline
+            resposta = "";
+        } else{
+            cin>>resposta;
+        }
+
+        return resposta;
     }
 
 };

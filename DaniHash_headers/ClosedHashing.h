@@ -40,12 +40,8 @@ bool DeletedOrNull(no_ch* no){
 
     bool result = true;
 
-    if (no == NULL){
-        result = true;
-    }else{
-        if (no->deleted == true)
-            result = true;
-        else
+    if (no != NULL){
+        if (no->deleted == false)
             result = false;
     }
 
@@ -121,10 +117,9 @@ class Chash: public TabelaHash{
                 //TENTATIVA LINEAR
                 if (tipo == 3){
                     while (!DeletedOrNull(Tabela[Hfinal])){
-                        printNoPause(PI," (Colisao)");
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"A chave ",k," ja existe na tabela (indice ",Hfinal,").\n");
+                            printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
                             return;
                         }
 
@@ -132,8 +127,10 @@ class Chash: public TabelaHash{
                             printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
                             return;
                         }
+                        printNoPause(PI," (Colisao)");
+
                         Hfinal = (H1 + i) % TamTabela;
-                        printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TamTabela," = ",Hfinal);
+                        printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TamTabela," = ",Hfinal,"\t");
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -145,10 +142,9 @@ class Chash: public TabelaHash{
                 else if (tipo == 4){
 
                     while (!DeletedOrNull(Tabela[Hfinal])){
-                        printNoPause(PI," (Colisao)");
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"A chave ",k," ja existe na tabela (indice ",Hfinal,").\n");
+                            printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
                             return;
                         }
 
@@ -156,8 +152,10 @@ class Chash: public TabelaHash{
                             printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
                             return;
                         }
+                        printNoPause(PI," (Colisao)");
+
                         Hfinal = (int)(H1 + pow(i,2)) % TamTabela;
-                        printNoPauseNoNewline(PI,"(",H1," + ",i,"^2) % ",TamTabela," = ",Hfinal);
+                        printNoPauseNoNewline(PI,"(",H1," + ",i,"^2) % ",TamTabela," = ",Hfinal,"\t");
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -173,12 +171,9 @@ class Chash: public TabelaHash{
                     bool printOnce = PI;
 
                     while (!DeletedOrNull(Tabela[Hfinal])){
-                        printNoPauseNoNewline(PI,"(Colisao)");
-                        printNoPauseNoNewline(printOnce," \t\t[H2 = ",r," - (",k," % ",r,") = ",H2,"]");
-                        printOnce = false;
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"\nA chave ",k," ja existe na tabela.\n");
+                            printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
                             return;
                         }
 
@@ -186,6 +181,10 @@ class Chash: public TabelaHash{
                             printPause(PI,"\nA chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
                             return;
                         }
+                        printNoPauseNoNewline(PI,"(Colisao)");
+                        printNoPauseNoNewline(printOnce," \t\t[H2 = ",r," - (",k," % ",r,") = ",H2,"]");
+                        printOnce = false;
+
                         Hfinal = (H1 + (i*H2)) % TamTabela;
                         printNoPauseNoNewline(PI,"\n(",H1," + ",i,"*",H2,") % ",TamTabela," = ",Hfinal,"\t");
 

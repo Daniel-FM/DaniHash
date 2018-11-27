@@ -56,16 +56,16 @@ class Ohash: public TabelaHash{
     void remover(int chave){
 
         int h = chave % TH;
-        printNoPause(true,chave," % ",TH," = ",h);
+        printNoPause(chave," % ",TH," = ",h);
 
         if (tabela[h]->remover(chave) == true){
             //Checa se uma posicao anteriormente ocupada vai ficar desocupada agora
             if (tabela[h]->isNull())
                 numPosOcupadas--;
 
-            printPause(true,"A chave foi deletada com sucesso do indice ",h,".");
+            printPause("A chave foi deletada com sucesso do indice ",h,".");
         }else
-            printPause(true,"A chave nao foi encontrada.");
+            printPause("A chave nao foi encontrada.");
 
     }
 
@@ -153,8 +153,8 @@ class Ohash: public TabelaHash{
 
     private:
 
-    int defineDistInicial(int i){
-        int alt = tabela[i]->getAltura();
+    int defineDistInicial(int indiceAtual){
+        int alt = tabela[indiceAtual]->getAltura();
 
         if (alt <= 3)
             return 40;
@@ -163,8 +163,19 @@ class Ohash: public TabelaHash{
 
     }
 
+    /*int getDistParaProxIndice(int indiceAtual){
+        int dist = 60, i = 1;
+        if (indiceAtual < TH-1){
+            while (( tabela[indiceAtual]->getAltura() > i ) ||
+                   ( tabela[indiceAtual+1]->getAltura() > i )){
+                i++;
+            }
+        }
+        return dist*i;
+    }*/
+
     void desenha_hash(RenderWindow* janela, int posAtual){
-        int x_indice, x_no, distancia;
+        int x_indice, x_no, distanciaEntreNosAvl;//, distanciaParaProxIndice;
 
         if (tipo == 1){
             x_indice = 6 + posAtual;
@@ -175,7 +186,7 @@ class Ohash: public TabelaHash{
         }
 
         for(int i = 0; i < TH; i++){
-            if (tipo == 2) distancia = defineDistInicial(i);
+            if (tipo == 2) distanciaEntreNosAvl = defineDistInicial(i);
 
             /******* DESENHA O QUADRADO DO INDICE E O NUMERO DENTRO DELE ***********/
             desenhaLinha(x_indice + 27, 40, x_indice + 27, 100, janela);      //antes, desenha a linha que vai ligar o indice ao no abaixo dele
@@ -186,14 +197,16 @@ class Ohash: public TabelaHash{
             if (tipo == 1)
                 desenhaLista(dynamic_cast<lista*>(tabela[i]), janela, x_no, 100);
             else
-                desenhaAVL(dynamic_cast<arv_avl*>(tabela[i]), janela, x_no, 100, distancia);
+                desenhaAVL(dynamic_cast<arv_avl*>(tabela[i]), janela, x_no, 100, distanciaEntreNosAvl);
             //Eh necessario fazer um dynamic casting para converter um objeto de classe derivada em um de classe base
 
             if (tipo == 1){
                 x_indice += 60;
                 x_no += 60;
             }else{
-
+                //distanciaParaProxIndice = getDistParaProxIndice(i);
+                //x_indice += distanciaParaProxIndice;
+                //x_no += distanciaParaProxIndice;
                 if (i < TH-1){
 
                     //Esses ifs verificam a altura da arvore do indice atual e do indice posterior, para ver qual deve ser a distancia entre eles,
@@ -206,10 +219,15 @@ class Ohash: public TabelaHash{
                         x_indice += 120;
                         x_no += 120;
                     }
-                    else{
+                    else if (( tabela[i]->getAltura() <= 3 ) && ( tabela[i+1]->getAltura() <= 3 )){
                         x_indice += 180;
                         x_no += 180;
                     }
+                    else if (( tabela[i]->getAltura() <= 4 ) && ( tabela[i+1]->getAltura() <= 4 )){
+                        x_indice += 240;
+                        x_no += 240;
+                    }
+
                 }
             }
 

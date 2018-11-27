@@ -190,7 +190,7 @@ class HOhash: public TabelaHash{
             }
         }
 
-        printPause(true,"A chave ",k," foi removida da arvore no indice ",H1,".");
+        printPause("A chave ",k," foi removida da arvore no indice ",H1,".");
 
     }
 

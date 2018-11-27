@@ -56,19 +56,20 @@ namespace geral{
 
     /************* FUNCOES DE IMPRESSAO CONDICIONAL COM E SEM PAUSA *************/
 
-    template <typename T>
-    void printPause(T t){
-        system("pause>0");
-        cout<<"\n";
+    void printPause(bool b){
+        if (b){
+            system("pause>0");
+            cout<<"\n";
+        }
     }
 
-    template <typename T>
-    void printNoPause(T t){
-        cout<<"\n";
+    void printNoPause(bool b){
+        if (b){
+            cout<<"\n";
+        }
     }
 
-    template <typename T>
-    void printNoPauseNoNewline(T t){
+    void printNoPauseNoNewline(bool b){
     }
 
     //Funcoes recursivas para impressao, que aceitam uma quantidade indefinida de
@@ -99,6 +100,21 @@ namespace geral{
         }
     }
 
+    //Essas de baixo sao apenas uma opcao resumida das do meio, sem o bool antes
+    template<typename T, typename... Args>
+    void printPause(T t, Args... args){
+        printPause(true, t, args...);
+    }
+
+    template<typename T, typename... Args>
+    void printNoPause(T t, Args... args){
+        printNoPause(true, t, args...);
+    }
+
+    template<typename T, typename... Args>
+    void printNoPauseNoNewline(T t, Args... args){
+        printNoPauseNoNewline(true, t, args...);
+    }
 
 
     void printNewPerc(int dividendo, int divisor){

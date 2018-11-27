@@ -61,8 +61,12 @@ int main(){
 
                     if (!arquivos::imprimeArquivosINS()) break;
 
-                    nomeDoArquivo = arquivos::setNomeDoArquivo();
-                    if (nomeDoArquivo == "sair") break;
+                    nomeDoArquivo = menu::pegaRespostaStr(
+                        "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
+                    if (nomeDoArquivo == "")
+                        break;
+                    else
+                        nomeDoArquivo += ".ins";
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
                     respfinal = menu::pegaRespostaMinMax("",1,2);
@@ -113,7 +117,6 @@ int main(){
 
                     if (respfinal == 1){
                         respfinal = 10;
-                        arquivos::inicializaDiretorioINS(FILENAME_DUMMY);
                     }
 
                     arquivos::inicializaDiretorioINS(nomeDoArquivo);

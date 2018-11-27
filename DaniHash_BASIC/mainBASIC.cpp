@@ -19,7 +19,7 @@ int main(){
     srand ( time(NULL) );
 
     Atributos atributos;
-    bool loopPrograma = true, loopMenu;
+    bool loopPrograma = true, loopMenu, podeImp;
     int respfinal, opcao, num, i, posicao;
     string linha, substringINS, str, nomeDoArquivo;
     ifstream fileREAD;
@@ -75,10 +75,20 @@ int main(){
                     else
                         nomeDoArquivo += ".ins";
 
+                    geral::printNoPause("\nImprimir passo a passo? (1-Sim, 2-Nao)");
+                    opcao = menu::pegaRespostaMinMax("",1,2);
+
+                    if (opcao == 1)
+                        podeImp = true;
+                    else
+                        podeImp = false;
+
+                    geral::printNoPause(true);
+
                     try{
-                        Results r = h->inserirDeArquivo(nomeDoArquivo, true);
-                        geral::printNoPauseNoNewline(true, "Insercoes concluidas!");
-                        geral::printNoPause(true, " (",r.colisoes," colisoes, ",
+                        Results r = h->inserirDeArquivo(nomeDoArquivo, podeImp);
+                        geral::printNoPauseNoNewline("Insercoes concluidas!");
+                        geral::printNoPause(" (",r.colisoes," colisoes, ",
                                           r.rehashings," rehashings)");
                         menu::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
                     }catch(arquivo_defeituoso &e){
@@ -100,13 +110,13 @@ int main(){
 
                     posicao = h->buscar(num,true);
                     if (posicao == -1)
-                        geral::printPause(true,"A chave nao existe na tabela.");
+                        geral::printPause("A chave nao existe na tabela.");
                     else if (posicao == -2)
-                        geral::printPause(true,"Numero maximo de tentativas atingido. A chave nao foi encontrada.");
+                        geral::printPause("Numero maximo de tentativas atingido. A chave nao foi encontrada.");
                     else if (posicao == -3)
-                        geral::printPause(true,"NENHUMA TABELA FOI INSTANCIADA.");
+                        geral::printPause("NENHUMA TABELA FOI INSTANCIADA.");
                     else
-                        geral::printPause(true,"A chave foi encontrada na posicao ",posicao);
+                        geral::printPause("A chave foi encontrada na posicao ",posicao);
 
 
                     break;
@@ -122,7 +132,7 @@ int main(){
                         h->inserir(i,false);
                         arquivos::salvarArqInsTemp(i);
                     }
-                    geral::printPause(true,"\nValores inseridos!");
+                    geral::printPause("\nValores inseridos!");
                     system("pause>0");
                     break;
 
@@ -133,7 +143,7 @@ int main(){
                         h->inserir(valor,false);
                         arquivos::salvarArqInsTemp(valor);
                     }
-                    geral::printPause(true,"\nValores inseridos!");
+                    geral::printPause("\nValores inseridos!");
                     break;
 
                 case 8:

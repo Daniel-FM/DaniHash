@@ -56,25 +56,24 @@ void criarIniSeNaoExistir(){
 string getValorDaConstanteINI(string constProcurada){
 
     ifstream fileREAD;
-    string linha, retorno;
+    string linha, retorno = "1";
     fileREAD.open(FILENAME_INI);
 
     while (fileREAD){
         getline(fileREAD, linha);
-        if ((linha == "") || (linha[0] == '#')){
-            continue;
-        }else{
+        //Se o primeiro caractere da linha nao for um '#' (vou melhorar isso depois)
+        if (linha[0] != '#'){
             size_t found = linha.find(constProcurada);
-            if (found != std::string::npos){
+            if (found != string::npos){
                 size_t posIgual = linha.find("=")+1;
                 retorno = linha.substr(posIgual,linha.size()-posIgual);
-                return retorno;
+                break;
             }
         }
     }
 
     fileREAD.close();
-    return "0";
+    return retorno;
 
 }
 

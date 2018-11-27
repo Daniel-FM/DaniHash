@@ -209,7 +209,7 @@ class Chash: public TabelaHash{
             numPosOcupadas++;
 
             //Ai, depois que inseriu, imprime
-            printPause(PI,"\nA chave ",k," foi inserida no indice ",Hfinal,"\n");
+            printPause(PI,"\nA chave ",k," foi inserida no indice ",Hfinal,".\n");
 
             //Checa se mais da metade das arvores da Tabela estao cheias. Se sim, faz rehashing
             if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
@@ -309,9 +309,9 @@ class Chash: public TabelaHash{
                 tabela[posParaRemover]->deleted = true;
                 numPosOcupadas--;
 
-                printPause(true,"A chave foi removida do indice ",posParaRemover);
+                printPause("A chave foi removida do indice ",posParaRemover);
             }else
-                printPause(true,"A chave nao foi encontrada na tabela.");
+                printPause("A chave nao foi encontrada na tabela.");
 
         }
 
@@ -347,7 +347,7 @@ class Chash: public TabelaHash{
 
         void desenha_hash(){
 
-            printPause(true,"Esta funcionalidade sera implementada em breve!");
+            printPause("Esta funcionalidade sera implementada em breve!");
 
         }
 

@@ -7,8 +7,9 @@
  */
 
 #include <fstream>
-#include "../DaniHash_headers/utilGeral.h"
-#include "../DaniHash_headers/utilMenu.h"
+#include "../DaniHash_headers/utilOutput.h"
+#include "../DaniHash_headers/utilMath.h"
+#include "../DaniHash_headers/utilInput.h"
 #include "../DaniHash_headers/TabelaHash.h"
 
 using namespace std;
@@ -49,7 +50,7 @@ int main(){
             cout<<"7) Realizar benchmark completo (Normal)\n";
             cout<<"8) Realizar benchmark completo (Exponencial)\n";
             cout<<"9) Sair\n\n";
-            opcao = menu::pegaRespostaMinMax("Opcao: ",0,9);
+            opcao = input::pegaRespostaMinMax("Opcao: ",0,9);
 
             switch (opcao){
 
@@ -61,7 +62,7 @@ int main(){
 
                     if (!arquivos::imprimeArquivosINS()) break;
 
-                    nomeDoArquivo = menu::pegaRespostaStr(
+                    nomeDoArquivo = input::pegaRespostaStr(
                         "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
                     if (nomeDoArquivo == "")
                         break;
@@ -69,7 +70,7 @@ int main(){
                         nomeDoArquivo += ".ins";
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    respfinal = menu::pegaRespostaMinMax("",1,2);
+                    respfinal = input::pegaRespostaMinMax("",1,2);
 
                     try{
                         h = instanciaHash(atributos);
@@ -113,7 +114,7 @@ int main(){
                     }
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    respfinal = menu::pegaRespostaMinMax("",1,2);
+                    respfinal = input::pegaRespostaMinMax("",1,2);
 
                     if (respfinal == 1){
                         respfinal = 10;
@@ -149,7 +150,7 @@ int main(){
                 case 7:
                 case 8:
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    num = menu::pegaRespostaMinMax("",1,2);
+                    num = input::pegaRespostaMinMax("",1,2);
 
                     if (num == 1){
                         opcao *= 10;    //Faz isso para poder identificar quando o benchmark inclui buscas
@@ -234,7 +235,7 @@ int main(){
         }
 
         cout<<"\nDeseja voltar ao menu inicial? (1-Sim; 2-Nao)\n";
-        respfinal = menu::pegaRespostaMinMax("",1,2);
+        respfinal = input::pegaRespostaMinMax("",1,2);
 
         if (respfinal == 2)
             loopPrograma = false;

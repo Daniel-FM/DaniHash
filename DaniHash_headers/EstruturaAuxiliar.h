@@ -9,7 +9,7 @@
 #ifndef ESTRUTURAAUXILIAR_H_INCLUDED
 #define ESTRUTURAAUXILIAR_H_INCLUDED
 
-
+namespace dh{
 class No{
 
     public:
@@ -34,16 +34,18 @@ class EstruturaAuxiliar{
     virtual ~EstruturaAuxiliar(){}
 
 };
+};
 
 #include "ArvoreAVL.h"
 #include "Lista.h"
 
+namespace dh{
 EstruturaAuxiliar* instanciaEstrutura(int tipo){
     if (tipo == 1)
         return new lista();
     else
         return new arv_avl();
 }
-
+};
 //
 #endif // ESTRUTURAAUXILIAR_H_INCLUDED

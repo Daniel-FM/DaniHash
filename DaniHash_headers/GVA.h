@@ -106,14 +106,14 @@ namespace gva{
 
     int getRand(int opc){
 
-        if (dh::benchmark::querFazerUniforme(opc))
-            return uniforme(dh::constantes::MEDIA_CHAVE_BMK);
-        else if (dh::benchmark::querFazerNormal(opc))
-            return normal(dh::constantes::MEDIA_CHAVE_BMK,dh::constantes::MEDIA_CHAVE_BMK/2.5);
-        else if (dh::benchmark::querFazerExponencial(opc))
-            return exponencial(dh::constantes::MEDIA_CHAVE_BMK);
+        if (benchmark::querFazerUniforme(opc))
+            return uniforme(constantes::MEDIA_CHAVE_BMK);
+        else if (benchmark::querFazerNormal(opc))
+            return normal(constantes::MEDIA_CHAVE_BMK,constantes::MEDIA_CHAVE_BMK/2.5);
+        else if (benchmark::querFazerExponencial(opc))
+            return exponencial(constantes::MEDIA_CHAVE_BMK);
         else
-            return dh::constantes::MEDIA_CHAVE_BMK;
+            return constantes::MEDIA_CHAVE_BMK;
 
     }
 };

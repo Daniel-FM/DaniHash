@@ -20,8 +20,9 @@ namespace dh{
     using namespace dh::benchmark;
     using namespace dh::arquivos;
     using namespace dh::desenho;
-    using namespace dh::geral;
-    using namespace dh::menu;
+    using namespace dh::output;
+    using namespace dh::input;
+    using namespace dh::math;
     using namespace dh::constantes;
     using namespace dh::gva;
 
@@ -238,11 +239,11 @@ namespace dh{
     TabelaHash* instanciaHash(Atributos attr){
 
         if (attr.tipo <= 2)
-            return new dh::Ohash(attr.tamanho,attr.tipo);
+            return new Ohash(attr.tamanho,attr.tipo);
         else if (attr.tipo <= 5)
-            return new dh::Chash(attr.tamanho,attr.tipo);
+            return new Chash(attr.tamanho,attr.tipo);
         else
-            return new dh::HOhash(attr.tamanho,attr.tipo,attr.limite);
+            return new HOhash(attr.tamanho,attr.tipo,attr.limite);
 
     }
 };

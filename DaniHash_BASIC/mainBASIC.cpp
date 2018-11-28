@@ -7,16 +7,15 @@
  */
 
 #include <fstream>
-#include "../DaniHash_headers/utilGeral.h"
-#include "../DaniHash_headers/utilMenu.h"
+#include "../DaniHash_headers/utilOutput.h"
+#include "../DaniHash_headers/utilInput.h"
+#include "../DaniHash_headers/utilMath.h"
 #include "../DaniHash_headers/TabelaHash.h"
 
 using namespace std;
 using namespace dh;
 
 int main(){
-
-    srand ( time(NULL) );
 
     Atributos atributos;
     bool loopPrograma = true, loopMenu, podeImp;
@@ -48,14 +47,14 @@ int main(){
             cout<<"7) Inserir varios numeros aleatorios\n";
             cout<<"8) Desenhar a hash em uma nova janela\n";
             cout<<"9) Sair\n\n";
-            opcao = menu::pegaRespostaMinMax("Opcao: ",0,9);
+            opcao = input::pegaRespostaMinMax("Opcao: ",0,9);
 
             switch (opcao){
 
                 case 1:
                     int valor;
 
-                    valor = menu::pegaRespostaInt("\n\nQual numero?\n");
+                    valor = input::pegaRespostaInt("\n\nQual numero?\n");
 
                     h->inserir(valor,true);
                     arquivos::salvarArqInsTemp(valor);
@@ -68,29 +67,29 @@ int main(){
 
                     if (!arquivos::imprimeArquivosINS()) break;
 
-                    nomeDoArquivo = menu::pegaRespostaStr(
+                    nomeDoArquivo = input::pegaRespostaStr(
                         "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
                     if (nomeDoArquivo == "")
                         break;
                     else
                         nomeDoArquivo += ".ins";
 
-                    geral::printNoPause("\nImprimir passo a passo? (1-Sim, 2-Nao)");
-                    opcao = menu::pegaRespostaMinMax("",1,2);
+                    output::printNoPause("\nImprimir passo a passo? (1-Sim, 2-Nao)");
+                    opcao = input::pegaRespostaMinMax("",1,2);
 
                     if (opcao == 1)
                         podeImp = true;
                     else
                         podeImp = false;
 
-                    geral::printNoPause(true);
+                    output::printNoPause(true);
 
                     try{
                         Results r = h->inserirDeArquivo(nomeDoArquivo, podeImp);
-                        geral::printNoPauseNoNewline("Insercoes concluidas!");
-                        geral::printNoPause(" (",r.colisoes," colisoes, ",
+                        output::printNoPauseNoNewline("Insercoes concluidas!");
+                        output::printNoPause(" (",r.colisoes," colisoes, ",
                                           r.rehashings," rehashings)");
-                        menu::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
+                        input::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
                     }catch(arquivo_defeituoso &e){
                         cerr<<e.what();
                         system("pause>0");
@@ -99,24 +98,24 @@ int main(){
                     break;
 
                 case 3:
-                    num = menu::pegaRespostaInt("\n\nQue numero?\n");
+                    num = input::pegaRespostaInt("\n\nQue numero?\n");
 
                     h->remover(num);
 
                     break;
 
                 case 4:
-                    num = menu::pegaRespostaInt("\n\nQue numero?\n");
+                    num = input::pegaRespostaInt("\n\nQue numero?\n");
 
                     posicao = h->buscar(num,true);
                     if (posicao == -1)
-                        geral::printPause("A chave nao existe na tabela.");
+                        output::printPause("A chave nao existe na tabela.");
                     else if (posicao == -2)
-                        geral::printPause("Numero maximo de tentativas atingido. A chave nao foi encontrada.");
+                        output::printPause("Numero maximo de tentativas atingido. A chave nao foi encontrada.");
                     else if (posicao == -3)
-                        geral::printPause("NENHUMA TABELA FOI INSTANCIADA.");
+                        output::printPause("NENHUMA TABELA FOI INSTANCIADA.");
                     else
-                        geral::printPause("A chave foi encontrada na posicao ",posicao);
+                        output::printPause("A chave foi encontrada na posicao ",posicao);
 
 
                     break;
@@ -127,23 +126,23 @@ int main(){
                     break;
 
                 case 6:
-                    num = menu::pegaRespostaInt("Quantos?\n");
+                    num = input::pegaRespostaInt("Quantos?\n");
                     for (i = 0; i < num; i++){
                         h->inserir(i,false);
                         arquivos::salvarArqInsTemp(i);
                     }
-                    geral::printPause("\nValores inseridos!");
+                    output::printPause("\nValores inseridos!");
                     system("pause>0");
                     break;
 
                 case 7:
-                    num = menu::pegaRespostaInt("Quantos?\n");
+                    num = input::pegaRespostaInt("Quantos?\n");
                     for (i = 0; i < num; i++){
-                        valor = rand()%999;
+                        valor = gva::uniforme(500);
                         h->inserir(valor,false);
                         arquivos::salvarArqInsTemp(valor);
                     }
-                    geral::printPause("\nValores inseridos!");
+                    output::printPause("\nValores inseridos!");
                     break;
 
                 case 8:
@@ -152,7 +151,7 @@ int main(){
 
                 case 9:
                     delete h;
-                    nomeDoArquivo = menu::pegaRespostaStr( nada+
+                    nomeDoArquivo = input::pegaRespostaStr( nada+
                             "\nEntre o nome para o arquivo de insercao criado "+
                             "(ou aperte apenas ENTER para manter o nome padrao): \n");
                     if (nomeDoArquivo != "") {
@@ -166,19 +165,19 @@ int main(){
                     break;
 
                 case 0:
-                    geral::printConstantes();
+                    output::printConstantes();
                     break;
 
                 default:
 
-                    geral::printPause("\n\nOpcao invalida!");
+                    output::printPause("\n\nOpcao invalida!");
 
             }
 
         }
 
         cout<<"\nDeseja voltar ao menu inicial? (1-Sim; 2-Nao)\n";
-        respfinal = menu::pegaRespostaMinMax("",1,2);
+        respfinal = input::pegaRespostaMinMax("",1,2);
 
         if (respfinal == 2)
             loopPrograma = false;

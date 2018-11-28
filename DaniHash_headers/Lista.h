@@ -11,6 +11,7 @@
 
 using namespace std;
 
+namespace dh{
 class no_lista : public No{
 
     public:
@@ -130,6 +131,6 @@ class lista : public EstruturaAuxiliar{
         return cabeca;
     }
 };
-
+};
 //
 #endif // LISTA_H_INCLUDED

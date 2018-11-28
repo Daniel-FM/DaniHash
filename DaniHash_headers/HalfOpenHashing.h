@@ -156,7 +156,7 @@ class HOhash: public TabelaHash{
         if (arvoreCheia(tabela_[H1])){
             if (!eraCheia){                     //Se ela tiver sido enchida agora
                 numArvoresCheias++;               //Incrementa o numero de arvores cheias
-                geral::printPause(PI,"Esta arvore agora esta cheia.");
+                output::printPause(PI,"Esta arvore agora esta cheia.");
             }
         }
 

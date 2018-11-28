@@ -9,6 +9,7 @@
 #ifndef ARVORE_AVL_H_INCLUDED
 #define ARVORE_AVL_H_INCLUDED
 
+namespace dh{
 class no_avl : public No{
 
     public:
@@ -117,7 +118,7 @@ class arv_avl : public EstruturaAuxiliar{
 
         }
 
-        no->altura = dh::geral::maximo(getAltura(no->esq), getAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
+        no->altura = math::maximo(getAltura(no->esq), getAltura(no->dir)) + 1;    //Depois atualiza a altura do novo no (isso acontece mesmo se
                                                                             //nao tiver sido feito nenhum balanceamento)
         return no;
     }
@@ -127,8 +128,8 @@ class arv_avl : public EstruturaAuxiliar{
         no_avl* k1 = k2->esq;
         k2->esq = k1->dir;
         k1->dir = k2;
-        k2->altura = dh::geral::maximo(getAltura(k2->esq), getAltura(k2->dir)) + 1;
-        k1->altura = dh::geral::maximo(getAltura(k1->esq), k2->altura) + 1;
+        k2->altura = math::maximo(getAltura(k2->esq), getAltura(k2->dir)) + 1;
+        k1->altura = math::maximo(getAltura(k1->esq), k2->altura) + 1;
         return k1;
     }
     /*
@@ -143,8 +144,8 @@ class arv_avl : public EstruturaAuxiliar{
         no_avl* k2 = k1->dir;
         k1->dir = k2->esq;
         k2->esq = k1;
-        k1->altura = dh::geral::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
-        k2->altura = dh::geral::maximo(getAltura(k2->dir), k1->altura) + 1;
+        k1->altura = math::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
+        k2->altura = math::maximo(getAltura(k2->dir), k1->altura) + 1;
         return k2;
     }
     /*
@@ -165,9 +166,9 @@ class arv_avl : public EstruturaAuxiliar{
         k2->esq = k1;
         k2->dir = k3;
 
-        k1->altura = dh::geral::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
-        k3->altura = dh::geral::maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
-        k2->altura = dh::geral::maximo(getAltura(k1), getAltura(k3)) + 1;
+        k1->altura = math::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
+        k3->altura = math::maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
+        k2->altura = math::maximo(getAltura(k1), getAltura(k3)) + 1;
 
 
         return k2;
@@ -193,9 +194,9 @@ class arv_avl : public EstruturaAuxiliar{
         k2->esq = k3;
         k2->dir = k1;
 
-        k3->altura = dh::geral::maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
-        k1->altura = dh::geral::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
-        k2->altura = dh::geral::maximo(getAltura(k3), getAltura(k1)) + 1;
+        k3->altura = math::maximo(getAltura(k3->esq), getAltura(k3->dir)) + 1;
+        k1->altura = math::maximo(getAltura(k1->esq), getAltura(k1->dir)) + 1;
+        k2->altura = math::maximo(getAltura(k3), getAltura(k1)) + 1;
 
         return k2;
 
@@ -350,7 +351,7 @@ class arv_avl : public EstruturaAuxiliar{
     }
 
 };
-
+};
 //
 
 #endif // ARVORE_AVL_H_INCLUDED

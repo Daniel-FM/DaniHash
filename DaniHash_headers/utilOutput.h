@@ -25,6 +25,12 @@ namespace output{
         }
     }
 
+    void printPauseNoNewline(bool b){
+        if (b){
+            system("pause>0");
+        }
+    }
+
     void printNoPause(bool b){
         if (b){
             cout<<"\n";
@@ -43,6 +49,14 @@ namespace output{
         if (pode){
             cout<<t ;
             printPause(pode, args...) ;
+        }
+    }
+
+    template<typename T, typename... Args>
+    void printPauseNoNewline(bool pode, T t, Args... args){
+        if (pode){
+            cout<<t ;
+            printPauseNoNewline(pode, args...) ;
         }
     }
 
@@ -66,6 +80,11 @@ namespace output{
     template<typename T, typename... Args>
     void printPause(T t, Args... args){
         printPause(true, t, args...);
+    }
+
+    template<typename T, typename... Args>
+    void printPauseNoNewline(T t, Args... args){
+        printPauseNoNewline(true, t, args...);
     }
 
     template<typename T, typename... Args>

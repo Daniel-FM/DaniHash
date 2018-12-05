@@ -13,10 +13,13 @@ namespace dh{
 
 class HOhash: public TabelaHash{
 
+    private:
+    int colisoesDaInsercaoAtual;
+    bool fezRehashing, RH_FLAG;
+
     public:
 
-    int TH, tipo, altMax, numArvoresCheias, colisoesDaInsercaoAtual;
-    bool fezRehashing, RH_FLAG;
+    int TH, tipo, altMax, numArvoresCheias;
     arv_avl* *tabela;
 
     HOhash(int tamanho, int type, int limit){

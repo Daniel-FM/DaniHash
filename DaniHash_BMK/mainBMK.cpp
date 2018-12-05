@@ -17,16 +17,17 @@ using namespace dh;
 
 int main(){
 
-    srand ( time(NULL) );
-
     Atributos atributos;
     bool loopPrograma = true, loopMenu;
-    int respfinal, opcao, num, rehashingsTotais;
+    int opcaoMenu, opcaoTmp, numeroTmp, codigoBmkTmp;
+    string comandoTmp, fileNameTmp;
+
+    /** Variaveis usadas nos benchmarks **/
+    int rehashingsTotais;
     unsigned int MAXcolisoes;
     double tempoTotal_insercoes, tempoTotal_buscas, tempoDecorrido, qtdInsercoes;
     Results resultadoBMK;
-    ifstream fileREAD;
-    string linha, nomeDoArquivo, comandoConsole, substringINS;
+    /*************************************/
 
     while (loopPrograma){
 
@@ -34,6 +35,15 @@ int main(){
         system("cls");
         cout<<"***DANIHASH BMK v1.0.3***\n";
         atributos = pegaAtributosDaHash(false);
+
+        if (atributos.tipo == 0){   //Para sair dos loops e encerrar o programa
+            loopMenu = false;
+            loopPrograma = false;
+        }else{
+            loopMenu = true;
+            loopPrograma = true;
+        }
+
         TabelaHash* h;
 
         while (loopMenu){
@@ -49,48 +59,48 @@ int main(){
             cout<<"6) Realizar benchmark completo (Uniforme)\n";
             cout<<"7) Realizar benchmark completo (Normal)\n";
             cout<<"8) Realizar benchmark completo (Exponencial)\n";
-            cout<<"9) Sair\n\n";
-            opcao = input::pegaRespostaMinMax("Opcao: ",0,9);
+            cout<<"9) Retornar ao menu inicial\n\n";
+            opcaoMenu = input::pegaRespostaMinMax("Opcao: ",0,9);
 
-            switch (opcao){
+            switch (opcaoMenu){
 
                 case 1:
                     h = instanciaHash(atributos);
 
-                    comandoConsole = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
-                    system(comandoConsole.c_str());
+                    comandoTmp = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
+                    system(comandoTmp.c_str());
 
                     if (!arquivos::imprimeArquivosINS()) break;
 
-                    nomeDoArquivo = input::pegaRespostaStr(
+                    fileNameTmp = input::pegaRespostaStr(
                         "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
-                    if (nomeDoArquivo == "")
+                    if (fileNameTmp == "")
                         break;
                     else
-                        nomeDoArquivo += ".ins";
+                        fileNameTmp += ".ins";
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    respfinal = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
 
                     try{
                         h = instanciaHash(atributos);
-                        resultadoBMK = h->inserirDeArquivo(nomeDoArquivo, false);
+                        resultadoBMK = h->inserirDeArquivo(fileNameTmp, false);
 
-                        if(respfinal == 1);
-                        tempoTotal_buscas = h->benchmarkBUSCA(0,nomeDoArquivo);
+                        if(opcaoTmp == 1);
+                        tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
 
                         cout<<"\nTudo feito!\n\n";
                         cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
 
-                        if (respfinal == 10)
+                        if (opcaoTmp == 10)
                         cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
 
                         cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
                         cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
-                    }catch(bad_alloc &e){
+                    }catch(bad_alloc e1){
                         cerr<<BAD_ALLOC_MSG;
-                    }catch(arquivo_defeituoso &e){
-                        cerr<<e.what();
+                    }catch(arquivo_defeituoso e2){
+                        cerr<<e2.what();
                     }
 
                     system("pause>0");
@@ -102,37 +112,36 @@ int main(){
                 case 4:
                 case 5:
                     cout<<"\nQuantos?\n";
-                    cin>>num;
+                    cin>>numeroTmp;
 
                     fflush(stdin);
                     cout<<"\nNome do arquivo de insercao a ser gerado (aperte apenas ENTER para usar o nome padrao):\n";
                     if (cin.peek() == '\n') {                   //se o proximo caractere eh um newline
-                        nomeDoArquivo = DEFAULT_FILENAME_INS;   //atribui o nome padrao
+                        fileNameTmp = DEFAULT_FILENAME_INS;   //atribui o nome padrao
                     } else{
-                        cin>>nomeDoArquivo;                     //senao, atribui o nome digitado
-                        nomeDoArquivo += ".ins";
+                        cin>>fileNameTmp;                     //senao, atribui o nome digitado
+                        fileNameTmp += ".ins";
                     }
 
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    respfinal = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
 
-                    if (respfinal == 1){
-                        respfinal = 10;
+                    if (opcaoTmp == 1){
+                        opcaoTmp = 10;
                     }
 
-                    arquivos::inicializaDiretorioINS(nomeDoArquivo);
+                    arquivos::inicializaDiretorioINS(fileNameTmp);
 
                     try{
                         h = instanciaHash(atributos);
-                        resultadoBMK = h->benchmarkINSERCAO(num,opcao,nomeDoArquivo);
-
-                        if(respfinal == 10);
-                        tempoTotal_buscas = h->benchmarkBUSCA(0,nomeDoArquivo);
+                        resultadoBMK = h->benchmarkINSERCAO(numeroTmp,opcaoTmp,fileNameTmp);
+                        if(opcaoTmp == 10);
+                        tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
 
                         cout<<"\nTudo feito!\n\n";
                         cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
 
-                        if (respfinal == 10)
+                        if (opcaoTmp == 10)
                         cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
 
                         cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
@@ -150,11 +159,12 @@ int main(){
                 case 7:
                 case 8:
                     cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    num = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
 
-                    if (num == 1){
-                        opcao *= 10;    //Faz isso para poder identificar quando o benchmark inclui buscas
-                                        //(a variavel referente a opcao escolhida fica divisivel por 10)
+                    codigoBmkTmp = opcaoMenu;
+                    if (opcaoTmp == 1){
+                        codigoBmkTmp *= 10;      //Faz isso para poder identificar quando o benchmark inclui buscas
+                                                        //(a variavel referente a opcao escolhida fica divisivel por 10)
                     }
 
                     tempoTotal_insercoes = 0;   //O somatorio dos tempos de cada insercao do benchmark
@@ -164,23 +174,23 @@ int main(){
                     MAXcolisoes = 0;
                     qtdInsercoes = 1;
                     //Inicializa o diretorio do arquivo de benchmark de insercoes
-                    arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,opcao,true));
+                    arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,codigoBmkTmp,true));
 
                     //E inicializa o diretorio do de buscas, caso isso tenha sido pedido
-                    if ((opcao%10) == 0) arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,opcao,false));
+                    if ((opcaoTmp%10) == 0) arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,codigoBmkTmp,false));
 
                     cout<<"\nTrabalhando...    0%";
                     try{
                         benchmark::cronometro cron;
                         while (true){
-                            if ((opcao%10) == 0) arquivos::inicializaDiretorioINS(FILENAME_DUMMY);
+                            if ((opcaoTmp%10) == 0) arquivos::inicializaDiretorioINS(FILENAME_DUMMY);
 
                             if (qtdInsercoes > QTDMAX_INS)
                                 qtdInsercoes = QTDMAX_INS;
 
                             h = instanciaHash(atributos);
-                            resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, opcao, FILENAME_DUMMY);
-                            if ((opcao%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(opcao, FILENAME_DUMMY)/1000;
+                            resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, codigoBmkTmp, FILENAME_DUMMY);
+                            if ((codigoBmkTmp%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(codigoBmkTmp, FILENAME_DUMMY)/1000;
                             delete h;
 
                             printNewPerc(qtdInsercoes,QTDMAX_INS);
@@ -204,7 +214,7 @@ int main(){
                         cout<<"Tempo decorrido: "<<tempoDecorrido/1000<<"s\n";
                         cout<<"Tempo insercoes: "<<tempoTotal_insercoes<<"s\n";
 
-                        if ((opcao%10==0))
+                        if ((codigoBmkTmp%10==0))
                         cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"s\n";
 
                         cout<<"MAX Colisoes:    "<<MAXcolisoes<<"\n";
@@ -233,12 +243,6 @@ int main(){
             }
 
         }
-
-        cout<<"\nDeseja voltar ao menu inicial? (1-Sim; 2-Nao)\n";
-        respfinal = input::pegaRespostaMinMax("",1,2);
-
-        if (respfinal == 2)
-            loopPrograma = false;
 
     }
 

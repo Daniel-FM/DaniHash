@@ -260,7 +260,7 @@ class Chash: public TabelaHash{
             return Hfinal;
         }
         /*************************************************** REHASHING *************************************************************/
-
+        private:
         void rehashing(bool PI){
 
             int TH_novo = pegaProxPrimMaior(TH*2);
@@ -295,7 +295,7 @@ class Chash: public TabelaHash{
 
 
         /************************************************* REMOVER *****************************************************************/
-
+        public:
         void remover(int chave){
             int posParaRemover;
 

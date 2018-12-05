@@ -18,17 +18,23 @@ using namespace dh;
 int main(){
 
     Atributos atributos;
-    bool loopPrograma = true, loopMenu, podeImp;
-    int respfinal, opcao, num, i, posicao;
-    string linha, substringINS, str, nomeDoArquivo;
-    ifstream fileREAD;
+    bool loopPrograma = true, loopMenu, piTmp;
+    int opcaoMenu, opcaoTmp, numeroTmp, indiceTmp;
+    string comandoTmp, fileNameTmp;
 
     while (loopPrograma){
 
-        loopMenu = true;
         system("cls");
         cout<<"***DANIHASH BASIC v1.0.3***\n";
         atributos = pegaAtributosDaHash(true);
+
+        if (atributos.tipo == 0){   //Para sair dos loops e encerrar o programa
+            loopMenu = false;
+            loopPrograma = false;
+        }else{
+            loopMenu = true;
+            loopPrograma = true;
+        }
 
         TabelaHash* h = instanciaHash(atributos);
         arquivos::inicializaDiretorioINS(DEFAULT_FILENAME_INS);
@@ -46,51 +52,49 @@ int main(){
             cout<<"6) Inserir varios numeros ordenados\n";
             cout<<"7) Inserir varios numeros aleatorios\n";
             cout<<"8) Desenhar a hash em uma nova janela\n";
-            cout<<"9) Sair\n\n";
-            opcao = input::pegaRespostaMinMax("Opcao: ",0,9);
+            cout<<"9) Retornar ao manu inicial\n\n";
+            opcaoMenu = input::pegaRespostaMinMax("Opcao: ",0,9);
 
-            switch (opcao){
+            switch (opcaoMenu){
 
                 case 1:
-                    int valor;
+                    numeroTmp = input::pegaRespostaInt("\n\nQual numero?\n");
 
-                    valor = input::pegaRespostaInt("\n\nQual numero?\n");
-
-                    h->inserir(valor,true);
-                    arquivos::salvarArqInsTemp(valor);
+                    h->inserir(numeroTmp,true);
+                    arquivos::salvarArqInsTemp(numeroTmp);
 
                     break;
 
                 case 2:
-                    str = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
-                    system(str.c_str());
+                    comandoTmp = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
+                    system(comandoTmp.c_str());
 
                     if (!arquivos::imprimeArquivosINS()) break;
 
-                    nomeDoArquivo = input::pegaRespostaStr(
+                    fileNameTmp = input::pegaRespostaStr(
                         "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
-                    if (nomeDoArquivo == "")
+                    if (fileNameTmp == "")
                         break;
                     else
-                        nomeDoArquivo += ".ins";
+                        fileNameTmp += ".ins";
 
                     output::printNoPause("\nImprimir passo a passo? (1-Sim, 2-Nao)");
-                    opcao = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
 
-                    if (opcao == 1)
-                        podeImp = true;
+                    if (opcaoTmp == 1)
+                        piTmp = true;
                     else
-                        podeImp = false;
+                        piTmp = false;
 
                     output::printNoPause(true);
 
                     try{
-                        Results r = h->inserirDeArquivo(nomeDoArquivo, podeImp);
+                        Results r = h->inserirDeArquivo(fileNameTmp, piTmp);
                         output::printNoPauseNoNewline("Insercoes concluidas!");
                         output::printNoPause(" (",r.colisoes," colisoes, ",
                                           r.rehashings," rehashings)");
                         input::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
-                    }catch(arquivo_defeituoso &e){
+                    }catch(arquivo_defeituoso e){
                         cerr<<e.what();
                         system("pause>0");
                     }
@@ -98,24 +102,24 @@ int main(){
                     break;
 
                 case 3:
-                    num = input::pegaRespostaInt("\n\nQue numero?\n");
+                    numeroTmp = input::pegaRespostaInt("\n\nQue numero?\n");
 
-                    h->remover(num);
+                    h->remover(numeroTmp);
 
                     break;
 
                 case 4:
-                    num = input::pegaRespostaInt("\n\nQue numero?\n");
+                    numeroTmp = input::pegaRespostaInt("\n\nQue numero?\n");
 
-                    posicao = h->buscar(num,true);
-                    if (posicao == -1)
+                    indiceTmp = h->buscar(numeroTmp,true);
+                    if (indiceTmp == -1)
                         output::printPause("A chave nao existe na tabela.");
-                    else if (posicao == -2)
+                    else if (indiceTmp == -2)
                         output::printPause("Numero maximo de tentativas atingido. A chave nao foi encontrada.");
-                    else if (posicao == -3)
+                    else if (indiceTmp == -3)
                         output::printPause("NENHUMA TABELA FOI INSTANCIADA.");
                     else
-                        output::printPause("A chave foi encontrada na posicao ",posicao);
+                        output::printPause("A chave foi encontrada na posicao ",indiceTmp);
 
 
                     break;
@@ -126,8 +130,8 @@ int main(){
                     break;
 
                 case 6:
-                    num = input::pegaRespostaInt("Quantos?\n");
-                    for (i = 0; i < num; i++){
+                    opcaoTmp = input::pegaRespostaInt("Quantos?\n");
+                    for (int i = 0; i < opcaoTmp; i++){
                         h->inserir(i,false);
                         arquivos::salvarArqInsTemp(i);
                     }
@@ -136,11 +140,11 @@ int main(){
                     break;
 
                 case 7:
-                    num = input::pegaRespostaInt("Quantos?\n");
-                    for (i = 0; i < num; i++){
-                        valor = gva::uniforme(500);
-                        h->inserir(valor,false);
-                        arquivos::salvarArqInsTemp(valor);
+                    opcaoTmp = input::pegaRespostaInt("Quantos?\n");
+                    for (int i = 0; i < opcaoTmp; i++){
+                        numeroTmp = gva::uniforme(500);
+                        h->inserir(numeroTmp,false);
+                        arquivos::salvarArqInsTemp(numeroTmp);
                     }
                     output::printPause("\nValores inseridos!");
                     break;
@@ -151,15 +155,15 @@ int main(){
 
                 case 9:
                     delete h;
-                    nomeDoArquivo = input::pegaRespostaStr( nada+
+                    fileNameTmp = input::pegaRespostaStr( nada+
                             "\nEntre o nome para o arquivo de insercao criado "+
                             "(ou aperte apenas ENTER para manter o nome padrao): \n");
-                    if (nomeDoArquivo != "") {
-                        str = "IF EXIST .\\"+FILEPATH_INS+nomeDoArquivo+".ins del "+FILEPATH_INS+nomeDoArquivo+".ins";
-                        system(str.c_str());
+                    if (fileNameTmp != "") {
+                        comandoTmp = "IF EXIST .\\"+FILEPATH_INS+fileNameTmp+".ins del "+FILEPATH_INS+fileNameTmp+".ins";
+                        system(comandoTmp.c_str());
 
-                        str = "rename "+FILEPATH_INS+DEFAULT_FILENAME_INS+" "+nomeDoArquivo+".ins";
-                        system(str.c_str());
+                        comandoTmp = "rename "+FILEPATH_INS+DEFAULT_FILENAME_INS+" "+fileNameTmp+".ins";
+                        system(comandoTmp.c_str());
                     }
                     loopMenu = false;
                     break;
@@ -175,12 +179,6 @@ int main(){
             }
 
         }
-
-        cout<<"\nDeseja voltar ao menu inicial? (1-Sim; 2-Nao)\n";
-        respfinal = input::pegaRespostaMinMax("",1,2);
-
-        if (respfinal == 2)
-            loopPrograma = false;
 
     }
 //

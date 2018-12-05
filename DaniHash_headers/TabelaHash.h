@@ -30,8 +30,7 @@ namespace dh{
 
         public:
 
-        int TH, tipo, colisoesDaIntercaoAtual;
-        bool fezRehashing;
+        int TH, tipo;
 
         virtual void inserir(int chave, bool PI)=0;
         virtual void remover(int chave)=0;
@@ -57,7 +56,7 @@ namespace dh{
                 if(substringINS =="INS "){
                     try{
                         numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
-                    }catch(invalid_argument &e){
+                    }catch(invalid_argument e){
                         throw arquivo_defeituoso(numeroDaLinha,1);
                     }
 
@@ -184,31 +183,45 @@ namespace dh{
         int type;
         Atributos atr;
 
-        cout<<"Que tipo de hash?\n\n";
+        cout<<"Que tipo de hash deseja utilizar?\n\n";
         cout<<"1) Open Hashing com Lista\n";
         cout<<"2) Open Hashing com Arvore\n";
         cout<<"3) Closed Hashing\n";
-        cout<<"4) Half-Open Hashing\n\n";
+        cout<<"4) Half-Open Hashing\n";
+        cout<<"5) Sair\n\n";
 
-        type = pegaRespostaMinMax("Opcao: ",1,4);
+        type = pegaRespostaMinMax("Opcao: ",1,5);
 
         if (type == 3){
 
             system("cls");
             cout<<"Escolha como lidar com colisoes:\n\n";
-            cout<<"3) Tentativa linear\n";
-            cout<<"4) Tentativa quadratica\n";
-            cout<<"5) Duplo hashing\n\n";
+            cout<<"1) Tentativa linear\n";
+            cout<<"2) Tentativa quadratica\n";
+            cout<<"3) Duplo hashing\n\n";
 
-            type = pegaRespostaMinMax("Opcao: ",3,5);
+            type = pegaRespostaMinMax("Opcao: ",1,3);
+
+                 if (type == 1) type = 3;
+            else if (type == 2) type = 4;
+            else if (type == 3) type = 5;
+
         }else if (type == 4){
 
             system("cls");
             cout<<"Deseja que a hash utilize tentativa quadratica?\n\n";
-            cout<<"6) Sim, insercoes em arvores cheias contam como colisoes\n";
-            cout<<"7) Nao, pode continuar inserindo em arvores cheias\n\n";
+            cout<<"1) Sim, insercoes em arvores cheias contam como colisoes (CQT)\n";
+            cout<<"2) Nao, pode continuar inserindo em arvores cheias (SQT)\n\n";
 
-            type = pegaRespostaMinMax("Opcao: ",6,7);
+            type = pegaRespostaMinMax("Opcao: ",1,2);
+
+                 if (type == 1) type = 6;
+            else if (type == 2) type = 7;
+
+        }else if (type == 5){
+            //Para forcar a ir logo pro final
+            type = 0;
+            trueBASIC_falseBMK = false;
         }
 
         atr.tipo = type;

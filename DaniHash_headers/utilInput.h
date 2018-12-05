@@ -13,24 +13,56 @@ namespace dh{
 
 namespace input{
 
+    struct entrada_invalida : public exception{
+
+        string errorMsg = "\nEntrada invalida!";
+
+        entrada_invalida(string tipoEsperado){
+
+            if (tipoEsperado != ""){
+                errorMsg == errorMsg + " Espera " + tipoEsperado + ".";
+            }
+
+            cerr<<errorMsg;
+            system("pause>0");
+            output::backspace(512);
+            cin.clear();                //Retorna as flags de cin pro estado inicial
+            cin.ignore(512,'\n');       //ignora tudo que tem na linha atual
+
+        }
+
+        //override do metodo virtual what(), de std::exception
+        const char * what () const throw () {
+            return errorMsg.c_str();
+        }
+
+    };
+
+    int pegaInt(){
+        int retorno = 0;
+
+        if (!(cin>>retorno)) {         //Para tratar entradas que nao sejam int
+            throw entrada_invalida("");
+        }
+
+        return retorno;
+    }
+
     int pegaRespostaMinMax(string pedido, int minim, int maxim){
 
+        int resposta=0;
+
         while (true){
-            int resposta=0;
             cout<<pedido;
 
-            if (!(cin>>resposta)) {         //Para tratar entradas que nao sejam int
-                cout<<"\nEntrada invalida!";
-                system("pause>0");
-                output::backspace(17);
-                cin.clear();
-                cin.ignore(512,'\n');
+            try{
+                resposta = pegaInt();
+            }catch(entrada_invalida e){
                 continue;
             }
 
             if ((resposta < minim) || (resposta > maxim)){
-                cout<<"\nOpcao invalida!";
-                system("pause>0");
+                output::printPauseNoNewline("\nOpcao invalida!");
                 output::backspace(15);
             }else{
                 return resposta;
@@ -45,19 +77,15 @@ namespace input{
 
         while (true){
             cout<<pedido;
-            if (!(cin>>resposta)) {         //Para tratar entradas que nao sejam int
-                cout << "Entrada invalida!";
-                system("pause>0");
-                output::backspace(17);
-                cin.clear();                //Retorna ss flags de cin pro estado inicial
-                cin.ignore(512,'\n');       //ignora tudo que tem na linha atual
+            try{
+                resposta = pegaInt();
+            }catch(entrada_invalida e){
                 continue;
             }
 
             if (resposta < minim){
-                cout<<"\nNao pode ser menor que "<<minim;
-                system("pause>0");
-                output::backspace(24);
+                output::printPauseNoNewline("\nNao pode ser menor que ",minim,"!");
+                output::backspace(512);
             }else{
                 return resposta;
             }
@@ -70,12 +98,9 @@ namespace input{
 
         while (true){
             cout<<pedido;
-            if (!(cin>>resposta)) {         //Para tratar entradas que nao sejam int
-                cout << "Entrada invalida!";
-                system("pause>0");
-                output::backspace(17);
-                cin.clear();
-                cin.ignore(512,'\n');
+            try{
+                resposta = pegaInt();
+            }catch(entrada_invalida e){
                 continue;
             }
 
@@ -99,6 +124,7 @@ namespace input{
     }
 
 };
+
 };
 
 //

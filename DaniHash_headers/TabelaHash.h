@@ -180,7 +180,7 @@ namespace dh{
     };
 
     Atributos pegaAtributosDaHash(bool trueBASIC_falseBMK){
-        int type;
+        int opcao1, opcao2, tipoEscolhido = 0;
         Atributos atr;
 
         cout<<"Que tipo de hash deseja utilizar?\n\n";
@@ -190,9 +190,11 @@ namespace dh{
         cout<<"4) Half-Open Hashing\n";
         cout<<"5) Sair\n\n";
 
-        type = pegaRespostaMinMax("Opcao: ",1,5);
+        opcao1 = pegaRespostaMinMax("","Opcao: ",1,5);
 
-        if (type == 3){
+        if (opcao1 == 1 || opcao1 == 2){
+            tipoEscolhido = opcao1;
+        }if (opcao1 == 3){
 
             system("cls");
             cout<<"Escolha como lidar com colisoes:\n\n";
@@ -200,37 +202,37 @@ namespace dh{
             cout<<"2) Tentativa quadratica\n";
             cout<<"3) Duplo hashing\n\n";
 
-            type = pegaRespostaMinMax("Opcao: ",1,3);
+            opcao2 = pegaRespostaMinMax("","Opcao: ",1,3);
 
-                 if (type == 1) type = 3;
-            else if (type == 2) type = 4;
-            else if (type == 3) type = 5;
+                 if (opcao2 == 1) tipoEscolhido = 3;
+            else if (opcao2 == 2) tipoEscolhido = 4;
+            else if (opcao2 == 3) tipoEscolhido = 5;
 
-        }else if (type == 4){
+        }else if (opcao1 == 4){
 
             system("cls");
             cout<<"Deseja que a hash utilize tentativa quadratica?\n\n";
             cout<<"1) Sim, insercoes em arvores cheias contam como colisoes (CQT)\n";
             cout<<"2) Nao, pode continuar inserindo em arvores cheias (SQT)\n\n";
 
-            type = pegaRespostaMinMax("Opcao: ",1,2);
+            opcao2 = pegaRespostaMinMax("","Opcao: ",1,2);
 
-                 if (type == 1) type = 6;
-            else if (type == 2) type = 7;
+                 if (opcao2 == 1) tipoEscolhido = 6;
+            else if (opcao2 == 2) tipoEscolhido = 7;
 
-        }else if (type == 5){
+        }else if (opcao1 == 5){
             //Para forcar a ir logo pro final
-            type = 0;
+            tipoEscolhido = 0;
             trueBASIC_falseBMK = false;
         }
 
-        atr.tipo = type;
+        atr.tipo = tipoEscolhido;
         atr.limite = 1; //so pra deixar inicializado com algum valor
 
         if (trueBASIC_falseBMK == true){
             atr.tamanho = pegaRespostaMin("\nTamanho da tabela: ", 1);
 
-            if (type >= 6)
+            if (tipoEscolhido >= 6)
                 atr.limite = pegaRespostaMin("Altura maxima das arvores: ", 1);
 
         }else{

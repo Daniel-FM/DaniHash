@@ -25,7 +25,7 @@ namespace input{
 
             cerr<<errorMsg;
             system("pause>0");
-            output::backspace(512);
+            output::apagaLinha();
             cin.clear();                //Retorna as flags de cin pro estado inicial
             cin.ignore(512,'\n');       //ignora tudo que tem na linha atual
 
@@ -48,12 +48,15 @@ namespace input{
         return retorno;
     }
 
-    int pegaRespostaMinMax(string pedido, int minim, int maxim){
+    int pegaRespostaMinMax(string pedido, string prompt, int a, int b){
 
         int resposta=0;
+        int minim = math::minimo(a,b);
+        int maxim = math::maximo(a,b);
 
+        cout<<pedido;
         while (true){
-            cout<<pedido;
+            cout<<prompt;
 
             try{
                 resposta = pegaInt();
@@ -63,20 +66,27 @@ namespace input{
 
             if ((resposta < minim) || (resposta > maxim)){
                 output::printPauseNoNewline("\nOpcao invalida!");
-                output::backspace(15);
+                output::apagaLinha();
             }else{
                 return resposta;
             }
         }
 
     }
+    int pegaRespostaMinMax(string pedido, int a, int b){
+        return pegaRespostaMinMax(pedido,"",a,b);
+    }
+    int pegaRespostaMinMax(int a, int b){
+        return pegaRespostaMinMax("","",a,b);
+    }
 
-    int pegaRespostaMin(string pedido, int minim){
+    int pegaRespostaMin(string pedido, string prompt, int minim){
 
         int resposta=0;
 
+        cout<<pedido;
         while (true){
-            cout<<pedido;
+            cout<<prompt;
             try{
                 resposta = pegaInt();
             }catch(entrada_invalida e){
@@ -85,19 +95,26 @@ namespace input{
 
             if (resposta < minim){
                 output::printPauseNoNewline("\nNao pode ser menor que ",minim,"!");
-                output::backspace(512);
+                output::apagaLinha();
             }else{
                 return resposta;
             }
         }
 
     }
+    int pegaRespostaMin(string pedido,int minim){
+        return pegaRespostaMin(pedido,"",minim);
+    }
+    int pegaRespostaMin(int minim){
+        return pegaRespostaMin("","",minim);
+    }
 
-    int pegaRespostaInt(string pedido){
+    int pegaRespostaInt(string pedido, string prompt){
         int resposta;
 
+        cout<<pedido;
         while (true){
-            cout<<pedido;
+            cout<<prompt;
             try{
                 resposta = pegaInt();
             }catch(entrada_invalida e){
@@ -107,6 +124,12 @@ namespace input{
             return resposta;
         }
 
+    }
+    int pegaRespostaInt(string pedido){
+        return pegaRespostaInt(pedido,"");
+    }
+    int pegaRespostaInt(){
+        return pegaRespostaInt("","");
     }
 
     string pegaRespostaStr(string pedido){

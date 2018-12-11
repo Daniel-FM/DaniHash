@@ -117,6 +117,10 @@ namespace output{
         }
     }
 
+    void apagaLinha(){
+        backspace(512);
+    }
+
     void printConstantes(){
         cout<<endl;
         cout<<"MEDIA_CHAVE_BMK       = "<<constantes::MEDIA_CHAVE_BMK<<endl;

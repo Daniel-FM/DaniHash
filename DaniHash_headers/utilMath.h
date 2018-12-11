@@ -42,6 +42,13 @@ namespace math{
             return b;
     }
 
+    int minimo(int a, int b){
+        if (b > a)
+            return a;
+        else
+            return b;
+    }
+
 };
 };
 

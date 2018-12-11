@@ -8,8 +8,8 @@
 
 #include <fstream>
 #include "../DaniHash_headers/utilOutput.h"
-#include "../DaniHash_headers/utilInput.h"
 #include "../DaniHash_headers/utilMath.h"
+#include "../DaniHash_headers/utilInput.h"
 #include "../DaniHash_headers/TabelaHash.h"
 
 using namespace std;
@@ -53,7 +53,7 @@ int main(){
             cout<<"7) Inserir varios numeros aleatorios\n";
             cout<<"8) Desenhar a hash em uma nova janela\n";
             cout<<"9) Retornar ao manu inicial\n\n";
-            opcaoMenu = input::pegaRespostaMinMax("Opcao: ",0,9);
+            opcaoMenu = input::pegaRespostaMinMax("","Opcao: ",0,9);
 
             switch (opcaoMenu){
 
@@ -78,8 +78,7 @@ int main(){
                     else
                         fileNameTmp += ".ins";
 
-                    output::printNoPause("\nImprimir passo a passo? (1-Sim, 2-Nao)");
-                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("\nImprimir passo a passo? (1-Sim, 2-Nao)",1,2);
 
                     if (opcaoTmp == 1)
                         piTmp = true;

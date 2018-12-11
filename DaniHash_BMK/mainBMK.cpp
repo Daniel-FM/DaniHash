@@ -60,7 +60,7 @@ int main(){
             cout<<"7) Realizar benchmark completo (Normal)\n";
             cout<<"8) Realizar benchmark completo (Exponencial)\n";
             cout<<"9) Retornar ao menu inicial\n\n";
-            opcaoMenu = input::pegaRespostaMinMax("Opcao: ",0,9);
+            opcaoMenu = input::pegaRespostaMinMax("","Opcao: ",0,9);
 
             switch (opcaoMenu){
 
@@ -79,20 +79,19 @@ int main(){
                     else
                         fileNameTmp += ".ins";
 
-                    cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     try{
                         h = instanciaHash(atributos);
                         resultadoBMK = h->inserirDeArquivo(fileNameTmp, false);
 
-                        if(opcaoTmp == 1);
-                        tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
+                        if(opcaoTmp == 1)
+                            tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
 
                         cout<<"\nTudo feito!\n\n";
                         cout<<"Tempo insercoes: "<<resultadoBMK.tempoBMK<<"ms\n";
 
-                        if (opcaoTmp == 10)
+                        if (opcaoTmp == 1)
                         cout<<"Tempo buscas:    "<<tempoTotal_buscas<<"ms\n";
 
                         cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
@@ -111,20 +110,16 @@ int main(){
                 case 3:
                 case 4:
                 case 5:
-                    cout<<"\nQuantos?\n";
-                    cin>>numeroTmp;
+                    numeroTmp = input::pegaRespostaInt("\nQuantos?\n");
 
-                    fflush(stdin);
-                    cout<<"\nNome do arquivo de insercao a ser gerado (aperte apenas ENTER para usar o nome padrao):\n";
-                    if (cin.peek() == '\n') {                   //se o proximo caractere eh um newline
+                    fileNameTmp = input::pegaRespostaStr("\nNome do arquivo de insercao a ser gerado (aperte apenas ENTER para usar o nome padrao):\n");
+                    if (fileNameTmp == "") {                   //se o usuario nao entounada
                         fileNameTmp = DEFAULT_FILENAME_INS;   //atribui o nome padrao
                     } else{
-                        cin>>fileNameTmp;                     //senao, atribui o nome digitado
                         fileNameTmp += ".ins";
                     }
 
-                    cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     if (opcaoTmp == 1){
                         opcaoTmp = 10;
@@ -158,8 +153,7 @@ int main(){
                 case 6:
                 case 7:
                 case 8:
-                    cout<<"\nIncluir buscas? (1-Sim; 2-Nao)\n";
-                    opcaoTmp = input::pegaRespostaMinMax("",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     codigoBmkTmp = opcaoMenu;
                     if (opcaoTmp == 1){
@@ -236,9 +230,7 @@ int main(){
                     break;
 
                 default:
-
-                    cout<<"\n\nOpcao invalida!";
-                    system("pause>0");
+                    printPause("\n\nOpcao invalida!");
 
             }
 

@@ -15,12 +15,12 @@ namespace dh
 
 namespace arquivos{
 
-    void salvarArqInsTemp(int valor){
+    void acrescentarNoArquivoDeInstrucoes(string instrucao, int valor){
 
         ofstream fileWRITE;
 
         fileWRITE.open(constantes::DEFAULT_FULLNAME_INS,ios::app);
-        fileWRITE<<"INS "<<valor<<endl;
+        fileWRITE<<instrucao<<" "<<valor<<endl;
         fileWRITE.close();
     }
 
@@ -130,6 +130,19 @@ namespace arquivos{
         fileBMK.close();
     }
 
+    int getIndiceInicial(string linha){
+        unsigned int indiceInicial=0;
+        if (!linha.empty()){
+            for (indiceInicial=0;indiceInicial<linha.size()-1;indiceInicial++){
+                if (linha.at(indiceInicial) != ' ' &&
+                    linha.at(indiceInicial) != '\t'){
+                    break;
+                }
+            }
+        }
+        return indiceInicial;
+    }
+
 };
 
 struct arquivo_defeituoso : public exception {
@@ -142,13 +155,13 @@ struct arquivo_defeituoso : public exception {
 
         switch (tipo){
             case 1:
-                t = "Caractere invalido";
+                t = "Caractere invalido.";
                 break;
             case 2:
-                t = "Sem identificador \"INS\"";
+                t = "Sem identificador valido.";
                 break;
             default:
-                t = "???";
+                t = "Erro desconhecido.";
         }
     }
 

@@ -124,7 +124,7 @@ class Chash: public TabelaHash{
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
+                            printPause(PI,"Tabela cheia. A chave ",k," nao pode ser inserida.\n");
                             return;
                         }
                         printNoPause(PI," (Colisao)");
@@ -140,7 +140,7 @@ class Chash: public TabelaHash{
 
                 //TENTATIVA QUADRATICA
                 else if (tipo == 4){
-
+                    int numMaxTentativas = TamTabela/2;
                     while (!DeletedOrNull(Tabela[Hfinal])){
 
                         if (Tabela[Hfinal]->info_no == k){
@@ -148,8 +148,8 @@ class Chash: public TabelaHash{
                             return;
                         }
 
-                        if (i == TamTabela){
-                            printPause(PI,"A chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
+                        if (i == numMaxTentativas){
+                            printPause(PI,"Numero maximo de tentativas atingido. A chave ",k," nao pode ser inserida.\n");
                             return;
                         }
                         printNoPause(PI," (Colisao)");
@@ -178,7 +178,7 @@ class Chash: public TabelaHash{
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"\nA chave ",k," nao pode ser inserida. Numero maximo de tentativas atingido.\n");
+                            printPause(PI,"\nTabela cheia. A chave ",k," nao pode ser inserida. \n");
                             return;
                         }
                         printNoPauseNoNewline(PI,"(Colisao)");
@@ -213,7 +213,7 @@ class Chash: public TabelaHash{
 
             //Checa se mais da metade das arvores da Tabela estao cheias. Se sim, faz rehashing
             if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-                printPause(PI,"O fator de carga ultrapassou o limiar definido como ",LIMIAR_PARA_REHASHING,". Sera feito rehashing.\n");
+                printPause(PI,"O fator de carga ultrapassou ",LIMIAR_PARA_REHASHING,". Sera feito rehashing.\n");
 
                 RH_FLAG = true;
                 rehashing(PI);
@@ -230,10 +230,12 @@ class Chash: public TabelaHash{
 
             int H1 = k % TH;
             int Hfinal = H1;
+            colisoesDaInsercaoAtual = 0;
+            printNoPauseNoNewline(PI,k," % ",TH," = ",H1,"\t\t");
 
-            if (tabela[H1] == NULL)
+            if (tabela[H1] == NULL){
                 return -1;
-            else{
+            }else{
                 int i = 1;
 
                 //BUSCA USANDO TENTATIVA LINEAR
@@ -245,8 +247,10 @@ class Chash: public TabelaHash{
                     if (i == TH){
                         return -2;
                     }
-
+                    printNoPause(PI," (Nao eh esse)");
                     Hfinal = (H1 + i) % TH;
+                    printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TH," = ",Hfinal,"\t");
+                    colisoesDaInsercaoAtual++;
                     i++;
 
                 }
@@ -296,22 +300,22 @@ class Chash: public TabelaHash{
 
         /************************************************* REMOVER *****************************************************************/
         public:
-        void remover(int chave){
+        void remover(int chave, bool PI){
             int posParaRemover;
 
             //Pegamos o indice onde a chave esta
-            posParaRemover = buscar(chave, false);
+            posParaRemover = buscar(chave, PI);
 
             //Depois que encontramos a posParaRemover, "deletamos" o no (nao podemos simplesmente setar ele como NULL, pois
             //iria impossibilitar que nos que foram inseridos em posicoes a frente dele escolhidos por tratamento de colisao
             //fossem encontrados futuramente.
-            if (posParaRemover < 0){
+            if (posParaRemover >= 0){
                 tabela[posParaRemover]->deleted = true;
                 numPosOcupadas--;
 
-                printPause("A chave foi removida do indice ",posParaRemover);
+                printPause(PI, "\nA chave foi removida do indice ",posParaRemover,".\n");
             }else
-                printPause("A chave nao foi encontrada na tabela.");
+                printPause(PI, "\nA chave nao foi encontrada na tabela.\n");
 
         }
 

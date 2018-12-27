@@ -53,19 +53,19 @@ class Ohash: public TabelaHash{
 
     /************************************************* REMOVER *****************************************************************/
 
-    void remover(int chave){
+    void remover(int chave, bool PI){
 
         int h = chave % TH;
-        printNoPause(chave," % ",TH," = ",h);
+        printNoPause(PI,chave," % ",TH," = ",h);
 
         if (tabela[h]->remover(chave) == true){
             //Checa se uma posicao anteriormente ocupada vai ficar desocupada agora
             if (tabela[h]->isNull())
                 numPosOcupadas--;
 
-            printPause("A chave foi deletada com sucesso do indice ",h,".");
+            printPause(PI,"A chave foi deletada com sucesso do indice ",h,".\n");
         }else
-            printPause("A chave nao foi encontrada.");
+            printPause(PI,"A chave nao foi encontrada.\n");
 
     }
 
@@ -92,6 +92,7 @@ class Ohash: public TabelaHash{
     int buscar(int chave, bool PI){
 
         int h = chave % TH;
+        printNoPause(PI,chave," % ",TH," = ",h);
         bool encontrou = false;
 
         encontrou = tabela[h]->buscar(chave);

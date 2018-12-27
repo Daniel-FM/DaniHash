@@ -118,7 +118,10 @@ namespace output{
     }
 
     void apagaLinha(){
-        backspace(512);
+        cout<<"\r";
+        for (int i=0;i<50;i++)
+            cout<<" ";
+        cout<<"\r";
     }
 
     void printConstantes(){
@@ -132,6 +135,17 @@ namespace output{
         cout<<"FILEPATH_INS          = "<<constantes::FILEPATH_INS<<endl;
         cout<<"FILEPATH_BMK          = "<<constantes::FILEPATH_BMK<<endl;
         system("pause>0");
+    }
+
+    void printResultadoBusca(bool PI, int indice){
+        if (indice >= 0)
+            printPause(PI,"\nA chave foi encontrada na posicao ",indice,".\n");
+        else if (indice == -1)
+            printPause(PI,"\nA chave nao existe na tabela.\n");
+        else if (indice == -2)
+            printPause(PI,"\nNumero maximo de tentativas atingido. A chave nao foi encontrada.\n");
+        else
+            printPause(PI,"\nErro ",indice,".\n");
     }
 
 };

@@ -51,7 +51,7 @@ int main(){
             system("cls");
 
             cout<<"O que deseja?\n\n";
-            cout<<"1) Ler e inserir numeros de um arquivo\n";
+            cout<<"1) Realizar instrucoes de um arquivo\n";
             cout<<"2) Inserir numeros ordenados\n";
             cout<<"3) Inserir numeros aleatorios (Uniforme)\n";
             cout<<"4) Inserir numeros aleatorios (Normal)\n";
@@ -83,7 +83,7 @@ int main(){
 
                     try{
                         h = instanciaHash(atributos);
-                        resultadoBMK = h->inserirDeArquivo(fileNameTmp, false);
+                        resultadoBMK = h->realizarInstrucoesDeArquivo(fileNameTmp, false);
 
                         if(opcaoTmp == 1)
                             tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
@@ -129,7 +129,7 @@ int main(){
 
                     try{
                         h = instanciaHash(atributos);
-                        resultadoBMK = h->benchmarkINSERCAO(numeroTmp,opcaoTmp,fileNameTmp);
+                        resultadoBMK = h->benchmarkINSERCAO(numeroTmp,opcaoMenu,fileNameTmp);
                         if(opcaoTmp == 10);
                         tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
 

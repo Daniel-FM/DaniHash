@@ -33,7 +33,7 @@ namespace dh{
         int TH, tipo;
 
         virtual void inserir(int chave, bool PI)=0;
-        virtual void remover(int chave)=0;
+        virtual void remover(int chave, bool PI)=0;
         virtual int buscar(int chave, bool PI)=0;
         virtual void imprimir()=0;
         virtual void desenha_hash()=0;
@@ -41,40 +41,76 @@ namespace dh{
         virtual int getColisoesDaInsercaoAtual()=0;
         virtual bool getFezRehashing()=0;
 
-        Results inserirDeArquivo(string nomeDoArquivo, bool PI){
+        Results realizarInstrucoesDeArquivo(string nomeDoArquivo, bool PI){
 
-            int numeroNaLinha, numeroDaLinha = 1;
-            string linha, substringINS;
+            int numeroNaLinha, numeroDaLinha = 0, indiceInicial;
+            string linha, operacao, opAnterior = "";
             ifstream fileREAD;
             fileREAD.open(FILEPATH_INS+nomeDoArquivo);
             Results resultado;
+            cronometro cron;
 
             while(fileREAD){
+                numeroDaLinha++;
                 getline(fileREAD, linha);
-                substringINS = linha.substr(0,4);
+                indiceInicial = getIndiceInicial(linha);
 
-                if(substringINS =="INS "){
+                if (linha.empty()){
+                    continue;
+                }else if (linha.at(indiceInicial) == '#'){
+                    if (linha.at(indiceInicial)  == '#' &&
+                        linha.at(indiceInicial+1)!= '#'){
+
+                        printNoPause(PI," * ",linha.substr(
+                        indiceInicial+1,linha.size()-indiceInicial+1)," * \n");
+                    }
+                }else{
+                    operacao = linha.substr(indiceInicial,4);
                     try{
-                        numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
+                        numeroNaLinha = stoi(linha.substr(indiceInicial+4,linha.size()-4));
                     }catch(invalid_argument e){
                         throw arquivo_defeituoso(numeroDaLinha,1);
                     }
+                    if(operacao =="INS "){
+                        if (opAnterior != "INSERCAO"){
+                            opAnterior = "INSERCAO";
+                            printNoPause(PI,"INSERCAO:\n");
+                        }
+                        cron.reset();
+                        this->inserir(numeroNaLinha, PI);
+                        resultado.tempoBMK += cron.tempoDecorrido();
 
-                    cronometro cron;
-                    this->inserir(numeroNaLinha, PI);
-                    resultado.tempoBMK += cron.tempoDecorrido();
+                        resultado.colisoes += getColisoesDaInsercaoAtual();
 
-                    resultado.colisoes += getColisoesDaInsercaoAtual();
+                        if (this->getFezRehashing())
+                            resultado.rehashings++;
 
-                    if (this->getFezRehashing())
-                        resultado.rehashings++;
+                    }else if (operacao == "DEL "){
+                        if (opAnterior != "DELECAO"){
+                            opAnterior = "DELECAO";
+                            printNoPause(PI,"DELECAO:\n");
+                        }
+                        cron.reset();
+                        this->remover(numeroNaLinha, PI);
+                        resultado.tempoBMK += cron.tempoDecorrido();
 
-                    numeroDaLinha++;
+                        resultado.colisoes += getColisoesDaInsercaoAtual();
 
-                }else if (linha == ""){
-                    break;
-                }else{
-                    throw arquivo_defeituoso(numeroDaLinha,2);
+                    }else if (operacao == "BSC "){
+                        if (opAnterior != "BUSCA"){
+                            opAnterior = "BUSCA";
+                            printNoPause(PI,"BUSCA:\n");
+                        }
+                        cron.reset();
+                        printResultadoBusca(PI,this->buscar(numeroNaLinha, PI));
+                        resultado.tempoBMK += cron.tempoDecorrido();
+
+                        resultado.colisoes += getColisoesDaInsercaoAtual();
+
+                    }else{
+                        fileREAD.close();
+                        throw arquivo_defeituoso(numeroDaLinha,2);
+                    }
                 }
             }
             fileREAD.close();
@@ -127,13 +163,13 @@ namespace dh{
         }
 
         double benchmarkBUSCA(int opcao_insbmk, string fileName_insercao){
-            //Praticamente igual ao benchmark de insercao, mas usando a operacao de busca
+            //Para cada numero inserido pelo arquivo de instrucoes, realizamos uma busca
             int numeroNaLinha, quantidadeDeBuscas = 0;
             double tempo = 0;
             string linha, ins_str;
 
             ifstream fileREAD;
-            fileREAD.open(FILEPATH_INS+fileName_insercao);  //Abre o arquivo de insercao gerado antes, pra saber o que deve ser buscado
+            fileREAD.open(FILEPATH_INS+fileName_insercao);  //Abre o arquivo de instrucoes gerado antes, pra saber o que deve ser buscado
 
             while(fileREAD){
                 getline(fileREAD, linha);
@@ -146,8 +182,9 @@ namespace dh{
                     buscar(numeroNaLinha,false);
                     tempo += cron.tempoDecorrido();
 
-                }else if (linha == ""){
-                    break;
+                }else if (linha.empty() || linha.front() == '#' ||
+                          ins_str=="DEL" || ins_str=="BSC"){
+                    continue;
                 }else{
                     cout<<"Arquivo com problema!"<<endl;
                     break;

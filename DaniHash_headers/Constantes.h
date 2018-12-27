@@ -32,7 +32,7 @@ const string INI_FILE = nada+
                     "#A altura maxima das arvores em tabelas com Half-Open Hashing criadas pelo DaniHash BMK\n"+
                     "ALT_MAX_BMK           =5\n\n\n"+
                     "#O diretorio aonde serao salvos os arquivos de insercao\n"+
-                    "FILEPATH_INS          =.\\\\insercao\\\\\n\n"+
+                    "FILEPATH_INS          =.\\\\instrucoes\\\\\n\n"+
                     "#O diretorio aonde serao salvos os arquivos de benchmark\n"+
                     "FILEPATH_BMK          =.\\\\benchmark\\\\";
 

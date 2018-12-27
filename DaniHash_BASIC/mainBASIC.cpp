@@ -18,23 +18,20 @@ using namespace dh;
 int main(){
 
     Atributos atributos;
-    bool loopPrograma = true, loopMenu, piTmp;
-    int opcaoMenu, opcaoTmp, numeroTmp, indiceTmp;
+    bool loopMenu, piTmp;
+    int opcaoMenu, opcaoTmp, numeroTmp;
     string comandoTmp, fileNameTmp;
 
-    while (loopPrograma){
+    while (true){
 
         system("cls");
         cout<<"***DANIHASH BASIC v1.0.3***\n";
         atributos = pegaAtributosDaHash(true);
 
-        if (atributos.tipo == 0){   //Para sair dos loops e encerrar o programa
-            loopMenu = false;
-            loopPrograma = false;
-        }else{
-            loopMenu = true;
-            loopPrograma = true;
-        }
+        //Para sair do loop principal e encerrar o programa
+        if (atributos.tipo == 0) break;
+
+        loopMenu = true;
 
         TabelaHash* h = instanciaHash(atributos);
         arquivos::inicializaDiretorioINS(DEFAULT_FILENAME_INS);
@@ -45,14 +42,14 @@ int main(){
             cout<<"Fator de carga: "<<h->getFC()<<"\n\n";
             cout<<"O que deseja?\n\n";
             cout<<"1) Inserir um numero manualmente\n";
-            cout<<"2) Ler e inserir numeros de um arquivo\n";
+            cout<<"2) Realizar instrucoes de um arquivo\n";
             cout<<"3) Remover\n";
             cout<<"4) Buscar\n";
             cout<<"5) Imprimir conteudo da hash\n";
             cout<<"6) Inserir varios numeros ordenados\n";
             cout<<"7) Inserir varios numeros aleatorios\n";
             cout<<"8) Desenhar a hash em uma nova janela\n";
-            cout<<"9) Retornar ao manu inicial\n\n";
+            cout<<"9) Retornar ao menu inicial\n\n";
             opcaoMenu = input::pegaRespostaMinMax("","Opcao: ",0,9);
 
             switch (opcaoMenu){
@@ -61,7 +58,7 @@ int main(){
                     numeroTmp = input::pegaRespostaInt("\n\nQual numero?\n");
 
                     h->inserir(numeroTmp,true);
-                    arquivos::salvarArqInsTemp(numeroTmp);
+                    arquivos::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
 
                     break;
 
@@ -78,7 +75,7 @@ int main(){
                     else
                         fileNameTmp += ".ins";
 
-                    opcaoTmp = input::pegaRespostaMinMax("\nImprimir passo a passo? (1-Sim, 2-Nao)",1,2);
+                    opcaoTmp = input::pegaRespostaMinMax("\nImprimir passo a passo? (1-Sim, 2-Nao)\n",1,2);
 
                     if (opcaoTmp == 1)
                         piTmp = true;
@@ -88,8 +85,8 @@ int main(){
                     output::printNoPause(true);
 
                     try{
-                        Results r = h->inserirDeArquivo(fileNameTmp, piTmp);
-                        output::printNoPauseNoNewline("Insercoes concluidas!");
+                        Results r = h->realizarInstrucoesDeArquivo(fileNameTmp, piTmp);
+                        output::printNoPauseNoNewline("Instrucoes concluidas!");
                         output::printNoPause(" (",r.colisoes," colisoes, ",
                                           r.rehashings," rehashings)");
                         input::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
@@ -103,23 +100,16 @@ int main(){
                 case 3:
                     numeroTmp = input::pegaRespostaInt("\n\nQue numero?\n");
 
-                    h->remover(numeroTmp);
+                    h->remover(numeroTmp, true);
+                    arquivos::acrescentarNoArquivoDeInstrucoes("DEL",numeroTmp);
 
                     break;
 
                 case 4:
                     numeroTmp = input::pegaRespostaInt("\n\nQue numero?\n");
 
-                    indiceTmp = h->buscar(numeroTmp,true);
-                    if (indiceTmp == -1)
-                        output::printPause("A chave nao existe na tabela.");
-                    else if (indiceTmp == -2)
-                        output::printPause("Numero maximo de tentativas atingido. A chave nao foi encontrada.");
-                    else if (indiceTmp == -3)
-                        output::printPause("NENHUMA TABELA FOI INSTANCIADA.");
-                    else
-                        output::printPause("A chave foi encontrada na posicao ",indiceTmp);
-
+                    printResultadoBusca(true,h->buscar(numeroTmp,true));
+                    arquivos::acrescentarNoArquivoDeInstrucoes("BSC",numeroTmp);
 
                     break;
 
@@ -132,7 +122,7 @@ int main(){
                     opcaoTmp = input::pegaRespostaInt("Quantos?\n");
                     for (int i = 0; i < opcaoTmp; i++){
                         h->inserir(i,false);
-                        arquivos::salvarArqInsTemp(i);
+                        arquivos::acrescentarNoArquivoDeInstrucoes("INS",i);
                     }
                     output::printPause("\nValores inseridos!");
                     system("pause>0");
@@ -143,7 +133,7 @@ int main(){
                     for (int i = 0; i < opcaoTmp; i++){
                         numeroTmp = gva::uniforme(500);
                         h->inserir(numeroTmp,false);
-                        arquivos::salvarArqInsTemp(numeroTmp);
+                        arquivos::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
                     }
                     output::printPause("\nValores inseridos!");
                     break;

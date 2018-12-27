@@ -129,8 +129,8 @@ class HOhash: public TabelaHash{
 
         //Checa se mais da metade das arvores da tabela estao cheias. Se sim, faz rehashing
         if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-            printPause(PI,"O fator de carga ultrapassou o limiar definido como ",
-                       LIMIAR_PARA_REHASHING,". Vai fazer rehashing.\n");
+            printPause(PI,"O fator de carga ultrapassou ",LIMIAR_PARA_REHASHING,
+                       ". Vai fazer rehashing.\n");
 
             RH_FLAG = true;
             rehashing(PI);
@@ -179,9 +179,10 @@ class HOhash: public TabelaHash{
 
     /************************************************* DELETAR *****************************************************************/
     public:
-    void remover(int k){
+    void remover(int k, bool PI){
 
         int H1 = k % TH;
+        printNoPause(PI,k," % ",TH," = ",H1);
         bool eraCheia = (tabela[H1]->getAltura() >= altMax);
 
         tabela[H1]->remover(k);
@@ -193,7 +194,7 @@ class HOhash: public TabelaHash{
             }
         }
 
-        printPause("A chave ",k," foi removida da arvore no indice ",H1,".");
+        printPause(PI, "A chave ",k," foi removida da arvore no indice ",H1,".\n");
 
     }
 
@@ -259,17 +260,28 @@ class HOhash: public TabelaHash{
 
     }
 
-    /************************************************* BUSCAR (SEM TENTATIVA QUADRATICA) *****************************************************************/
-
+    /************************************************* BUSCAR (FUNCAO BASE) *****************************************************************/
     int buscar(int k, bool PI){
+        if (tipo == 6)
+            return buscar_CTQ(k,PI);
+        else if (tipo == 7)
+            return buscar_STQ(k,PI);
+        else
+            return -4;
+    }
 
-        int chave = k % TH;
+    /************************************************* BUSCAR (SEM TENTATIVA QUADRATICA) *****************************************************************/
+    private:
+    int buscar_STQ(int k, bool PI){
+
+        int h = k % TH;
+        printNoPause(PI,k," % ",TH," = ",h);
         bool encontrou = false;
 
-        encontrou = tabela[chave]->buscar(k);
+        encontrou = tabela[h]->buscar(k);
 
         if (encontrou){
-            return chave;
+            return h;
         } else{
             return -2;
         }
@@ -282,22 +294,26 @@ class HOhash: public TabelaHash{
 
         int H1 = k % TH;
         int Hfinal = H1;
+        printNoPauseNoNewline(PI,k," % ",TH," = ",Hfinal);
 
         if (tabela[Hfinal]->getRaiz() == NULL){
             return -1;
         }else{
 
             int i = 1;
+            int numMaxTentativas = TH/2;
             while (tabela[Hfinal]->getRaiz() != NULL){
 
                 if (tabela[Hfinal]->buscar(k) == true)
                     return Hfinal;
 
-                if (i == TH){
+                if (i == numMaxTentativas){
                     return -2;
                 }
+                printNoPause(PI," (Nao eh esse)");
 
                 Hfinal = (int)(k + pow(i,2)) % TH;
+                printNoPauseNoNewline(PI,"(",H1," + ",i,"^2) % ",TH," = ",Hfinal,"\t");
                 i++;
 
             }   //Se saiu desse laco, significa que encontrou a posicao do no (ou chegou numa posicao nula)
@@ -315,7 +331,7 @@ class HOhash: public TabelaHash{
 
 
     /************************************************* PEGAR FATOR DE CARGA *****************************************************************/
-
+    public:
     float getFC(){
 
         return (float)numArvoresCheias/TH;       //Para obter um float atraves da divisao de inteiros, eu tenho que converter um desses

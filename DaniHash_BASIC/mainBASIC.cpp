@@ -131,7 +131,7 @@ int main(){
                 case 7:
                     opcaoTmp = input::pegaRespostaInt("Quantos?\n");
                     for (int i = 0; i < opcaoTmp; i++){
-                        numeroTmp = gva::uniforme(500);
+                        numeroTmp = random::getUniforme(500);
                         h->inserir(numeroTmp,false);
                         arquivos::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
                     }

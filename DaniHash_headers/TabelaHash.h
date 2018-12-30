@@ -24,7 +24,6 @@ namespace dh{
     using namespace dh::input;
     using namespace dh::math;
     using namespace dh::constantes;
-    using namespace dh::gva;
 
     class TabelaHash{
 
@@ -129,7 +128,7 @@ namespace dh{
 
             for (int i = 0; i < quantidadeDeInsercoes; i++){
                 //Geramos a variavel aleatoria a ser inserida
-                chaveParaInserir = getRand(opcao_insbmk);
+                chaveParaInserir = random::getRandom(opcao_insbmk);
 
                 if (chaveParaInserir < 0) chaveParaInserir = 0;
 

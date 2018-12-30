@@ -13,9 +13,9 @@
 //#define M_E 2.718281828459
 
 namespace dh{
-namespace gva{
+namespace random {
 
-    int getZ1(){
+    int getSeed(){
 
         timeval TV;
         double db_TV;
@@ -32,7 +32,11 @@ namespace gva{
 
     //A variavel global que muda a cada chamada de getRand(),
     //fazendo o periodo de numeros pseudo-aleatorios entre 0 e 1.
-    int z = getZ1();
+    int z = getSeed();
+
+    //A variaval global que eh incrementada a cada chamada
+    //de getOrdenado()
+    int ord = 0;
 
     float getU(){
 
@@ -52,10 +56,9 @@ namespace gva{
             z = test+m;
 
         return (float)z/m;
-
     }
 
-    int uniforme(int media){
+    int getUniforme(int media){
 
         float u = getU();
 
@@ -65,10 +68,9 @@ namespace gva{
 
     }
 
-    int normal(int media, float desvio){
+    int getNormal(int media, float desvio){
 
         while (true){
-
             float u1 = getU();
             float u2 = getU();
 
@@ -96,24 +98,28 @@ namespace gva{
 
     }
 
-    int exponencial(int media){
-
+    int getExponencial(int media){
         float u  = getU();
         float ln = (float) log(u);
 
         return (int) -media*ln;
     }
 
-    int getRand(int opc){
+    int getOrdenado(){
+        ord++;
+        return ord;
+    }
+
+    int getRandom(int opc){
 
         if (benchmark::querFazerUniforme(opc))
-            return uniforme(constantes::MEDIA_CHAVE_BMK);
+            return getUniforme(constantes::MEDIA_CHAVE_BMK);
         else if (benchmark::querFazerNormal(opc))
-            return normal(constantes::MEDIA_CHAVE_BMK,constantes::MEDIA_CHAVE_BMK/2.5);
+            return getNormal(constantes::MEDIA_CHAVE_BMK,constantes::MEDIA_CHAVE_BMK/2.5);
         else if (benchmark::querFazerExponencial(opc))
-            return exponencial(constantes::MEDIA_CHAVE_BMK);
+            return getExponencial(constantes::MEDIA_CHAVE_BMK);
         else
-            return constantes::MEDIA_CHAVE_BMK;
+            return getOrdenado();
 
     }
 };

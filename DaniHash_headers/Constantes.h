@@ -9,8 +9,6 @@
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED
 
-using namespace std;
-
 namespace dh{
 namespace constantes{
 

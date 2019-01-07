@@ -6,43 +6,21 @@
  * Part of the DaniHash project
  */
 
+#include "Excecoes.h"
+
 #ifndef FUNCOES_AUXILIARES_MENU_H_INCLUDED
 #define FUNCOES_AUXILIARES_MENU_H_INCLUDED
+
 
 namespace dh{
 
 namespace input{
 
-    struct entrada_invalida : public exception{
-
-        string errorMsg = "\nEntrada invalida!";
-
-        entrada_invalida(string tipoEsperado){
-
-            if (tipoEsperado != ""){
-                errorMsg == errorMsg + " Espera " + tipoEsperado + ".";
-            }
-
-            cerr<<errorMsg;
-            system("pause>0");
-            output::apagaLinha();
-            cin.clear();                //Retorna as flags de cin pro estado inicial
-            cin.ignore(512,'\n');       //ignora tudo que tem na linha atual
-
-        }
-
-        //override do metodo virtual what(), de std::exception
-        const char * what () const throw () {
-            return errorMsg.c_str();
-        }
-
-    };
-
     int pegaInt(){
         int retorno = 0;
 
         if (!(cin>>retorno)) {         //Para tratar entradas que nao sejam int
-            throw entrada_invalida("");
+            throw excecao::entrada_invalida("");
         }
 
         return retorno;
@@ -60,7 +38,7 @@ namespace input{
 
             try{
                 resposta = pegaInt();
-            }catch(entrada_invalida e){
+            }catch(excecao::entrada_invalida e){
                 continue;
             }
 
@@ -89,7 +67,7 @@ namespace input{
             cout<<prompt;
             try{
                 resposta = pegaInt();
-            }catch(entrada_invalida e){
+            }catch(excecao::entrada_invalida e){
                 continue;
             }
 
@@ -117,7 +95,7 @@ namespace input{
             cout<<prompt;
             try{
                 resposta = pegaInt();
-            }catch(entrada_invalida e){
+            }catch(excecao::entrada_invalida e){
                 continue;
             }
 

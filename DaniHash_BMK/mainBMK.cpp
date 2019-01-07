@@ -6,11 +6,7 @@
  * Part of the DaniHash project
  */
 
-#include <fstream>
-#include "../DaniHash_headers/utilOutput.h"
-#include "../DaniHash_headers/utilMath.h"
-#include "../DaniHash_headers/utilInput.h"
-#include "../DaniHash_headers/TabelaHash.h"
+#include "../DaniHash_headers/DaniHashCore.h"
 
 using namespace std;
 using namespace dh;
@@ -98,7 +94,7 @@ int main(){
                         cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
                     }catch(bad_alloc e1){
                         cerr<<BAD_ALLOC_MSG;
-                    }catch(arquivo_defeituoso e2){
+                    }catch(excecao::arquivo_defeituoso e2){
                         cerr<<e2.what();
                     }
 

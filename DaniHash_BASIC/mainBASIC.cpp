@@ -5,12 +5,7 @@
  * Created on 2013, 2018
  * Part of the DaniHash project
  */
-
-#include <fstream>
-#include "../DaniHash_headers/utilOutput.h"
-#include "../DaniHash_headers/utilMath.h"
-#include "../DaniHash_headers/utilInput.h"
-#include "../DaniHash_headers/TabelaHash.h"
+#include "../DaniHash_headers/DaniHashCore.h"
 
 using namespace std;
 using namespace dh;
@@ -90,7 +85,7 @@ int main(){
                         output::printNoPause(" (",r.colisoes," colisoes, ",
                                           r.rehashings," rehashings)");
                         input::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
-                    }catch(arquivo_defeituoso e){
+                    }catch(excecao::excecao_arquivo e){
                         cerr<<e.what();
                         system("pause>0");
                     }

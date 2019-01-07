@@ -25,29 +25,6 @@ class no_ch{
 
 };
 
-//Funcao para conferir se ha um certo numero no no (se nao houver ou o no for nulo, retorna 0)
-bool confere_num(no_ch* no, int num){
-
-    if (no != NULL){
-        if (no->info_no == num)
-            return true;
-    }
-    return false;
-
-}
-
-bool DeletedOrNull(no_ch* no){
-
-    bool result = true;
-
-    if (no != NULL){
-        if (no->deleted == false)
-            result = false;
-    }
-
-    return result;
-}
-
 class Chash: public TabelaHash{
 
     public:
@@ -363,6 +340,30 @@ class Chash: public TabelaHash{
 
         bool getFezRehashing(){
             return fezRehashing;
+        }
+
+        private:
+        //Funcao para conferir se ha um certo numero no no (se nao houver ou o no for nulo, retorna 0)
+        bool confere_num(no_ch* no, int num){
+
+            if (no != NULL){
+                if (no->info_no == num)
+                    return true;
+            }
+            return false;
+
+        }
+
+        bool DeletedOrNull(no_ch* no){
+
+            bool result = true;
+
+            if (no != NULL){
+                if (no->deleted == false)
+                    result = false;
+            }
+
+            return result;
         }
 
 };

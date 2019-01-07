@@ -15,15 +15,16 @@
 #include "utilBenchmark.h"
 #include "utilArquivos.h"
 
-namespace dh{
+using namespace dh::benchmark;
+using namespace dh::arquivos;
+using namespace dh::desenho;
+using namespace dh::excecao;
+using namespace dh::output;
+using namespace dh::input;
+using namespace dh::math;
+using namespace dh::constantes;
 
-    using namespace dh::benchmark;
-    using namespace dh::arquivos;
-    using namespace dh::desenho;
-    using namespace dh::output;
-    using namespace dh::input;
-    using namespace dh::math;
-    using namespace dh::constantes;
+namespace dh{
 
     class TabelaHash{
 
@@ -48,6 +49,9 @@ namespace dh{
             fileREAD.open(FILEPATH_INS+nomeDoArquivo);
             Results resultado;
             cronometro cron;
+
+            if (!fileREAD)
+                throw arquivo_inexistente(FILEPATH_INS+nomeDoArquivo);
 
             while(fileREAD){
                 numeroDaLinha++;

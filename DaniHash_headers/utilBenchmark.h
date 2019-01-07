@@ -33,17 +33,15 @@ namespace benchmark{
         }
     };
 
-
-
     class cronometro {
 
-    private:
+        private:
         typedef std::chrono::high_resolution_clock clock;
         typedef std::chrono::nanoseconds Nanoseconds;
 
         clock::time_point start;
 
-    public:
+        public:
         cronometro(bool startCounting = true) {
             if(startCounting)
                 start = clock::now();

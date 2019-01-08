@@ -43,7 +43,7 @@ namespace dh{
 
         Results realizarInstrucoesDeArquivo(string nomeDoArquivo, bool PI){
 
-            int numeroNaLinha, numeroDaLinha = 0, indiceInicial;
+            int numeroNaLinha, numeroDaLinha = 0, tamanhoDaLinha, indiceInicial;
             string linha, operacao, opAnterior = "";
             ifstream fileREAD;
             fileREAD.open(FILEPATH_INS+nomeDoArquivo);
@@ -51,11 +51,12 @@ namespace dh{
             cronometro cron;
 
             if (!fileREAD)
-                throw arquivo_inexistente(FILEPATH_INS+nomeDoArquivo);
+                throw excecao_arquivo(excecao::EX_FILE_FILENOTFOUND,FILEPATH_INS+nomeDoArquivo);
 
             while(fileREAD){
                 numeroDaLinha++;
                 getline(fileREAD, linha);
+                tamanhoDaLinha = linha.size();
                 indiceInicial = getIndiceInicial(linha);
 
                 if (linha.empty()){
@@ -65,15 +66,21 @@ namespace dh{
                         linha.at(indiceInicial+1)!= '#'){
 
                         printNoPause(PI," * ",linha.substr(
-                        indiceInicial+1,linha.size()-indiceInicial+1)," * \n");
+                        indiceInicial+1,tamanhoDaLinha-indiceInicial+1)," * \n");
                     }
                 }else{
-                    operacao = linha.substr(indiceInicial,4);
-                    try{
-                        numeroNaLinha = stoi(linha.substr(indiceInicial+4,linha.size()-4));
-                    }catch(invalid_argument e){
-                        throw arquivo_defeituoso(numeroDaLinha,1);
+                    if (tamanhoDaLinha >= 5){
+                        operacao = linha.substr(indiceInicial,4);
+
+                        try{
+                            numeroNaLinha = stoi(linha.substr(indiceInicial+4,tamanhoDaLinha-4));
+                        }catch(invalid_argument e){
+                            throw excecao_arquivo(excecao::EX_FILE_INVALIDCHAR,to_string(numeroDaLinha));
+                        }
+                    }else{
+                        throw excecao_arquivo(excecao::EX_FILE_INCOMPLETELINE,to_string(numeroDaLinha));
                     }
+
                     if(operacao =="INS "){
                         if (opAnterior != "INSERCAO"){
                             opAnterior = "INSERCAO";
@@ -112,7 +119,7 @@ namespace dh{
 
                     }else{
                         fileREAD.close();
-                        throw arquivo_defeituoso(numeroDaLinha,2);
+                        throw excecao_arquivo(excecao::EX_FILE_NOIDENTIFIER,to_string(numeroDaLinha));
                     }
                 }
             }

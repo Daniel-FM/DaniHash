@@ -20,7 +20,7 @@ namespace input{
         int retorno = 0;
 
         if (!(cin>>retorno)) {         //Para tratar entradas que nao sejam int
-            throw excecao::entrada_invalida("");
+            throw excecao::entrada_invalida();
         }
 
         return retorno;
@@ -38,15 +38,15 @@ namespace input{
 
             try{
                 resposta = pegaInt();
+                if ((resposta < minim) || (resposta > maxim)){
+                    output::printPauseNoNewline("\nOpcao invalida!");
+                    output::apagaLinha();
+                }else{
+                    return resposta;
+                }
             }catch(excecao::entrada_invalida e){
-                continue;
-            }
-
-            if ((resposta < minim) || (resposta > maxim)){
-                output::printPauseNoNewline("\nOpcao invalida!");
+                output::logError(e.what());
                 output::apagaLinha();
-            }else{
-                return resposta;
             }
         }
 
@@ -68,7 +68,7 @@ namespace input{
             try{
                 resposta = pegaInt();
             }catch(excecao::entrada_invalida e){
-                continue;
+                output::logError(e.what());
             }
 
             if (resposta < minim){
@@ -96,7 +96,7 @@ namespace input{
             try{
                 resposta = pegaInt();
             }catch(excecao::entrada_invalida e){
-                continue;
+                output::logError(e.what());
             }
 
             return resposta;

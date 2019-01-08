@@ -5,81 +5,68 @@
 namespace dh{
 namespace excecao{
 
+    const int EX_FILE_FILENOTFOUND = 1;
+    const int EX_FILE_INVALIDCHAR = 2;
+    const int EX_FILE_NOIDENTIFIER = 3;
+    const int EX_FILE_INCOMPLETELINE = 4;
+
     struct entrada_invalida : public exception{
 
         string errorMsg = "\nEntrada invalida!";
 
-        entrada_invalida(string tipoEsperado){
-
-            if (tipoEsperado != ""){
-                errorMsg == errorMsg + " Espera " + tipoEsperado + ".";
-            }
-
-            cerr<<errorMsg;
-            system("pause>0");
-            output::apagaLinha();
+        entrada_invalida(){
             cin.clear();                //Retorna as flags de cin pro estado inicial
             cin.ignore(512,'\n');       //ignora tudo que tem na linha atual
-
         }
 
-        const char * what () const throw () {
-            return errorMsg.c_str();
+        string what() {
+            return errorMsg;
         }
 
     };
+
 
     struct excecao_arquivo : public exception{
 
-        excecao_arquivo(){
-            cout<<"oi";
-        }
+        string errorMsg;
+        excecao_arquivo(int codigo, string localizacao){
 
-        const char* what() const throw (){
-            cout<<"yo1";
-            return "yo2";
-        }
+            string e1, e2;
 
-    };
+            switch (codigo){
 
-    struct arquivo_defeituoso : public excecao_arquivo {
-
-        int l = 0;
-        string t = "";
-
-        arquivo_defeituoso(int linha, int tipo){
-            l = linha;
-
-            switch (tipo){
-                case 1:
-                    t = "Caractere invalido.";
+                case EX_FILE_FILENOTFOUND:
+                    e1 = "Arquivo inexistente: ";
+                    e2 = localizacao+"\n";
                     break;
-                case 2:
-                    t = "Sem identificador valido.";
+
+                case EX_FILE_INVALIDCHAR:
+                    e1 = "Arquivo defeituoso: Caractere invalido";
+                    e2 = " (Linha "+localizacao+")\n";
                     break;
+
+                case EX_FILE_NOIDENTIFIER:
+                    e1 = "Arquivo defeituoso: Sem identificador valido";
+                    e2 = " (Linha "+localizacao+")\n";
+                    break;
+
+                case EX_FILE_INCOMPLETELINE:
+                    e1 = "Arquivo defeituoso: Linha incompleta";
+                    e2 = " (Linha "+localizacao+")\n";
+                    break;
+
                 default:
-                    t = "Erro desconhecido.";
+                    e1 = "Arquivo com problema! ";
+                    e2 = "Erro desconhecido.\n";
             }
+
+            errorMsg = e1 + e2;
         }
 
-        const char * what () const throw () {
-            string str = ("\nProblema na linha " + to_string(l)) + (": " + t);
-            return str.c_str();
-        }
-    };
-
-    struct arquivo_inexistente : public excecao_arquivo {
-
-        string fullPath;
-
-        arquivo_inexistente(string fullPath_){
-            fullPath = fullPath_;
+        string what(){
+            return errorMsg;
         }
 
-        const char * what () const throw () {
-            string str = ("\nArquivo Inexistente: " + fullPath);
-            return str.c_str();
-        }
     };
 
 };

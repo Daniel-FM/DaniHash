@@ -146,6 +146,11 @@ namespace output{
             printPause(PI,"\nErro ",indice,".\n");
     }
 
+    void logError(string erro){
+        cerr<<erro;
+        system("pause>0");
+    }
+
 };
 };
 

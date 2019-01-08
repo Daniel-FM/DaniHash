@@ -86,8 +86,7 @@ int main(){
                                           r.rehashings," rehashings)");
                         input::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
                     }catch(excecao::excecao_arquivo e){
-                        cerr<<e.what();
-                        system("pause>0");
+                        logError(e.what());
                     }
 
                     break;

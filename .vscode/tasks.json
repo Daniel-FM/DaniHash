@@ -1,0 +1,39 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "g++.exe build active file",
+            "command": "C:\\MinGW\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\bin\\danihash.exe",
+                "-I",
+                "C:\\SFML-2.5.1\\include",
+                "-L",
+                "C:\\SFML-2.5.1\\lib",
+                "-l",
+                "sfml-graphics-d",
+                "-l",
+                "sfml-audio-d",
+                "-l",
+                "sfml-network-d",
+                "-l",
+                "sfml-window-d",
+                "-l",
+                "sfml-system-d",
+            ],
+            "options": {
+                "cwd": "C:\\MinGW\\bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+    ]
+}

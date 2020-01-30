@@ -5,27 +5,18 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "g++.exe build active file",
+            "label": "Build BASIC Debug",
             "command": "C:\\MinGW\\bin\\g++.exe",
             "args": [
                 "-g",
-                "${file}",
+                "${workspaceFolder}\\mainBASIC.cpp",
                 "-o",
-                "${fileDirname}\\bin\\danihash.exe",
-                "-I",
-                "C:\\SFML-2.5.1\\include",
-                "-L",
-                "C:\\SFML-2.5.1\\lib",
-                "-l",
-                "sfml-graphics-d",
-                "-l",
-                "sfml-audio-d",
-                "-l",
-                "sfml-network-d",
-                "-l",
-                "sfml-window-d",
-                "-l",
-                "sfml-system-d",
+                "${workspaceFolder}\\bin-debug\\DaniHash_BASIC 1.0.3.exe",
+                "-IC:\\SFML-2.5.1\\include",
+                "-LC:\\SFML-2.5.1\\lib",
+                "-lsfml-graphics-d",
+                "-lsfml-window-d",
+                "-lsfml-system-d",
             ],
             "options": {
                 "cwd": "C:\\MinGW\\bin"
@@ -34,6 +25,75 @@
                 "$gcc"
             ],
             "group": "build"
-        }
+        },
+        {
+            "type": "shell",
+            "label": "Build BMK Debug",
+            "command": "C:\\MinGW\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "${workspaceFolder}\\mainBMK.cpp",
+                "-o",
+                "${workspaceFolder}\\bin-debug\\DaniHash_BMK 1.0.3.exe",
+                "-IC:\\SFML-2.5.1\\include",
+                "-LC:\\SFML-2.5.1\\lib",
+                "-lsfml-graphics-d",
+                "-lsfml-window-d",
+                "-lsfml-system-d",
+            ],
+            "options": {
+                "cwd": "C:\\MinGW\\bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Build BASIC Release",
+            "command": "C:\\MinGW\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "${workspaceFolder}\\mainBASIC.cpp",
+                "-o",
+                "${workspaceFolder}\\bin\\DaniHash_BASIC 1.0.3.exe",
+                "-IC:\\SFML-2.5.1\\include",
+                "-LC:\\SFML-2.5.1\\lib",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system",
+            ],
+            "options": {
+                "cwd": "C:\\MinGW\\bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Build BMK Release",
+            "command": "C:\\MinGW\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "${workspaceFolder}\\mainBMK.cpp",
+                "-o",
+                "${workspaceFolder}\\bin\\DaniHash_BMK 1.0.3.exe",
+                "-IC:\\SFML-2.5.1\\include",
+                "-LC:\\SFML-2.5.1\\lib",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system",
+            ],
+            "options": {
+                "cwd": "C:\\MinGW\\bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
     ]
 }

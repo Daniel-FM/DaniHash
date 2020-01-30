@@ -29,9 +29,9 @@ const string INI_FILE = nada+
                     "TAM_INICIAL_HASH_BMK  =11\n\n"+
                     "#A altura maxima das arvores em tabelas com Half-Open Hashing criadas pelo DaniHash BMK\n"+
                     "ALT_MAX_BMK           =5\n\n\n"+
-                    "#O diretorio aonde serao salvos os arquivos de insercao\n"+
+                    "#O diretorio onde serao salvos os arquivos de instrucao\n"+
                     "FILEPATH_INS          =.\\\\instrucoes\\\\\n\n"+
-                    "#O diretorio aonde serao salvos os arquivos de benchmark\n"+
+                    "#O diretorio onde serao salvos os arquivos de benchmark\n"+
                     "FILEPATH_BMK          =.\\\\benchmark\\\\";
 
 void criarIniSeNaoExistir(){

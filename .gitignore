@@ -1,1 +1,12 @@
 *.lnk
+0
+instrucoes/*
+benchmark/*
+bin/0
+bin/instrucoes/*
+bin/benchmark/*
+bin-debug/*.exe
+bin-debug/*.ini
+bin-debug/0
+bin-debug/instrucoes/*
+bin-debug/benchmark/*

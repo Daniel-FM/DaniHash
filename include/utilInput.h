@@ -27,11 +27,11 @@ namespace input{
     }
 
     int pegaRespostaMinMax(string pedido, string prompt, int a, int b){
-cout<<"a";
+
         int resposta=0;
         int minim = math::minimo(a,b);
         int maxim = math::maximo(a,b);
-cout<<"a";
+
         cout<<pedido;
         while (true){
             cout<<prompt;

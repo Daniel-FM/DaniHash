@@ -6,7 +6,7 @@
  * Part of the DaniHash project
  */
 
-#include "../DaniHash_headers/DaniHashCore.h"
+#include "include/DaniHashCore.h"
 
 using namespace std;
 using namespace dh;
@@ -14,7 +14,7 @@ using namespace dh;
 int main(){
 
     Atributos atributos;
-    bool loopPrograma = true, loopMenu;
+    bool loopMenu;
     int opcaoMenu, opcaoTmp, numeroTmp, codigoBmkTmp;
     string comandoTmp, fileNameTmp;
 
@@ -25,20 +25,15 @@ int main(){
     Results resultadoBMK;
     /*************************************/
 
-    while (loopPrograma){
+    while (true){
 
         loopMenu = true;
         system("cls");
         cout<<"***DANIHASH BMK v1.0.3***\n";
         atributos = pegaAtributosDaHash(false);
 
-        if (atributos.tipo == 0){   //Para sair dos loops e encerrar o programa
-            loopMenu = false;
-            loopPrograma = false;
-        }else{
-            loopMenu = true;
-            loopPrograma = true;
-        }
+        //Para sair do loop principal e encerrar o programa
+        if (atributos.tipo == 0) break;
 
         TabelaHash* h;
 
@@ -232,5 +227,6 @@ int main(){
         }
 
     }
+    return 1;
 
 }

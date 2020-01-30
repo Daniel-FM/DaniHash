@@ -10,17 +10,8 @@
             "cwd": "${workspaceFolder}",
             "request": "launch",
             "externalConsole": true,
-            "program": "${workspaceFolder}/bin-debug/DaniHash_BASIC 1.0.3.exe",
+            "program": "${workspaceFolder}/bin-debug/DaniHash_BASIC 1.0.3d.exe",
             "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe"
-        },
-        {
-            "name": "Launch BASIC",
-            "type": "cppvsdbg",
-            "cwd": "${workspaceFolder}",
-            "request": "launch",
-            "program": "${workspaceFolder}/bin-debug/DaniHash_BASIC 1.0.3.exe",
-            "stopAtEntry": false,
-            "externalConsole": true
         },
         {
             "name": "Debug BMK",
@@ -28,17 +19,8 @@
             "cwd": "${workspaceFolder}",
             "request": "launch",
             "externalConsole": true,
-            "program": "${workspaceFolder}/bin-debug/DaniHash_BMK 1.0.3.exe",
+            "program": "${workspaceFolder}/bin-debug/DaniHash_BMK 1.0.3d.exe",
             "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe"
-        },
-        {
-            "name": "Launch BMK",
-            "type": "cppvsdbg",
-            "cwd": "${workspaceFolder}",
-            "request": "launch",
-            "program": "${workspaceFolder}/bin-debug/DaniHash_BMK 1.0.3.exe",
-            "stopAtEntry": false,
-            "externalConsole": true
         }
     ]
 }

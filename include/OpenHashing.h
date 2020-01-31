@@ -40,14 +40,14 @@ class Ohash: public TabelaHash{
     void inserir(int chave, bool PI){
 
         int h = chave % TH;
-        printNoPause(PI,chave," % ",TH," = ",h);
+        out::printNoPause(PI,chave," % ",TH," = ",h);
         //Checa se uma posicao anteriormente desocupada vai ficar ocupada agora
         if (tabela[h]->isNull())
             numPosOcupadas++;
 
         tabela[h]->inserir(chave);
 
-        printPause(PI,"A chave ",chave," foi inserida no indice ",h,".\n");
+        out::printPause(PI,"A chave ",chave," foi inserida no indice ",h,".\n");
 
     }
 
@@ -56,16 +56,16 @@ class Ohash: public TabelaHash{
     void remover(int chave, bool PI){
 
         int h = chave % TH;
-        printNoPause(PI,chave," % ",TH," = ",h);
+        out::printNoPause(PI,chave," % ",TH," = ",h);
 
         if (tabela[h]->remover(chave) == true){
             //Checa se uma posicao anteriormente ocupada vai ficar desocupada agora
             if (tabela[h]->isNull())
                 numPosOcupadas--;
 
-            printPause(PI,"A chave foi deletada com sucesso do indice ",h,".\n");
+            out::printPause(PI,"A chave foi deletada com sucesso do indice ",h,".\n");
         }else
-            printPause(PI,"A chave nao foi encontrada.\n");
+            out::printPause(PI,"A chave nao foi encontrada.\n");
 
     }
 
@@ -92,7 +92,7 @@ class Ohash: public TabelaHash{
     int buscar(int chave, bool PI){
 
         int h = chave % TH;
-        printNoPause(PI,chave," % ",TH," = ",h);
+        out::printNoPause(PI,chave," % ",TH," = ",h);
         bool encontrou = false;
 
         encontrou = tabela[h]->buscar(chave);

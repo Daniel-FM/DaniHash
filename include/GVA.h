@@ -13,7 +13,7 @@
 //#define M_E 2.718281828459
 
 namespace dh{
-namespace random {
+namespace rand {
 
     int getSeed(){
 
@@ -112,12 +112,12 @@ namespace random {
 
     int getRandom(int opc){
 
-        if (benchmark::querFazerUniforme(opc))
-            return getUniforme(constantes::MEDIA_CHAVE_BMK);
-        else if (benchmark::querFazerNormal(opc))
-            return getNormal(constantes::MEDIA_CHAVE_BMK,constantes::MEDIA_CHAVE_BMK/2.5);
-        else if (benchmark::querFazerExponencial(opc))
-            return getExponencial(constantes::MEDIA_CHAVE_BMK);
+        if (bmk::querFazerUniforme(opc))
+            return getUniforme(cons::MEDIA_CHAVE_BMK);
+        else if (bmk::querFazerNormal(opc))
+            return getNormal(cons::MEDIA_CHAVE_BMK,cons::MEDIA_CHAVE_BMK/2.5);
+        else if (bmk::querFazerExponencial(opc))
+            return getExponencial(cons::MEDIA_CHAVE_BMK);
         else
             return getOrdenado();
 

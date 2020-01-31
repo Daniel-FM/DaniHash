@@ -41,7 +41,7 @@ class Chash: public TabelaHash{
             numPosOcupadas = 0;
             colisoesDaInsercaoAtual = 0;
             fezRehashing = false;
-            r = pegaProxPrimMenor(TH);   //valor usado em duplo hashing
+            r = math::pegaProxPrimMenor(TH);   //valor usado em duplo hashing
 
             tabela = new no_ch*[TH];
 
@@ -76,7 +76,7 @@ class Chash: public TabelaHash{
             }
 
             int H1 = k % TamTabela;
-            printNoPauseNoNewline(PI,k," % ",TamTabela," = ",H1,"\t\t");
+            out::printNoPauseNoNewline(PI,k," % ",TamTabela," = ",H1,"\t\t");
 
             int Hfinal = H1;
 
@@ -96,18 +96,18 @@ class Chash: public TabelaHash{
                     while (!DeletedOrNull(Tabela[Hfinal])){
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
+                            out::printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"Tabela cheia. A chave ",k," nao pode ser inserida.\n");
+                            out::printPause(PI,"Tabela cheia. A chave ",k," nao pode ser inserida.\n");
                             return;
                         }
-                        printNoPause(PI," (Colisao)");
+                        out::printNoPause(PI," (Colisao)");
 
                         Hfinal = (H1 + i) % TamTabela;
-                        printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TamTabela," = ",Hfinal,"\t");
+                        out::printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TamTabela," = ",Hfinal,"\t");
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -121,18 +121,18 @@ class Chash: public TabelaHash{
                     while (!DeletedOrNull(Tabela[Hfinal])){
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
+                            out::printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
                             return;
                         }
 
                         if (i == numMaxTentativas){
-                            printPause(PI,"Numero maximo de tentativas atingido. A chave ",k," nao pode ser inserida.\n");
+                            out::printPause(PI,"Numero maximo de tentativas atingido. A chave ",k," nao pode ser inserida.\n");
                             return;
                         }
-                        printNoPause(PI," (Colisao)");
+                        out::printNoPause(PI," (Colisao)");
 
                         Hfinal = (int)(H1 + pow(i,2)) % TamTabela;
-                        printNoPauseNoNewline(PI,"(",H1," + ",i,"^2) % ",TamTabela," = ",Hfinal,"\t");
+                        out::printNoPauseNoNewline(PI,"(",H1," + ",i,"^2) % ",TamTabela," = ",Hfinal,"\t");
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -150,20 +150,20 @@ class Chash: public TabelaHash{
                     while (!DeletedOrNull(Tabela[Hfinal])){
 
                         if (Tabela[Hfinal]->info_no == k){
-                            printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
+                            out::printPause(PI,"\nJa existe uma chave ",k," no indice ",Hfinal,".\n");
                             return;
                         }
 
                         if (i == TamTabela){
-                            printPause(PI,"\nTabela cheia. A chave ",k," nao pode ser inserida. \n");
+                            out::printPause(PI,"\nTabela cheia. A chave ",k," nao pode ser inserida. \n");
                             return;
                         }
-                        printNoPauseNoNewline(PI,"(Colisao)");
-                        printNoPauseNoNewline(printOnce," \t\t[H2 = ",r," - (",k," % ",r,") = ",H2,"]");
+                        out::printNoPauseNoNewline(PI,"(Colisao)");
+                        out::printNoPauseNoNewline(printOnce," \t\t[H2 = ",r," - (",k," % ",r,") = ",H2,"]");
                         printOnce = false;
 
                         Hfinal = (H1 + (i*H2)) % TamTabela;
-                        printNoPauseNoNewline(PI,"\n(",H1," + ",i,"*",H2,") % ",TamTabela," = ",Hfinal,"\t");
+                        out::printNoPauseNoNewline(PI,"\n(",H1," + ",i,"*",H2,") % ",TamTabela," = ",Hfinal,"\t");
 
                         colisoesDaInsercaoAtual++;
                         i++;
@@ -186,11 +186,11 @@ class Chash: public TabelaHash{
             numPosOcupadas++;
 
             //Ai, depois que inseriu, imprime
-            printPause(PI,"\nA chave ",k," foi inserida no indice ",Hfinal,".\n");
+            out::printPause(PI,"\nA chave ",k," foi inserida no indice ",Hfinal,".\n");
 
             //Checa se mais da metade das arvores da Tabela estao cheias. Se sim, faz rehashing
-            if ((getFC() > LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
-                printPause(PI,"O fator de carga ultrapassou ",LIMIAR_PARA_REHASHING,". Sera feito rehashing.\n");
+            if ((getFC() > cons::LIMIAR_PARA_REHASHING) && (RH_FLAG == false)){
+                out::printPause(PI,"O fator de carga ultrapassou ", cons::LIMIAR_PARA_REHASHING,". Sera feito rehashing.\n");
 
                 RH_FLAG = true;
                 rehashing(PI);
@@ -208,7 +208,7 @@ class Chash: public TabelaHash{
             int H1 = k % TH;
             int Hfinal = H1;
             colisoesDaInsercaoAtual = 0;
-            printNoPauseNoNewline(PI,k," % ",TH," = ",H1,"\t\t");
+            out::printNoPauseNoNewline(PI,k," % ",TH," = ",H1,"\t\t");
 
             if (tabela[H1] == NULL){
                 return -1;
@@ -224,9 +224,9 @@ class Chash: public TabelaHash{
                     if (i == TH){
                         return -2;
                     }
-                    printNoPause(PI," (Nao eh esse)");
+                    out::printNoPause(PI," (Nao eh esse)");
                     Hfinal = (H1 + i) % TH;
-                    printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TH," = ",Hfinal,"\t");
+                    out::printNoPauseNoNewline(PI,"(",H1," + ",i,") % ",TH," = ",Hfinal,"\t");
                     colisoesDaInsercaoAtual++;
                     i++;
 
@@ -244,7 +244,7 @@ class Chash: public TabelaHash{
         private:
         void rehashing(bool PI){
 
-            int TH_novo = pegaProxPrimMaior(TH*2);
+            int TH_novo = math::pegaProxPrimMaior(TH*2);
             no_ch* *tabela_nova = new no_ch*[TH_novo];      //Cria a nova tabela, com o tamanho novo
             numPosOcupadas = 0;
 
@@ -257,7 +257,7 @@ class Chash: public TabelaHash{
             int TH_antigo = TH;
 
             TH = TH_novo;                   //Atualiza o tamanho da hashing
-            r = pegaProxPrimMenor(TH);   //e o proximo primo menor
+            r = math::pegaProxPrimMenor(TH);   //e o proximo primo menor
 
             for (int i = 0; i < TH_antigo; i++){        //Vai percorrendo a tabela auxiliar, inserindo os elementos dela na nova tabela
 
@@ -269,9 +269,9 @@ class Chash: public TabelaHash{
             tabela = tabela_nova;           //A tabela antiga agora eh a tabela nova
 
             for (int i=0;i<TH_antigo;i++)
-                delete tabela_dummy[i];         //Deleta a tabela auxilia
+                delete tabela_dummy[i];         //Deleta a tabela auxiliar
 
-            printPause(PI,"Rehashing concluido.\n");
+            out::printPause(PI,"Rehashing concluido.\n");
         }
 
 
@@ -284,15 +284,15 @@ class Chash: public TabelaHash{
             posParaRemover = buscar(chave, PI);
 
             //Depois que encontramos a posParaRemover, "deletamos" o no (nao podemos simplesmente setar ele como NULL, pois
-            //iria impossibilitar que nos que foram inseridos em posicoes a frente dele escolhidos por tratamento de colisao
-            //fossem encontrados futuramente.
+            //iria impossibilitar que nos que foram inseridos em posicoes a frente dele escolhidas por tratamento de colisao
+            //fossem encontrados futuramente).
             if (posParaRemover >= 0){
                 tabela[posParaRemover]->deleted = true;
                 numPosOcupadas--;
 
-                printPause(PI, "\nA chave foi removida do indice ",posParaRemover,".\n");
+                out::printPause(PI, "\nA chave foi removida do indice ",posParaRemover,".\n");
             }else
-                printPause(PI, "\nA chave nao foi encontrada na tabela.\n");
+                out::printPause(PI, "\nA chave nao foi encontrada na tabela.\n");
 
         }
 
@@ -300,7 +300,7 @@ class Chash: public TabelaHash{
 
         float getFC(){
 
-            return (float)numPosOcupadas/TH;       //Para obter um float atraves da divisao de inteiros, eu tenho que converter um desses
+            return (float)numPosOcupadas/TH;       //Para obter um float atraves da divisao de inteiros, temos que converter um desses
                                                 //inteiros para float
         }
 
@@ -321,14 +321,6 @@ class Chash: public TabelaHash{
             }
 
             system("pause>0");
-
-        }
-
-        /************************************************* DESENHO *****************************************************************/
-
-        void desenha_hash(){
-
-            printPause("Esta funcionalidade sera implementada em breve!");
 
         }
 

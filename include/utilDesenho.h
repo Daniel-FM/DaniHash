@@ -148,7 +148,7 @@ namespace desenho{
 
     }
 
-    int defineDistInicial(dh::Ohash* h, int indiceAtual){
+    int defineDistInicialOpenHash(dh::Ohash* h, int indiceAtual){
         int alt = h->tabela[indiceAtual]->getAltura();
 
         if (alt <= 3)
@@ -157,6 +157,8 @@ namespace desenho{
             return (40 + 40*(alt-3));
 
     }
+
+    /**************************************** DESENHA OPEN HASH *************************************************/
 
     void desenhaOpenHashPrivate(dh::Ohash* h, sf::RenderWindow* janela, int posAtual){
         int x_indice, x_no, distanciaEntreNosAvl;//, distanciaParaProxIndice;
@@ -170,7 +172,7 @@ namespace desenho{
         }
 
         for(int i = 0; i < h->TH; i++){
-            if (h->tipo == 2) distanciaEntreNosAvl = defineDistInicial(h, i);
+            if (h->tipo == 2) distanciaEntreNosAvl = defineDistInicialOpenHash(h, i);
 
             /******* DESENHA O QUADRADO DO INDICE E O NUMERO DENTRO DELE ***********/
             desenhaLinha(x_indice + 27, 40, x_indice + 27, 100, janela);      //antes, desenha a linha que vai ligar o indice ao no abaixo dele
@@ -182,15 +184,13 @@ namespace desenho{
                 desenhaLista(dynamic_cast<lista*>(h->tabela[i]), janela, x_no, 100);
             else
                 desenhaAVL(dynamic_cast<arv_avl*>(h->tabela[i]), janela, x_no, 100, distanciaEntreNosAvl);
-            //Eh necessario fazer um dynamic casting para converter um objeto de classe base em um de classe derivada
+            //Eh necessario fazer um dynamic casting para converter um objeto de classe base (EstruturaAuxiliar) em um de classe derivada (AVL/Lista)
 
             if (h->tipo == 1){
                 x_indice += 60;
                 x_no += 60;
             }else{
-                //distanciaParaProxIndice = getDistParaProxIndice(i);
-                //x_indice += distanciaParaProxIndice;
-                //x_no += distanciaParaProxIndice;
+                
                 if (i < h->TH-1){
 
                     //Esses ifs verificam a altura da arvore do indice atual e do indice posterior, para ver qual deve ser a distancia entre eles,
@@ -242,6 +242,77 @@ namespace desenho{
         }
 
     }
+
+/**************************************** DESENHA HALF-OPEN HASH *************************************************/
+
+    int defineDistInicialHalfOpenHash(HOhash* h, int i){
+        int alt = h->tabela[i]->getAltura();
+
+        if (alt <= 3)
+            return 40;
+        else
+            return (40 + 40*(alt-3));
+
+    }
+    
+    void desenhaHalfOpenHashPrivate(HOhash* h, sf::RenderWindow* janela, int posAtual){
+        int x_indice, x_no, distancia;
+
+        x_indice = 66 + posAtual;
+        x_no = 80 + posAtual;      //posicao inicial = 13 + 60 + um pouquinho, por causa do encolhimento do desenho do no da arvore
+
+        for(int i = 0; i < h->TH; i++){
+            distancia = defineDistInicialHalfOpenHash(h, i);
+
+            /******* DESENHA O QUADRADO DO INDICE E O NUMERO DENTRO DELE ***********/
+            desenhaLinha(x_indice + 27, 40, x_indice + 27, 100, janela);                    //antes, desenha a linha que vai ligar o indice ao no abaixo dele
+            desenhaRetangulo(x_indice, 30, 54, 54, sf::Color(255, 127, 39), janela);        //desenha o quadrado
+            desenhaTexto(i, x_indice + 10, 40, janela, TAM_TEXTO_IND, sf::Color::White);    //e o numero do indice dentro dele
+
+            /********** PRA DEPOIS DESENHAR A ARVORE ABAIXO DO QUADRADO DO INDICE ************/
+
+            desenhaAVL(h->tabela[i], janela, x_no, 100, distancia);
+
+            if (i < h->TH-1){
+
+                //Esses ifs verificam a altura da arvore do indice atual e do indice posterior, para ver qual deve ser a distancia entre eles,
+                //para evitar arvores adjacentes se sobrepondo.
+                if (( h->tabela[i]->getAltura() <= 1 ) && ( h->tabela[i+1]->getAltura() <= 1 )){
+                    x_indice += 60; //largura do quadrado grande + 4
+                    x_no += 60;
+                }
+                else if (( h->tabela[i]->getAltura() <= 2 ) && ( h->tabela[i+1]->getAltura() <= 2 )){
+                    x_indice += 120; //largura do quadrado grande + 4 (*2)
+                    x_no += 120;
+                }
+                else{
+                    x_indice += 180; //largura do quadrado grande + 4 (*3)
+                    x_no += 180;
+                }
+            }
+
+        }
+    }    
+
+    void desenhaHalfOpenHash(HOhash* h){
+
+        unsigned int w = h->TH * 175;
+        int posAtual = 0;
+        if (w > sf::VideoMode::getDesktopMode().width)
+            w = sf::VideoMode::getDesktopMode().width;
+
+        sf::RenderWindow* janela = new sf::RenderWindow(sf::VideoMode(w,500),"Half-Open Hashing");
+
+        while (janela->isOpen()){
+            eventHandler(janela);
+            janela->clear(sf::Color::White);
+            update_pos(janela, &posAtual);
+            desenhaHalfOpenHashPrivate(h, janela, posAtual);
+            janela->display();
+        }
+
+    }
+
 
 };
 

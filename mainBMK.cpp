@@ -22,7 +22,7 @@ int main(){
     int rehashingsTotais;
     unsigned int MAXcolisoes;
     double tempoTotal_insercoes, tempoTotal_buscas, tempoDecorrido, qtdInsercoes;
-    Results resultadoBMK;
+    bmk::Results resultadoBMK;
     /*************************************/
 
     while (true){
@@ -51,26 +51,26 @@ int main(){
             cout<<"7) Realizar benchmark completo (Normal)\n";
             cout<<"8) Realizar benchmark completo (Exponencial)\n";
             cout<<"9) Retornar ao menu inicial\n\n";
-            opcaoMenu = input::pegaRespostaMinMax("","Opcao: ",0,9);
+            opcaoMenu = in::pegaRespostaMinMax("","Opcao: ",0,9);
 
             switch (opcaoMenu){
 
                 case 1:
                     h = instanciaHash(atributos);
 
-                    comandoTmp = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
+                    comandoTmp = "IF NOT EXIST .\\"+cons::FILEPATH_INS+" mkdir "+cons::FILEPATH_INS;
                     system(comandoTmp.c_str());
 
-                    if (!arquivos::imprimeArquivosINS()) break;
+                    if (!arq::imprimeArquivosINS()) break;
 
-                    fileNameTmp = input::pegaRespostaStr(
+                    fileNameTmp = in::pegaRespostaStr(
                         "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
                     if (fileNameTmp == "")
                         break;
                     else
                         fileNameTmp += ".ins";
 
-                    opcaoTmp = input::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
+                    opcaoTmp = in::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     try{
                         h = instanciaHash(atributos);
@@ -88,9 +88,9 @@ int main(){
                         cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
                         cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
                     }catch(bad_alloc e1){
-                        logError(BAD_ALLOC_MSG);
-                    }catch(excecao_arquivo e2){
-                        logError(e2.what());
+                        out::logError(cons::BAD_ALLOC_MSG);
+                    }catch(exc::excecao_arquivo e2){
+                        out::logError(e2.what());
                     }
 
                     delete h;
@@ -100,22 +100,22 @@ int main(){
                 case 3:
                 case 4:
                 case 5:
-                    numeroTmp = input::pegaRespostaInt("\nQuantos?\n");
+                    numeroTmp = in::pegaRespostaInt("\nQuantos?\n");
 
-                    fileNameTmp = input::pegaRespostaStr("\nNome do arquivo de insercao a ser gerado (aperte apenas ENTER para usar o nome padrao):\n");
-                    if (fileNameTmp == "") {                   //se o usuario nao entounada
-                        fileNameTmp = DEFAULT_FILENAME_INS;   //atribui o nome padrao
+                    fileNameTmp = in::pegaRespostaStr("\nNome do arquivo de insercao a ser gerado (aperte apenas ENTER para usar o nome padrao):\n");
+                    if (fileNameTmp == "") {                   //se o usuario nao entrou nada
+                        fileNameTmp = cons::DEFAULT_FILENAME_INS;   //atribui o nome padrao
                     } else{
                         fileNameTmp += ".ins";
                     }
 
-                    opcaoTmp = input::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
+                    opcaoTmp = in::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     if (opcaoTmp == 1){
                         opcaoTmp = 10;
                     }
 
-                    arquivos::inicializaDiretorioINS(fileNameTmp);
+                    arq::inicializaDiretorioINS(fileNameTmp);
 
                     try{
                         h = instanciaHash(atributos);
@@ -133,7 +133,7 @@ int main(){
                         cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
 
                     }catch(bad_alloc e){
-                        logError(BAD_ALLOC_MSG);
+                        out::logError(cons::BAD_ALLOC_MSG);
                     }
 
                     system("pause>0");
@@ -143,7 +143,7 @@ int main(){
                 case 6:
                 case 7:
                 case 8:
-                    opcaoTmp = input::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
+                    opcaoTmp = in::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     codigoBmkTmp = opcaoMenu;
                     if (opcaoTmp == 1){
@@ -158,36 +158,36 @@ int main(){
                     MAXcolisoes = 0;
                     qtdInsercoes = 1;
                     //Inicializa o diretorio do arquivo de benchmark de insercoes
-                    arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,codigoBmkTmp,true));
+                    arq::inicializaDiretorioBMK(arq::montarNomeDoArquivoBMK(atributos.tipo,codigoBmkTmp,true));
 
                     //E inicializa o diretorio do de buscas, caso isso tenha sido pedido
-                    if ((opcaoTmp%10) == 0) arquivos::inicializaDiretorioBMK(arquivos::montarNomeDoArquivoBMK(atributos.tipo,codigoBmkTmp,false));
+                    if ((opcaoTmp%10) == 0) arq::inicializaDiretorioBMK(arq::montarNomeDoArquivoBMK(atributos.tipo,codigoBmkTmp,false));
 
                     cout<<"\nTrabalhando...    0%";
                     try{
-                        benchmark::cronometro cron;
+                        bmk::cronometro cron;
                         while (true){
-                            if ((opcaoTmp%10) == 0) arquivos::inicializaDiretorioINS(FILENAME_DUMMY);
+                            if ((opcaoTmp%10) == 0) arq::inicializaDiretorioINS(cons::FILENAME_DUMMY);
 
-                            if (qtdInsercoes > QTDMAX_INS)
-                                qtdInsercoes = QTDMAX_INS;
+                            if (qtdInsercoes > cons::QTDMAX_INS)
+                                qtdInsercoes = cons::QTDMAX_INS;
 
                             h = instanciaHash(atributos);
-                            resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, codigoBmkTmp, FILENAME_DUMMY);
-                            if ((codigoBmkTmp%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(codigoBmkTmp, FILENAME_DUMMY)/1000;
+                            resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, codigoBmkTmp, cons::FILENAME_DUMMY);
+                            if ((codigoBmkTmp%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(codigoBmkTmp, cons::FILENAME_DUMMY)/1000;
                             delete h;
 
-                            printNewPerc(qtdInsercoes,QTDMAX_INS);
+                            out::printNewPerc(qtdInsercoes,cons::QTDMAX_INS);
 
                             tempoTotal_insercoes += resultadoBMK.tempoBMK/1000;
                             rehashingsTotais += resultadoBMK.rehashings;
                             if (resultadoBMK.colisoes > MAXcolisoes)
                                 MAXcolisoes = resultadoBMK.colisoes;
 
-                            if (qtdInsercoes == QTDMAX_INS)
+                            if (qtdInsercoes == cons::QTDMAX_INS)
                                 break;
                             else
-                                qtdInsercoes += GAP_INS;
+                                qtdInsercoes += cons::GAP_INS;
                         }
                         tempoDecorrido = cron.tempoDecorrido();
 
@@ -205,7 +205,7 @@ int main(){
                         cout<<"Rehashings:      "<<rehashingsTotais<<"\n";
 
                     }catch(bad_alloc e){
-                        logError(BAD_ALLOC_MSG);
+                        out::logError(cons::BAD_ALLOC_MSG);
                     }
 
                     system("pause>0");
@@ -216,11 +216,11 @@ int main(){
                     break;
 
                 case 0:
-                    printConstantes();
+                    out::printConstantes();
                     break;
 
                 default:
-                    printPause("\n\nOpcao invalida!");
+                    out::printPause("\n\nOpcao invalida!");
 
             }
 

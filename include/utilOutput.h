@@ -12,7 +12,7 @@
 
 namespace dh{
 
-namespace output{
+namespace out{
 
     /************* FUNCOES DE IMPRESSAO CONDICIONAL COM E SEM PAUSA *************/
 
@@ -124,26 +124,26 @@ namespace output{
 
     void printConstantes(){
         cout<<endl;
-        cout<<"MEDIA_CHAVE_BMK       = "<<constantes::MEDIA_CHAVE_BMK<<endl;
-        cout<<"QTDMAX_INS            = "<<constantes::QTDMAX_INS<<endl;
-        cout<<"GAP_INS               = "<<constantes::GAP_INS<<endl;
-        cout<<"LIMIAR_PARA_REHASHING = "<<constantes::LIMIAR_PARA_REHASHING<<endl;
-        cout<<"TAM_INICIAL_HASH_BMK  = "<<constantes::TAM_INICIAL_HASH_BMK<<endl;
-        cout<<"ALT_MAX_BMK           = "<<constantes::ALT_MAX_BMK<<endl;
-        cout<<"FILEPATH_INS          = "<<constantes::FILEPATH_INS<<endl;
-        cout<<"FILEPATH_BMK          = "<<constantes::FILEPATH_BMK<<endl;
+        cout<<"MEDIA_CHAVE_BMK       = "<<cons::MEDIA_CHAVE_BMK<<endl;
+        cout<<"QTDMAX_INS            = "<<cons::QTDMAX_INS<<endl;
+        cout<<"GAP_INS               = "<<cons::GAP_INS<<endl;
+        cout<<"LIMIAR_PARA_REHASHING = "<<cons::LIMIAR_PARA_REHASHING<<endl;
+        cout<<"TAM_INICIAL_HASH_BMK  = "<<cons::TAM_INICIAL_HASH_BMK<<endl;
+        cout<<"ALT_MAX_BMK           = "<<cons::ALT_MAX_BMK<<endl;
+        cout<<"FILEPATH_INS          = "<<cons::FILEPATH_INS<<endl;
+        cout<<"FILEPATH_BMK          = "<<cons::FILEPATH_BMK<<endl;
         system("pause>0");
     }
 
     void printResultadoBusca(bool PI, int indice){
         if (indice >= 0)
-            printPause(PI,"\nA chave foi encontrada na posicao ",indice,".\n");
+            out::printPause(PI,"\nA chave foi encontrada na posicao ",indice,".\n");
         else if (indice == -1)
-            printPause(PI,"\nA chave nao existe na tabela.\n");
+            out::printPause(PI,"\nA chave nao existe na tabela.\n");
         else if (indice == -2)
-            printPause(PI,"\nNumero maximo de tentativas atingido. A chave nao foi encontrada.\n");
+            out::printPause(PI,"\nNumero maximo de tentativas atingido. A chave nao foi encontrada.\n");
         else
-            printPause(PI,"\nErro ",indice,".\n");
+            out::printPause(PI,"\nErro ",indice,".\n");
     }
 
     void logError(string erro){

@@ -13,13 +13,13 @@
 namespace dh
 {
 
-namespace arquivos{
+namespace arq{
 
     void acrescentarNoArquivoDeInstrucoes(string instrucao, int valor){
 
         ofstream fileWRITE;
 
-        fileWRITE.open(constantes::DEFAULT_FULLNAME_INS,ios::app);
+        fileWRITE.open(cons::DEFAULT_FULLNAME_INS,ios::app);
         fileWRITE<<instrucao<<" "<<valor<<endl;
         fileWRITE.close();
     }
@@ -47,11 +47,11 @@ namespace arquivos{
 
         cout<<"\nArquivos de insercao presentes no diretorio:\n\n";
 
-        if ((dir = opendir (constantes::FILEPATH_INS.c_str())) != NULL) {
+        if ((dir = opendir (cons::FILEPATH_INS.c_str())) != NULL) {
             //Imprime o nome dos arquivos de insercao do diretorio definido nas constantes
             while ((ent = readdir (dir)) != NULL) {
                 if (ehArquivoDeInsercao(ent->d_name))
-                    printf ("%s\n", ent->d_name);
+                    cout<<ent->d_name<<"\n";
             }
             closedir (dir);
         } else {
@@ -86,11 +86,11 @@ namespace arquivos{
             fileName += "HalfOpenH (Sem TQ)_";
 
         //Depois a distribuicao das variaveis aleatorias
-        if (benchmark::querFazerUniforme(opcao_insbmk))
+        if (bmk::querFazerUniforme(opcao_insbmk))
             fileName += "Uniforme_";
-        else if (benchmark::querFazerNormal(opcao_insbmk))
+        else if (bmk::querFazerNormal(opcao_insbmk))
             fileName += "Normal_";
-        else if (benchmark::querFazerExponencial(opcao_insbmk))
+        else if (bmk::querFazerExponencial(opcao_insbmk))
             fileName += "Exponencial_";
         else
             fileName += "Ordenado_";
@@ -108,12 +108,12 @@ namespace arquivos{
     //cria um novo arquivo limpo, sobrescrevendo o anterior de mesmo nome, se existir
     void inicializaDiretorioINS(string filename){
 
-        string str = "IF NOT EXIST .\\"+constantes::FILEPATH_INS+
-            " mkdir "+constantes::FILEPATH_INS;
+        string str = "IF NOT EXIST .\\"+cons::FILEPATH_INS+
+            " mkdir "+cons::FILEPATH_INS;
         system(str.c_str());
         ofstream fileINS;
 
-        fileINS.open(constantes::FILEPATH_INS+filename);
+        fileINS.open(cons::FILEPATH_INS+filename);
         fileINS.close();
     }
 
@@ -121,12 +121,12 @@ namespace arquivos{
     //cria um novo arquivo limpo, sobrescrevendo o anterior de mesmo nome, se existir
     void inicializaDiretorioBMK(string filenameMontado){
 
-        string str = "IF NOT EXIST .\\"+constantes::FILEPATH_BMK+
-            " mkdir "+constantes::FILEPATH_BMK;
+        string str = "IF NOT EXIST .\\"+cons::FILEPATH_BMK+
+            " mkdir "+cons::FILEPATH_BMK;
         system(str.c_str());
         ofstream fileBMK;
 
-        fileBMK.open(constantes::FILEPATH_BMK+filenameMontado);
+        fileBMK.open(cons::FILEPATH_BMK+filenameMontado);
         fileBMK.close();
     }
 

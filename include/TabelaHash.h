@@ -10,20 +10,9 @@
 #define TABELAHASH_H_INCLUDED
 
 #include "EstruturaAuxiliar.h"
-#include "OpenHashing.h"
 
-#include "utilDesenho.h"
 #include "utilBenchmark.h"
 #include "utilArquivos.h"
-
-using namespace dh::benchmark;
-using namespace dh::arquivos;
-using namespace dh::desenho;
-using namespace dh::excecao;
-using namespace dh::output;
-using namespace dh::input;
-using namespace dh::math;
-using namespace dh::constantes;
 
 namespace dh{
 
@@ -41,23 +30,27 @@ namespace dh{
         virtual int getColisoesDaInsercaoAtual()=0;
         virtual bool getFezRehashing()=0;
 
-        Results realizarInstrucoesDeArquivo(string nomeDoArquivo, bool PI){
+        int getTipo(){
+            return tipo;
+        }
+
+        bmk::Results realizarInstrucoesDeArquivo(string nomeDoArquivo, bool PI){
 
             int numeroNaLinha, numeroDaLinha = 0, tamanhoDaLinha, indiceInicial;
             string linha, operacao, opAnterior = "";
             ifstream fileREAD;
-            fileREAD.open(FILEPATH_INS+nomeDoArquivo);
-            Results resultado;
-            cronometro cron;
+            fileREAD.open(cons::FILEPATH_INS+nomeDoArquivo);
+            bmk::Results resultado;
+            bmk::cronometro cron;
 
             if (!fileREAD)
-                throw excecao_arquivo(excecao::EX_FILE_FILENOTFOUND,FILEPATH_INS+nomeDoArquivo);
+                throw exc::excecao_arquivo(exc::EX_FILE_FILENOTFOUND,cons::FILEPATH_INS+nomeDoArquivo);
 
             while(fileREAD){
                 numeroDaLinha++;
                 getline(fileREAD, linha);
                 tamanhoDaLinha = linha.size();
-                indiceInicial = getIndiceInicial(linha);
+                indiceInicial = arq::getIndiceInicial(linha);
 
                 if (linha.empty()){
                     continue;
@@ -65,7 +58,7 @@ namespace dh{
                     if (linha.at(indiceInicial)  == '#' &&
                         linha.at(indiceInicial+1)!= '#'){
 
-                        printNoPause(PI," * ",linha.substr(
+                        out::printNoPause(PI," * ",linha.substr(
                         indiceInicial+1,tamanhoDaLinha-indiceInicial+1)," * \n");
                     }
                 }else{
@@ -75,16 +68,16 @@ namespace dh{
                         try{
                             numeroNaLinha = stoi(linha.substr(indiceInicial+4,tamanhoDaLinha-4));
                         }catch(invalid_argument e){
-                            throw excecao_arquivo(excecao::EX_FILE_INVALIDCHAR,to_string(numeroDaLinha));
+                            throw exc::excecao_arquivo(exc::EX_FILE_INVALIDCHAR,to_string(numeroDaLinha));
                         }
                     }else{
-                        throw excecao_arquivo(excecao::EX_FILE_INCOMPLETELINE,to_string(numeroDaLinha));
+                        throw exc::excecao_arquivo(exc::EX_FILE_INCOMPLETELINE,to_string(numeroDaLinha));
                     }
 
                     if(operacao =="INS "){
                         if (opAnterior != "INSERCAO"){
                             opAnterior = "INSERCAO";
-                            printNoPause(PI,"INSERCAO:\n");
+                            out::printNoPause(PI,"INSERCAO:\n");
                         }
                         cron.reset();
                         this->inserir(numeroNaLinha, PI);
@@ -98,7 +91,7 @@ namespace dh{
                     }else if (operacao == "DEL "){
                         if (opAnterior != "DELECAO"){
                             opAnterior = "DELECAO";
-                            printNoPause(PI,"DELECAO:\n");
+                            out::printNoPause(PI,"DELECAO:\n");
                         }
                         cron.reset();
                         this->remover(numeroNaLinha, PI);
@@ -109,17 +102,17 @@ namespace dh{
                     }else if (operacao == "BSC "){
                         if (opAnterior != "BUSCA"){
                             opAnterior = "BUSCA";
-                            printNoPause(PI,"BUSCA:\n");
+                            out::printNoPause(PI,"BUSCA:\n");
                         }
                         cron.reset();
-                        printResultadoBusca(PI,this->buscar(numeroNaLinha, PI));
+                        out::printResultadoBusca(PI,this->buscar(numeroNaLinha, PI));
                         resultado.tempoBMK += cron.tempoDecorrido();
 
                         resultado.colisoes += getColisoesDaInsercaoAtual();
 
                     }else{
                         fileREAD.close();
-                        throw excecao_arquivo(excecao::EX_FILE_NOIDENTIFIER,to_string(numeroDaLinha));
+                        throw exc::excecao_arquivo(exc::EX_FILE_NOIDENTIFIER,to_string(numeroDaLinha));
                     }
                 }
             }
@@ -127,26 +120,26 @@ namespace dh{
             return resultado;
         }
 
-        Results benchmarkINSERCAO(int quantidadeDeInsercoes, int opcao_insbmk, string fileName_insercao){
+        bmk::Results benchmarkINSERCAO(int quantidadeDeInsercoes, int opcao_insbmk, string fileName_insercao){
             int chaveParaInserir;
             double tempo = 0;
             ofstream fileINS;
-            Results resultado;
+            bmk::Results resultado;
 
-            if (benchmarkComArquivoDeInsercao(opcao_insbmk)){
-                fileINS.open(FILEPATH_INS+fileName_insercao, ios::app);
+            if (bmk::benchmarkComArquivoDeInsercao(opcao_insbmk)){
+                fileINS.open(cons::FILEPATH_INS+fileName_insercao, ios::app);
             }
 
             for (int i = 0; i < quantidadeDeInsercoes; i++){
                 //Geramos a variavel aleatoria a ser inserida
-                chaveParaInserir = random::getRandom(opcao_insbmk);
+                chaveParaInserir = rand::getRandom(opcao_insbmk);
 
                 if (chaveParaInserir < 0) chaveParaInserir = 0;
 
-                if (benchmarkComArquivoDeInsercao(opcao_insbmk))
+                if (bmk::benchmarkComArquivoDeInsercao(opcao_insbmk))
                     fileINS<<"INS "<<chaveParaInserir<<endl;
 
-                cronometro cron;
+                bmk::cronometro cron;
                 inserir(chaveParaInserir, false);   //Depois fazemos a insercao, medindo o tempo
                 tempo += cron.tempoDecorrido();
 
@@ -156,14 +149,14 @@ namespace dh{
             }
             resultado.tempoBMK = tempo;
 
-            if (benchmarkComArquivoDeInsercao(opcao_insbmk))
+            if (bmk::benchmarkComArquivoDeInsercao(opcao_insbmk))
                 fileINS.close();
 
             //Se for um benchmark completo, inclui uma adicao ao arquivo com os tempos do bmk atual
-            if (benchmarkComArquivoBenchmark(opcao_insbmk)){
+            if (bmk::benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
+                fileBMK.open(cons::FILEPATH_BMK+arq::montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
                 //Poe no arquivo o tempo da insercao
                 fileBMK<<quantidadeDeInsercoes<<"\t"<<tempo<<endl;
                 fileBMK.close();
@@ -179,7 +172,7 @@ namespace dh{
             string linha, ins_str;
 
             ifstream fileREAD;
-            fileREAD.open(FILEPATH_INS+fileName_insercao);  //Abre o arquivo de instrucoes gerado antes, pra saber o que deve ser buscado
+            fileREAD.open(cons::FILEPATH_INS+fileName_insercao);  //Abre o arquivo de instrucoes gerado antes, pra saber o que deve ser buscado
 
             while(fileREAD){
                 getline(fileREAD, linha);
@@ -188,7 +181,7 @@ namespace dh{
                     quantidadeDeBuscas++;
                     numeroNaLinha = stoi(linha.substr(4,linha.size()-4));
 
-                    cronometro cron;
+                    bmk::cronometro cron;
                     buscar(numeroNaLinha,false);
                     tempo += cron.tempoDecorrido();
 
@@ -202,10 +195,10 @@ namespace dh{
             }
             fileREAD.close();
 
-            if (benchmarkComArquivoBenchmark(opcao_insbmk)){
+            if (bmk::benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(FILEPATH_BMK+montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
+                fileBMK.open(cons::FILEPATH_BMK + arq::montarNomeDoArquivoBMK(tipo,opcao_insbmk,false),ios::app);
 
                 fileBMK<<quantidadeDeBuscas<<"\t"<<tempo<<endl;
                 fileBMK.close();
@@ -237,7 +230,7 @@ namespace dh{
         cout<<"4) Half-Open Hashing\n";
         cout<<"5) Sair\n\n";
 
-        opcao1 = pegaRespostaMinMax("","Opcao: ",1,5);
+        opcao1 = in::pegaRespostaMinMax("","Opcao: ",1,5);
 
         if (opcao1 == 1 || opcao1 == 2){
             tipoEscolhido = opcao1;
@@ -249,7 +242,7 @@ namespace dh{
             cout<<"2) Tentativa quadratica\n";
             cout<<"3) Duplo hashing\n\n";
 
-            opcao2 = pegaRespostaMinMax("","Opcao: ",1,3);
+            opcao2 = in::pegaRespostaMinMax("","Opcao: ",1,3);
 
                  if (opcao2 == 1) tipoEscolhido = 3;
             else if (opcao2 == 2) tipoEscolhido = 4;
@@ -262,7 +255,7 @@ namespace dh{
             cout<<"1) Sim, insercoes em arvores cheias contam como colisoes (CQT)\n";
             cout<<"2) Nao, pode continuar inserindo em arvores cheias (SQT)\n\n";
 
-            opcao2 = pegaRespostaMinMax("","Opcao: ",1,2);
+            opcao2 = in::pegaRespostaMinMax("","Opcao: ",1,2);
 
                  if (opcao2 == 1) tipoEscolhido = 6;
             else if (opcao2 == 2) tipoEscolhido = 7;
@@ -277,14 +270,14 @@ namespace dh{
         atr.limite = 1; //so pra deixar inicializado com algum valor
 
         if (trueBASIC_falseBMK == true){
-            atr.tamanho = pegaRespostaMin("\nTamanho da tabela: ", 1);
+            atr.tamanho = in::pegaRespostaMin("\nTamanho da tabela: ", 1);
 
             if (tipoEscolhido >= 6)
-                atr.limite = pegaRespostaMin("Altura maxima das arvores: ", 1);
+                atr.limite = in::pegaRespostaMin("Altura maxima das arvores: ", 1);
 
         }else{
-            atr.tamanho = TAM_INICIAL_HASH_BMK;
-            atr.limite = ALT_MAX_BMK;
+            atr.tamanho = cons::TAM_INICIAL_HASH_BMK;
+            atr.limite = cons::ALT_MAX_BMK;
         }
 
         return atr;
@@ -292,6 +285,7 @@ namespace dh{
     }
 };
 
+#include "OpenHashing.h"
 #include "ClosedHashing.h"
 #include "HalfOpenHashing.h"
 

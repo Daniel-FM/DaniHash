@@ -14,13 +14,13 @@
 
 namespace dh{
 
-namespace input{
+namespace in{
 
     int pegaInt(){
         int retorno = 0;
 
         if (!(cin>>retorno)) {         //Para tratar entradas que nao sejam int
-            throw excecao::entrada_invalida();
+            throw exc::entrada_invalida();
         }
 
         return retorno;
@@ -39,14 +39,14 @@ namespace input{
             try{
                 resposta = pegaInt();
                 if ((resposta < minim) || (resposta > maxim)){
-                    output::printPauseNoNewline("\nOpcao invalida!");
-                    output::apagaLinha();
+                    out::printPauseNoNewline("\nOpcao invalida!");
+                    out::apagaLinha();
                 }else{
                     return resposta;
                 }
-            }catch(excecao::entrada_invalida e){
-                output::logError(e.what());
-                output::apagaLinha();
+            }catch(exc::entrada_invalida e){
+                out::logError(e.what());
+                out::apagaLinha();
             }
         }
 
@@ -67,13 +67,13 @@ namespace input{
             cout<<prompt;
             try{
                 resposta = pegaInt();
-            }catch(excecao::entrada_invalida e){
-                output::logError(e.what());
+            }catch(exc::entrada_invalida e){
+                out::logError(e.what());
             }
 
             if (resposta < minim){
-                output::printPauseNoNewline("\nNao pode ser menor que ",minim,"!");
-                output::apagaLinha();
+                out::printPauseNoNewline("\nNao pode ser menor que ",minim,"!");
+                out::apagaLinha();
             }else{
                 return resposta;
             }
@@ -95,8 +95,8 @@ namespace input{
             cout<<prompt;
             try{
                 resposta = pegaInt();
-            }catch(excecao::entrada_invalida e){
-                output::logError(e.what());
+            }catch(exc::entrada_invalida e){
+                out::logError(e.what());
             }
 
             return resposta;

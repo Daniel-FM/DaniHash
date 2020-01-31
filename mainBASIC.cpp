@@ -6,6 +6,7 @@
  * Part of the DaniHash project
  */
 #include "include/DaniHashCore.h"
+#include "include/utilDesenho.h"
 
 using namespace std;
 using namespace dh;
@@ -29,7 +30,7 @@ int main(){
         loopMenu = true;
 
         TabelaHash* h = instanciaHash(atributos);
-        arquivos::inicializaDiretorioINS(DEFAULT_FILENAME_INS);
+        arq::inicializaDiretorioINS(cons::DEFAULT_FILENAME_INS);
 
         while (loopMenu){
 
@@ -45,65 +46,65 @@ int main(){
             cout<<"7) Inserir varios numeros aleatorios\n";
             cout<<"8) Desenhar a hash em uma nova janela\n";
             cout<<"9) Retornar ao menu inicial\n\n";
-            opcaoMenu = input::pegaRespostaMinMax("","Opcao: ",0,9);
+            opcaoMenu = in::pegaRespostaMinMax("","Opcao: ",0,9);
 
             switch (opcaoMenu){
 
                 case 1:
-                    numeroTmp = input::pegaRespostaInt("\n\nQual numero?\n");
+                    numeroTmp = in::pegaRespostaInt("\n\nQual numero?\n");
 
                     h->inserir(numeroTmp,true);
-                    arquivos::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
+                    arq::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
 
                     break;
 
                 case 2:
-                    comandoTmp = "IF NOT EXIST .\\"+FILEPATH_INS+" mkdir "+FILEPATH_INS;
+                    comandoTmp = "IF NOT EXIST .\\"+cons::FILEPATH_INS+" mkdir "+cons::FILEPATH_INS;
                     system(comandoTmp.c_str());
 
-                    if (!arquivos::imprimeArquivosINS()) break;
+                    if (!arq::imprimeArquivosINS()) break;
 
-                    fileNameTmp = input::pegaRespostaStr(
+                    fileNameTmp = in::pegaRespostaStr(
                         "\nEntre o nome do arquivo que deseja usar (ou aperte apenas ENTER para cancelar):\n");
                     if (fileNameTmp == "")
                         break;
                     else
                         fileNameTmp += ".ins";
 
-                    opcaoTmp = input::pegaRespostaMinMax("\nImprimir passo a passo? (1-Sim, 2-Nao)\n",1,2);
+                    opcaoTmp = in::pegaRespostaMinMax("\nImprimir passo a passo? (1-Sim, 2-Nao)\n",1,2);
 
                     if (opcaoTmp == 1)
                         piTmp = true;
                     else
                         piTmp = false;
 
-                    output::printNoPause(true);
+                    out::printNoPause(true);
 
                     try{
-                        Results r = h->realizarInstrucoesDeArquivo(fileNameTmp, piTmp);
-                        output::printNoPauseNoNewline("Instrucoes concluidas!");
-                        output::printNoPause(" (",r.colisoes," colisoes, ",
+                        bmk::Results r = h->realizarInstrucoesDeArquivo(fileNameTmp, piTmp);
+                        out::printNoPauseNoNewline("Instrucoes concluidas!");
+                        out::printNoPause(" (",r.colisoes," colisoes, ",
                                           r.rehashings," rehashings)");
-                        input::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
-                    }catch(excecao::excecao_arquivo e){
-                        logError(e.what());
+                        in::pegaRespostaStr("\n\nPressione ENTER para continuar... ");
+                    }catch(exc::excecao_arquivo e){
+                        out::logError(e.what());
                     }
 
                     break;
 
                 case 3:
-                    numeroTmp = input::pegaRespostaInt("\n\nQue numero?\n");
+                    numeroTmp = in::pegaRespostaInt("\n\nQue numero?\n");
 
                     h->remover(numeroTmp, true);
-                    arquivos::acrescentarNoArquivoDeInstrucoes("DEL",numeroTmp);
+                    arq::acrescentarNoArquivoDeInstrucoes("DEL",numeroTmp);
 
                     break;
 
                 case 4:
-                    numeroTmp = input::pegaRespostaInt("\n\nQue numero?\n");
+                    numeroTmp = in::pegaRespostaInt("\n\nQue numero?\n");
 
-                    printResultadoBusca(true,h->buscar(numeroTmp,true));
-                    arquivos::acrescentarNoArquivoDeInstrucoes("BSC",numeroTmp);
+                    out::printResultadoBusca(true,h->buscar(numeroTmp,true));
+                    arq::acrescentarNoArquivoDeInstrucoes("BSC",numeroTmp);
 
                     break;
 
@@ -113,55 +114,57 @@ int main(){
                     break;
 
                 case 6:
-                    opcaoTmp = input::pegaRespostaInt("Quantos?\n");
+                    opcaoTmp = in::pegaRespostaInt("Quantos?\n");
                     for (int i = 0; i < opcaoTmp; i++){
                         h->inserir(i,false);
-                        arquivos::acrescentarNoArquivoDeInstrucoes("INS",i);
+                        arq::acrescentarNoArquivoDeInstrucoes("INS",i);
                     }
-                    output::printPause("\nValores inseridos!");
+                    out::printPause("\nValores inseridos!");
                     system("pause>0");
                     break;
 
                 case 7:
-                    opcaoTmp = input::pegaRespostaInt("Quantos?\n");
+                    opcaoTmp = in::pegaRespostaInt("Quantos?\n");
                     for (int i = 0; i < opcaoTmp; i++){
-                        numeroTmp = random::getUniforme(500);
+                        numeroTmp = rand::getUniforme(500);
                         h->inserir(numeroTmp,false);
-                        arquivos::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
+                        arq::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
                     }
-                    output::printPause("\nValores inseridos!");
+                    out::printPause("\nValores inseridos!");
                     break;
 
                 case 8:
-                    if (h->tipo <= 2){
-                        desenhaOpenHash(dynamic_cast<Ohash*>(h));
-                    }else{
-                        output::printPause("\nWork in progress...");
+                    if (atributos.tipo <= 2){
+                        desenho::desenhaOpenHash(dynamic_cast<Ohash*>(h));
+                    }else if (atributos.tipo > 5){
+                        desenho::desenhaHalfOpenHash(dynamic_cast<HOhash*>(h));
+                    }else {
+                        out::printPause("\nComing soon!");
                     }
                     break;
 
                 case 9:
                     delete h;
-                    fileNameTmp = input::pegaRespostaStr( nada+
+                    fileNameTmp = in::pegaRespostaStr( cons::nada+
                             "\nEntre o nome para o arquivo de insercao criado "+
                             "(ou aperte apenas ENTER para manter o nome padrao): \n");
                     if (fileNameTmp != "") {
-                        comandoTmp = "IF EXIST .\\"+FILEPATH_INS+fileNameTmp+".ins del "+FILEPATH_INS+fileNameTmp+".ins";
+                        comandoTmp = "IF EXIST .\\"+cons::FILEPATH_INS+fileNameTmp+".ins del "+cons::FILEPATH_INS+fileNameTmp+".ins";
                         system(comandoTmp.c_str());
 
-                        comandoTmp = "rename "+FILEPATH_INS+DEFAULT_FILENAME_INS+" "+fileNameTmp+".ins";
+                        comandoTmp = "rename "+cons::FILEPATH_INS+cons::DEFAULT_FILENAME_INS+" "+fileNameTmp+".ins";
                         system(comandoTmp.c_str());
                     }
                     loopMenu = false;
                     break;
 
                 case 0:
-                    output::printConstantes();
+                    out::printConstantes();
                     break;
 
                 default:
 
-                    output::printPause("\n\nOpcao invalida!");
+                    out::printPause("\n\nOpcao invalida!");
 
             }
 

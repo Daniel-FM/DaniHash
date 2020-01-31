@@ -10,7 +10,7 @@
 #define CONSTANTES_H_INCLUDED
 
 namespace dh{
-namespace constantes{
+namespace cons{
 
 const string FILENAME_INI = "constantes.ini";
 const string nada = "";  //Somar pelo menos uma string permite que usemos o operador + para somar const chars*

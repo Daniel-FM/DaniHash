@@ -3,7 +3,7 @@
 #include <exception>
 
 namespace dh{
-namespace excecao{
+namespace exc{
 
     const int EX_FILE_FILENOTFOUND = 1;
     const int EX_FILE_INVALIDCHAR = 2;

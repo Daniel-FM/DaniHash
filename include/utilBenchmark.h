@@ -12,7 +12,7 @@
 
 namespace dh{
 
-namespace benchmark{
+namespace bmk{
 
     struct Results{
 

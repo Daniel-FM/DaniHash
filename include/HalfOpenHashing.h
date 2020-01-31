@@ -355,14 +355,14 @@ class HOhash: public TabelaHash{
 
         unsigned int w = TH * 175;
         int posAtual = 0;
-        if (w > VideoMode::getDesktopMode().width)
-            w = VideoMode::getDesktopMode().width;
+        if (w > sf::VideoMode::getDesktopMode().width)
+            w = sf::VideoMode::getDesktopMode().width;
 
-        RenderWindow* janela = new RenderWindow(VideoMode(w,500),"Half-Open Hashing");
+        sf::RenderWindow* janela = new sf::RenderWindow(sf::VideoMode(w,500),"Half-Open Hashing");
 
         while (janela->isOpen()){
             eventHandler(janela);
-            janela->clear(Color::White);
+            janela->clear(sf::Color::White);
             update_pos(janela, &posAtual);
             desenha_hash(janela, posAtual);
             janela->display();
@@ -371,7 +371,7 @@ class HOhash: public TabelaHash{
     }
 
     private:
-    void desenha_hash(RenderWindow* janela, int posAtual){
+    void desenha_hash(sf::RenderWindow* janela, int posAtual){
         int x_indice, x_no, distancia;
 
         x_indice = 66 + posAtual;
@@ -382,8 +382,8 @@ class HOhash: public TabelaHash{
 
             /******* DESENHA O QUADRADO DO INDICE E O NUMERO DENTRO DELE ***********/
             desenhaLinha(x_indice + 27, 40, x_indice + 27, 100, janela);   //antes, desenha a linha que vai ligar o indice ao no abaixo dele
-            desenhaRetangulo(x_indice, 30, 54, 54, Color(255, 127, 39), janela);        //desenha o quadrado
-            desenhaTexto(i, x_indice + 10, 40, janela, TAM_TEXTO_IND, Color::White);     //e o numero do indice dentro dele
+            desenhaRetangulo(x_indice, 30, 54, 54, sf::Color(255, 127, 39), janela);        //desenha o quadrado
+            desenhaTexto(i, x_indice + 10, 40, janela, TAM_TEXTO_IND, sf::Color::White);     //e o numero do indice dentro dele
 
             /********** PRA DEPOIS DESENHAR A ARVORE ABAIXO DO QUADRADO DO INDICE ************/
 

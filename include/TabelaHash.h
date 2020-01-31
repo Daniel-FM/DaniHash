@@ -10,6 +10,7 @@
 #define TABELAHASH_H_INCLUDED
 
 #include "EstruturaAuxiliar.h"
+#include "OpenHashing.h"
 
 #include "utilDesenho.h"
 #include "utilBenchmark.h"
@@ -36,7 +37,6 @@ namespace dh{
         virtual void remover(int chave, bool PI)=0;
         virtual int buscar(int chave, bool PI)=0;
         virtual void imprimir()=0;
-        virtual void desenha_hash()=0;
         virtual float getFC()=0;
         virtual int getColisoesDaInsercaoAtual()=0;
         virtual bool getFezRehashing()=0;
@@ -292,7 +292,6 @@ namespace dh{
     }
 };
 
-#include "OpenHashing.h"
 #include "ClosedHashing.h"
 #include "HalfOpenHashing.h"
 

@@ -133,7 +133,11 @@ int main(){
                     break;
 
                 case 8:
-                    h->desenha_hash();
+                    if (h->tipo <= 2){
+                        desenhaOpenHash(dynamic_cast<Ohash*>(h));
+                    }else{
+                        output::printPause("\nWork in progress...");
+                    }
                     break;
 
                 case 9:

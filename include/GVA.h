@@ -17,16 +17,8 @@ namespace rand {
 
     int getSeed(){
 
-        timeval TV;
-        double db_TV;
-
-        gettimeofday(&TV,NULL);
-        db_TV = TV.tv_usec;
-
-        //Pegamos o seed inicial com o numero de microssegundos atuais do relogio
-        int seed = (int)db_TV;
-
-        return seed;
+        clock_t ticks = clock();
+        return (int)ticks;
 
     }
 

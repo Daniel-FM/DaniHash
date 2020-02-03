@@ -1,8 +1,6 @@
 # DaniHash
 Simulador e visualizador de tabelas hash. Feito originalmente como Trabalho de Conclusão de Curso de graduação em Ciência da Computação pela Universidade Estadual do Ceará (UECE).
 
-tst4
-
 <b>Versão 1.0.3:</b>
 <ul>
 <li>Classes e funções organizados em namespaces.</li>

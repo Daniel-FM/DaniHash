@@ -48,7 +48,10 @@
                 "cwd": "C:\\MinGW\\bin"
             },
             "problemMatcher": [
-                "$gcc"
+                {
+                    "base":"$gcc",
+                    "fileLocation": ["autoDetect", "${workspaceFolder}"]
+                }
             ],
             "group": "build"
         },
@@ -71,7 +74,10 @@
                 "cwd": "C:\\MinGW\\bin"
             },
             "problemMatcher": [
-                "$gcc"
+                {
+                    "base":"$gcc",
+                    "fileLocation": ["autoDetect", "${workspaceFolder}"]
+                }
             ],
             "group": "build"
         },
@@ -94,7 +100,10 @@
                 "cwd": "C:\\MinGW\\bin"
             },
             "problemMatcher": [
-                "$gcc"
+                {
+                    "base":"$gcc",
+                    "fileLocation": ["autoDetect", "${workspaceFolder}"]
+                }
             ],
             "group": "build"
         },

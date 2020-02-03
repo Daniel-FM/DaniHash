@@ -6,8 +6,6 @@
  * Part of the DaniHash project
  */
 
-#include "Excecoes.h"
-
 #ifndef FUNCOES_AUXILIARES_MENU_H_INCLUDED
 #define FUNCOES_AUXILIARES_MENU_H_INCLUDED
 

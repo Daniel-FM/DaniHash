@@ -8,7 +8,6 @@
 
 #ifndef FUNCOES_AUXILIARES_GERAL_H_INCLUDED
 #define FUNCOES_AUXILIARES_GERAL_H_INCLUDED
-#include "Constantes.h"
 
 namespace dh{
 

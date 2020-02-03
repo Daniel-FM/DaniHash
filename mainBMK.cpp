@@ -13,7 +13,7 @@ using namespace dh;
 
 int main(){
 
-    Atributos atributos;
+    builder::Atributos atributos;
     bool loopMenu;
     int opcaoMenu, opcaoTmp, numeroTmp, codigoBmkTmp;
     string comandoTmp, fileNameTmp;
@@ -30,7 +30,7 @@ int main(){
         loopMenu = true;
         system("cls");
         cout<<"***DANIHASH BMK v1.0.3***\n";
-        atributos = pegaAtributosDaHash(false);
+        atributos = builder::pegaAtributosDaHash(false);
 
         //Para sair do loop principal e encerrar o programa
         if (atributos.tipo == 0) break;
@@ -56,7 +56,7 @@ int main(){
             switch (opcaoMenu){
 
                 case 1:
-                    h = instanciaHash(atributos);
+                    builder::buildHash(h, atributos);
 
                     comandoTmp = "IF NOT EXIST .\\"+cons::FILEPATH_INS+" mkdir "+cons::FILEPATH_INS;
                     system(comandoTmp.c_str());
@@ -73,7 +73,7 @@ int main(){
                     opcaoTmp = in::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     try{
-                        h = instanciaHash(atributos);
+                        builder::buildHash(h, atributos);
                         resultadoBMK = h->realizarInstrucoesDeArquivo(fileNameTmp, false);
 
                         if(opcaoTmp == 1)
@@ -118,7 +118,7 @@ int main(){
                     arq::inicializaDiretorioINS(fileNameTmp);
 
                     try{
-                        h = instanciaHash(atributos);
+                        builder::buildHash(h, atributos);
                         resultadoBMK = h->benchmarkINSERCAO(numeroTmp,opcaoMenu,fileNameTmp);
                         if(opcaoTmp == 10);
                         tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
@@ -172,7 +172,9 @@ int main(){
                             if (qtdInsercoes > cons::QTDMAX_INS)
                                 qtdInsercoes = cons::QTDMAX_INS;
 
-                            h = instanciaHash(atributos);
+                            builder::buildHash(h, atributos);
+                            //h = new Ohash(atributos.tamanho, atributos.tipo);
+
                             resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, codigoBmkTmp, cons::FILENAME_DUMMY);
                             if ((codigoBmkTmp%10) == 0) tempoTotal_buscas += h->benchmarkBUSCA(codigoBmkTmp, cons::FILENAME_DUMMY)/1000;
                             delete h;

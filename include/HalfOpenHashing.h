@@ -9,6 +9,8 @@
 #ifndef HALF_OPEN_HASHING_H_INCLUDED
 #define HALF_OPEN_HASHING_H_INCLUDED
 
+#include "ArvoreAVL.h"
+
 namespace dh{
 
 class HOhash: public TabelaHash{
@@ -39,6 +41,10 @@ class HOhash: public TabelaHash{
 
         }
 
+    }
+
+    int getTipo(){
+        return tipo;
     }
 
     ~HOhash(){
@@ -218,7 +224,7 @@ class HOhash: public TabelaHash{
         for (int i = 0; i < TH_antigo; i++){        //Vai percorrendo a tabela auxiliar, inserindo os elementos dela na nova tabela
 
             if (tabela_dummy[i] != NULL){
-                insereAvlNaHash(tabela_dummy[i]->getRaiz(), tabela_nova, PI);
+                insereAvlNaTabelaHash(tabela_dummy[i], tabela_nova, PI);
             }
 
         }
@@ -231,18 +237,21 @@ class HOhash: public TabelaHash{
 
     /************************** FUNCAO PARA IR PERCORRENDO A ARVORE TODA, INSERINDO OS NOS DELA NA HASH *************************/
 
-    void insereAvlNaHash(no_avl* noAtualParaInserir, arv_avl* *tabelaQueVaiReceber, bool PI){
+    void insereAvlNaTabelaHash(arv_avl* avlParaInserir, arv_avl* *tabelaQueVaiReceber, bool PI){
+        insereNoAvlNaTabelaHash(avlParaInserir->getRaiz(), tabelaQueVaiReceber, PI);
+    }
+
+    void insereNoAvlNaTabelaHash(no_avl* noAtualParaInserir, arv_avl* *tabelaQueVaiReceber, bool PI){
 
         if(noAtualParaInserir != NULL){
 
             inserir(noAtualParaInserir->info, tabelaQueVaiReceber, PI);
 
-            insereAvlNaHash(noAtualParaInserir->esq, tabelaQueVaiReceber, PI);
-            insereAvlNaHash(noAtualParaInserir->dir, tabelaQueVaiReceber, PI);
+            insereNoAvlNaTabelaHash(noAtualParaInserir->esq, tabelaQueVaiReceber, PI);
+            insereNoAvlNaTabelaHash(noAtualParaInserir->dir, tabelaQueVaiReceber, PI);
         }
 
     }
-
 
     /************************************************* IMPRIMIR *****************************************************************/
     public:

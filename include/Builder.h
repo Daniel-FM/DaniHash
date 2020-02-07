@@ -1,17 +1,27 @@
 /*
- * File:   HashBuilder.h
+ * File:   Builder.h
  * Author: Daniel Franklin
  *
  * Created on 2020
  * Part of the DaniHash project
  */
 
-#ifndef HASHBUILDER_H_INCLUDED
-#define HASHBUILDER_H_INCLUDED
+#ifndef BUILDER_H_INCLUDED
+#define BUILDER_H_INCLUDED
 
 #include <iostream>
 #include "utilInput.h"
 #include "Constantes.h"
+
+#include "EstruturaAuxiliar.h"
+#include "ArvoreAVL.h"
+#include "Lista.h"
+
+#include "TabelaHash.h"
+#include "OpenHashing.h"
+#include "ClosedHashing.h"
+#include "HalfOpenHashing.h"
+
 
 using namespace std;
 
@@ -27,17 +37,23 @@ namespace dh{
             int tipo, tamanho, limite;
         };
 
-        void buildHash(TabelaHash* h, Atributos attr){
+        TabelaHash* buildHash(Atributos attr){
 
             if (attr.tipo <= 2){
-                h = new Ohash(attr.tamanho,attr.tipo);
-                h->inserir(13,false);
+                return new Ohash(attr.tamanho,attr.tipo);
             }else if (attr.tipo <= 5){
-                h = new Chash(attr.tamanho,attr.tipo);
+                return new Chash(attr.tamanho,attr.tipo);
             }else{
-                h = new HOhash(attr.tamanho,attr.tipo,attr.limite);
+                return new HOhash(attr.tamanho,attr.tipo,attr.limite);
             }
 
+        }
+
+        EstruturaAuxiliar* buildEstruturaAuxiliar(int tipo){
+            if (tipo == 1)
+                return new lista();
+            else
+                return new arv_avl();
         }
 
         Atributos pegaAtributosDaHash(bool trueBASIC_falseBMK){
@@ -111,4 +127,4 @@ namespace dh{
 
 
 //
-#endif // HASHBUILDER_H_INCLUDED
+#endif // BUILDER_H_INCLUDED

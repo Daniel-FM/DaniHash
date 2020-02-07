@@ -26,10 +26,7 @@ namespace dh{
         virtual float getFC()=0;
         virtual int getColisoesDaInsercaoAtual()=0;
         virtual bool getFezRehashing()=0;
-
-        int getTipo(){
-            return tipo;
-        }
+        virtual int getTipo()=0;
 
         bmk::Results realizarInstrucoesDeArquivo(string nomeDoArquivo, bool PI){
 
@@ -153,7 +150,7 @@ namespace dh{
             if (bmk::benchmarkComArquivoBenchmark(opcao_insbmk)){
                 ofstream fileBMK;
 
-                fileBMK.open(cons::FILEPATH_BMK+arq::montarNomeDoArquivoBMK(tipo,opcao_insbmk,true),ios::app);
+                fileBMK.open(cons::FILEPATH_BMK+arq::montarNomeDoArquivoBMK(getTipo(),opcao_insbmk,true),ios::app);
                 //Poe no arquivo o tempo da insercao
                 fileBMK<<quantidadeDeInsercoes<<"\t"<<tempo<<endl;
                 fileBMK.close();

@@ -36,16 +36,5 @@ class EstruturaAuxiliar{
 };
 };
 
-#include "ArvoreAVL.h"
-#include "Lista.h"
-
-namespace dh{
-EstruturaAuxiliar* instanciaEstrutura(int tipo){
-    if (tipo == 1)
-        return new lista();
-    else
-        return new arv_avl();
-}
-};
 //
 #endif // ESTRUTURAAUXILIAR_H_INCLUDED

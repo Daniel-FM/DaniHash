@@ -56,7 +56,7 @@ int main(){
             switch (opcaoMenu){
 
                 case 1:
-                    builder::buildHash(h, atributos);
+                    h = builder::buildHash(atributos);
 
                     comandoTmp = "IF NOT EXIST .\\"+cons::FILEPATH_INS+" mkdir "+cons::FILEPATH_INS;
                     system(comandoTmp.c_str());
@@ -73,7 +73,7 @@ int main(){
                     opcaoTmp = in::pegaRespostaMinMax("\nIncluir buscas? (1-Sim; 2-Nao)\n",1,2);
 
                     try{
-                        builder::buildHash(h, atributos);
+                        h = builder::buildHash(atributos);
                         resultadoBMK = h->realizarInstrucoesDeArquivo(fileNameTmp, false);
 
                         if(opcaoTmp == 1)
@@ -118,7 +118,7 @@ int main(){
                     arq::inicializaDiretorioINS(fileNameTmp);
 
                     try{
-                        builder::buildHash(h, atributos);
+                        h = builder::buildHash(atributos);
                         resultadoBMK = h->benchmarkINSERCAO(numeroTmp,opcaoMenu,fileNameTmp);
                         if(opcaoTmp == 10);
                         tempoTotal_buscas = h->benchmarkBUSCA(0,fileNameTmp);
@@ -172,7 +172,7 @@ int main(){
                             if (qtdInsercoes > cons::QTDMAX_INS)
                                 qtdInsercoes = cons::QTDMAX_INS;
 
-                            builder::buildHash(h, atributos);
+                            h = builder::buildHash(atributos);
                             //h = new Ohash(atributos.tamanho, atributos.tipo);
 
                             resultadoBMK = h->benchmarkINSERCAO(qtdInsercoes, codigoBmkTmp, cons::FILENAME_DUMMY);

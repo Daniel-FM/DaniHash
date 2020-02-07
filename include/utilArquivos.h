@@ -81,9 +81,11 @@ namespace arq{
         else if (tipo == 5)
             fileName += "ClosedH (DoubleHashing)_";
         else if (tipo == 6)
-            fileName += "HalfOpenH (Com TQ)_";
+            fileName += "HalfOpenH (CTQ)_";
+        else if (tipo == 7)
+            fileName += "HalfOpenH (STQ)_";
         else
-            fileName += "HalfOpenH (Sem TQ)_";
+            fileName += "ERROR_";
 
         //Depois a distribuicao das variaveis aleatorias
         if (bmk::querFazerUniforme(opcao_insbmk))

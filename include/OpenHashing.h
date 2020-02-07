@@ -9,6 +9,8 @@
 #ifndef OPEN_HASHING_H_INCLUDED
 #define OPEN_HASHING_H_INCLUDED
 
+#include "Builder.h"
+
 namespace dh{
 class Ohash: public TabelaHash{
 
@@ -25,7 +27,7 @@ class Ohash: public TabelaHash{
         tabela = new EstruturaAuxiliar*[TH];
 
         for (int i = 0; i < TH; i++){
-            tabela[i] = instanciaEstrutura(tipo);
+            tabela[i] = builder::buildEstruturaAuxiliar(tipo);
         }
 
     }
@@ -33,6 +35,10 @@ class Ohash: public TabelaHash{
     ~Ohash(){
         for (int i=0;i<TH;i++)
             delete tabela[i];
+    }
+
+    int getTipo(){
+        return tipo;
     }
 
     /************************************************* INSERIR *****************************************************************/

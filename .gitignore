@@ -1,4 +1,5 @@
 *.lnk
+constantes.ini
 0
 instrucoes/*
 benchmark/*

@@ -56,6 +56,9 @@ class Chash: public TabelaHash{
                 delete tabela[i];
         }
 
+        int getTipo(){
+            return tipo;
+        }
 
         /************************************************* INSERIR *****************************************************************/
 

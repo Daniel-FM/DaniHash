@@ -111,7 +111,7 @@ namespace rand {
         else if (bmk::querFazerExponencial(opc))
             return getExponencial(cons::MEDIA_CHAVE_BMK);
         else
-            return getOrdenado();
+            return 0;
 
     }
 };

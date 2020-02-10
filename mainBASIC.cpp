@@ -24,7 +24,7 @@ int main(){
         cout<<"***DANIHASH BASIC v1.0.3***\n";
         atributos = pegaAtributosDaHash(true);
 
-        //Para sair do loop principal e encerrar o programa
+        //para sair do loop principal e encerrar o programa
         if (atributos.tipo == 0) break;
 
         loopMenu = true;

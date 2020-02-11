@@ -13,8 +13,8 @@ using namespace dh;
 
 int main(){
 
-    Atributos atributos;
-    bool loopMenu, piTmp;
+    builder::Atributos atributos;
+    bool loopMenu, piTmp, firstInsFileCheck = false;
     int opcaoMenu, opcaoTmp, numeroTmp;
     string comandoTmp, fileNameTmp;
 
@@ -22,15 +22,14 @@ int main(){
 
         system("cls");
         cout<<"***DANIHASH BASIC v1.0.3***\n";
-        atributos = pegaAtributosDaHash(true);
+        atributos = builder::pegaAtributosDaHash(true);
 
         //Para sair do loop principal e encerrar o programa
         if (atributos.tipo == 0) break;
 
         loopMenu = true;
 
-        TabelaHash* h = instanciaHash(atributos);
-        arq::inicializaDiretorioINS(cons::DEFAULT_FILENAME_INS);
+        TabelaHash* h = builder::buildHash(atributos);
 
         while (loopMenu){
 
@@ -54,7 +53,7 @@ int main(){
                     numeroTmp = in::pegaRespostaInt("\n\nQual numero?\n");
 
                     h->inserir(numeroTmp,true);
-                    arq::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
+                    arq::acrescentarNoArquivoDeInstrucoesDefault("INS",numeroTmp);
 
                     break;
 
@@ -96,7 +95,7 @@ int main(){
                     numeroTmp = in::pegaRespostaInt("\n\nQue numero?\n");
 
                     h->remover(numeroTmp, true);
-                    arq::acrescentarNoArquivoDeInstrucoes("DEL",numeroTmp);
+                    arq::acrescentarNoArquivoDeInstrucoesDefault("DEL",numeroTmp);
 
                     break;
 
@@ -104,7 +103,7 @@ int main(){
                     numeroTmp = in::pegaRespostaInt("\n\nQue numero?\n");
 
                     out::printResultadoBusca(true,h->buscar(numeroTmp,true));
-                    arq::acrescentarNoArquivoDeInstrucoes("BSC",numeroTmp);
+                    arq::acrescentarNoArquivoDeInstrucoesDefault("BSC",numeroTmp);
 
                     break;
 
@@ -117,7 +116,7 @@ int main(){
                     opcaoTmp = in::pegaRespostaInt("Quantos?\n");
                     for (int i = 0; i < opcaoTmp; i++){
                         h->inserir(i,false);
-                        arq::acrescentarNoArquivoDeInstrucoes("INS",i);
+                        arq::acrescentarNoArquivoDeInstrucoesDefault("INS",i);
                     }
                     out::printPause("\nValores inseridos!");
                     system("pause>0");
@@ -128,7 +127,7 @@ int main(){
                     for (int i = 0; i < opcaoTmp; i++){
                         numeroTmp = rand::getUniforme(500);
                         h->inserir(numeroTmp,false);
-                        arq::acrescentarNoArquivoDeInstrucoes("INS",numeroTmp);
+                        arq::acrescentarNoArquivoDeInstrucoesDefault("INS",numeroTmp);
                     }
                     out::printPause("\nValores inseridos!");
                     break;

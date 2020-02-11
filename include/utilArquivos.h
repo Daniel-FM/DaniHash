@@ -15,16 +15,7 @@ namespace dh
 
 namespace arq{
 
-    void acrescentarNoArquivoDeInstrucoes(string instrucao, int valor){
-
-        ofstream fileWRITE;
-
-        fileWRITE.open(cons::DEFAULT_FULLNAME_INS,ios::app);
-        fileWRITE<<instrucao<<" "<<valor<<endl;
-        fileWRITE.close();
-    }
-
-    bool ehArquivoDeInsercao(char fileName[]){
+    bool ehArquivoDeInstrucao(char fileName[]){
 
         for (int i=0;i<256;i++){
             if (fileName[i] == '.'){
@@ -50,7 +41,7 @@ namespace arq{
         if ((dir = opendir (cons::FILEPATH_INS.c_str())) != NULL) {
             //Imprime o nome dos arquivos de insercao do diretorio definido nas constantes
             while ((ent = readdir (dir)) != NULL) {
-                if (ehArquivoDeInsercao(ent->d_name))
+                if (ehArquivoDeInstrucao(ent->d_name))
                     cout<<ent->d_name<<"\n";
             }
             closedir (dir);
@@ -85,7 +76,7 @@ namespace arq{
         else if (tipo == 7)
             fileName += "HalfOpenH (STQ)_";
         else
-            fileName += "ERROR_";
+            fileName += "ERROR1_";
 
         //Depois a distribuicao das variaveis aleatorias
         if (bmk::querFazerUniforme(opcao_insbmk))
@@ -95,7 +86,7 @@ namespace arq{
         else if (bmk::querFazerExponencial(opcao_insbmk))
             fileName += "Exponencial_";
         else
-            fileName += "Ordenado_";
+            fileName += "ERROR2_";
 
         //Depois a identificacao se eh benchmark de insercao ou de busca
         if (inserTRUE_buscaFALSE == true)
@@ -130,6 +121,16 @@ namespace arq{
 
         fileBMK.open(cons::FILEPATH_BMK+filenameMontado);
         fileBMK.close();
+    }
+
+    void acrescentarNoArquivoDeInstrucoesDefault(string instrucao, int valor){
+
+        ofstream fileWRITE;
+
+        inicializaDiretorioINS(cons::DEFAULT_FULLNAME_INS);
+        fileWRITE.open(cons::DEFAULT_FULLNAME_INS,ios::app);
+        fileWRITE<<instrucao<<" "<<valor<<endl;
+        fileWRITE.close();
     }
 
     int getIndiceInicial(string linha){

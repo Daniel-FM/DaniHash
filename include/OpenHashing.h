@@ -9,7 +9,7 @@
 #ifndef OPEN_HASHING_H_INCLUDED
 #define OPEN_HASHING_H_INCLUDED
 
-#include "Builder.h"
+#include "EstruturaAuxiliarBuilder.h"
 
 namespace dh{
 class Ohash: public TabelaHash{

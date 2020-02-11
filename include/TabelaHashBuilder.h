@@ -1,13 +1,13 @@
 /*
- * File:   Builder.h
+ * File:   TabelaHashBuilder.h
  * Author: Daniel Franklin
  *
  * Created on 2020
  * Part of the DaniHash project
  */
 
-#ifndef BUILDER_H_INCLUDED
-#define BUILDER_H_INCLUDED
+#ifndef TABHASHBUILDER_H_INCLUDED
+#define TABHASHBUILDER_H_INCLUDED
 
 #include <iostream>
 #include "utilInput.h"
@@ -47,13 +47,6 @@ namespace dh{
                 return new HOhash(attr.tamanho,attr.tipo,attr.limite);
             }
 
-        }
-
-        EstruturaAuxiliar* buildEstruturaAuxiliar(int tipo){
-            if (tipo == 1)
-                return new lista();
-            else
-                return new arv_avl();
         }
 
         Atributos pegaAtributosDaHash(bool trueBASIC_falseBMK){
@@ -127,4 +120,4 @@ namespace dh{
 
 
 //
-#endif // BUILDER_H_INCLUDED
+#endif

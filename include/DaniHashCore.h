@@ -21,6 +21,7 @@ using namespace std;
 #include "ClosedHashing.h"
 #include "HalfOpenHashing.h"
 
-#include "Builder.h"
+#include "TabelaHashBuilder.h"
+#include "EstruturaAuxiliarBuilder.h"
 
 #endif // DANIHASHCORE_H_INCLUDED

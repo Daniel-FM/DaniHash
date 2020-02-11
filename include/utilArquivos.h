@@ -101,12 +101,12 @@ namespace arq{
     //cria um novo arquivo limpo, sobrescrevendo o anterior de mesmo nome, se existir
     void inicializaDiretorioINS(string filename){
 
-        string str = "IF NOT EXIST .\\"+cons::FILEPATH_INS+
+        string str = "IF NOT EXIST "+cons::FILEPATH_INS+
             " mkdir "+cons::FILEPATH_INS;
         system(str.c_str());
         ofstream fileINS;
 
-        fileINS.open(cons::FILEPATH_INS+filename);
+        fileINS.open(filename);
         fileINS.close();
     }
 
@@ -127,7 +127,6 @@ namespace arq{
 
         ofstream fileWRITE;
 
-        inicializaDiretorioINS(cons::DEFAULT_FULLNAME_INS);
         fileWRITE.open(cons::DEFAULT_FULLNAME_INS,ios::app);
         fileWRITE<<instrucao<<" "<<valor<<endl;
         fileWRITE.close();

@@ -30,6 +30,7 @@ int main(){
         loopMenu = true;
 
         TabelaHash* h = builder::buildHash(atributos);
+        arq::inicializaDiretorioINS(cons::DEFAULT_FULLNAME_INS);
 
         while (loopMenu){
 

@@ -116,8 +116,6 @@ const string FILENAME_DUMMY = "bmkdummy.ins";
 const string DEFAULT_FILENAME_INS = "ultimaInsercao.ins";
 const string DEFAULT_FULLNAME_INS = FILEPATH_INS + DEFAULT_FILENAME_INS;
 
-const string BAD_ALLOC_MSG = "\nVazamento de memoria detectado. Reinicie o programa e tente fazer menos insercoes.";
-
 };
 };
 //

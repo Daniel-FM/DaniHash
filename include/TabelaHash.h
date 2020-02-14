@@ -36,7 +36,7 @@ namespace dh{
             bmk::cronometro cron;
 
             if (!fileREAD)
-                throw exc::excecao_arquivo(exc::EX_FILE_FILENOTFOUND,cons::FILEPATH_INS+nomeDoArquivo);
+                throw exc::excecao_arquivo(exc::EX_CODE_FILE_FILENOTFOUND,cons::FILEPATH_INS+nomeDoArquivo);
 
             while(fileREAD){
                 numeroDaLinha++;
@@ -60,10 +60,10 @@ namespace dh{
                         try{
                             numeroNaLinha = stoi(linha.substr(indiceInicial+4,tamanhoDaLinha-4));
                         }catch(invalid_argument e){
-                            throw exc::excecao_arquivo(exc::EX_FILE_INVALIDCHAR,to_string(numeroDaLinha));
+                            throw exc::excecao_arquivo(exc::EX_CODE_FILE_INVALIDCHAR,to_string(numeroDaLinha));
                         }
                     }else{
-                        throw exc::excecao_arquivo(exc::EX_FILE_INCOMPLETELINE,to_string(numeroDaLinha));
+                        throw exc::excecao_arquivo(exc::EX_CODE_FILE_INCOMPLETELINE,to_string(numeroDaLinha));
                     }
 
                     if(operacao =="INS "){
@@ -104,7 +104,7 @@ namespace dh{
 
                     }else{
                         fileREAD.close();
-                        throw exc::excecao_arquivo(exc::EX_FILE_NOIDENTIFIER,to_string(numeroDaLinha));
+                        throw exc::excecao_arquivo(exc::EX_CODE_FILE_NOIDENTIFIER,to_string(numeroDaLinha));
                     }
                 }
             }

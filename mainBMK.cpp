@@ -88,7 +88,7 @@ int main(){
                         cout<<"Colisoes:        "<<resultadoBMK.colisoes<<"\n";
                         cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
                     }catch(bad_alloc e1){
-                        out::logError(cons::BAD_ALLOC_MSG);
+                        out::logError(exc::EX_MSG_BADALLOC);
                     }catch(exc::excecao_arquivo e2){
                         out::logError(e2.what());
                     }
@@ -133,7 +133,7 @@ int main(){
                         cout<<"Rehashings:      "<<resultadoBMK.rehashings<<"\n";
 
                     }catch(bad_alloc e){
-                        out::logError(cons::BAD_ALLOC_MSG);
+                        out::logError(exc::EX_MSG_BADALLOC);
                     }
 
                     system("pause>0");
@@ -207,7 +207,7 @@ int main(){
                         cout<<"Rehashings:      "<<rehashingsTotais<<"\n";
 
                     }catch(bad_alloc e){
-                        out::logError(cons::BAD_ALLOC_MSG);
+                        out::logError(exc::EX_MSG_BADALLOC);
                     }
 
                     system("pause>0");

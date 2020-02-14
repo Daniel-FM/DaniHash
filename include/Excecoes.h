@@ -5,10 +5,12 @@
 namespace dh{
 namespace exc{
 
-    const int EX_FILE_FILENOTFOUND = 1;
-    const int EX_FILE_INVALIDCHAR = 2;
-    const int EX_FILE_NOIDENTIFIER = 3;
-    const int EX_FILE_INCOMPLETELINE = 4;
+    const string EX_MSG_BADALLOC = "\nVazamento de memoria detectado. Reinicie o programa e tente fazer menos insercoes.";
+
+    const int EX_CODE_FILE_FILENOTFOUND = 1;
+    const int EX_CODE_FILE_INVALIDCHAR = 2;
+    const int EX_CODE_FILE_NOIDENTIFIER = 3;
+    const int EX_CODE_FILE_INCOMPLETELINE = 4;
 
     struct entrada_invalida : public exception{
 
@@ -35,32 +37,46 @@ namespace exc{
 
             switch (codigo){
 
-                case EX_FILE_FILENOTFOUND:
+                case EX_CODE_FILE_FILENOTFOUND:
                     e1 = "Arquivo inexistente: ";
                     e2 = localizacao+"\n";
                     break;
 
-                case EX_FILE_INVALIDCHAR:
+                case EX_CODE_FILE_INVALIDCHAR:
                     e1 = "Arquivo defeituoso: Caractere invalido";
                     e2 = " (Linha "+localizacao+")\n";
                     break;
 
-                case EX_FILE_NOIDENTIFIER:
+                case EX_CODE_FILE_NOIDENTIFIER:
                     e1 = "Arquivo defeituoso: Sem identificador valido";
                     e2 = " (Linha "+localizacao+")\n";
                     break;
 
-                case EX_FILE_INCOMPLETELINE:
+                case EX_CODE_FILE_INCOMPLETELINE:
                     e1 = "Arquivo defeituoso: Linha incompleta";
                     e2 = " (Linha "+localizacao+")\n";
                     break;
 
                 default:
                     e1 = "Arquivo com problema! ";
-                    e2 = "Erro desconhecido.\n";
+                    e2 = "Código: "+ to_string(codigo) + ", Localizacao: "+localizacao+"\n";
             }
 
             errorMsg = e1 + e2;
+        }
+
+        string what(){
+            return errorMsg;
+        }
+
+    };
+
+    struct unknown_hashtype : public exception {
+
+        string errorMsg;
+
+        unknown_hashtype(int type){
+            errorMsg = "Tipo de hash desconhecido: "+ to_string(type) +"\n";
         }
 
         string what(){

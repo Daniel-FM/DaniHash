@@ -6,8 +6,8 @@
  * Part of the DaniHash project
  */
 
-#ifndef FUNCOES_AUXILIARES_DESENHO_H_INCLUDED
-#define FUNCOES_AUXILIARES_DESENHO_H_INCLUDED
+#ifndef UTIL_DESENHO_H_INCLUDED
+#define UTIL_DESENHO_H_INCLUDED
 #include <SFML/Graphics.hpp>
 
 namespace dh{
@@ -319,4 +319,4 @@ namespace desenho{
 };
 
 //
-#endif // FUNCOES_AUXILIARES_DESENHO_H_INCLUDED
+#endif

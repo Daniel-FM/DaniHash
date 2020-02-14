@@ -1,5 +1,5 @@
-#ifndef UTILMATH_H_INCLUDED
-#define UTILMATH_H_INCLUDED
+#ifndef UTIL_MATH_H_INCLUDED
+#define UTIL_MATH_H_INCLUDED
 
 namespace dh{
 namespace math{
@@ -52,4 +52,4 @@ namespace math{
 };
 };
 
-#endif // UTILMATH_H_INCLUDED
+#endif

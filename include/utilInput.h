@@ -6,8 +6,8 @@
  * Part of the DaniHash project
  */
 
-#ifndef FUNCOES_AUXILIARES_MENU_H_INCLUDED
-#define FUNCOES_AUXILIARES_MENU_H_INCLUDED
+#ifndef UTIL_INPUT_H_INCLUDED
+#define UTIL_INPUT_H_INCLUDED
 
 
 namespace dh{
@@ -127,4 +127,4 @@ namespace in{
 };
 
 //
-#endif // FUNCOES_AUXILIARES_MENU_H_INCLUDED
+#endif

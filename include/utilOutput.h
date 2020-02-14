@@ -6,8 +6,8 @@
  * Part of the DaniHash project
  */
 
-#ifndef FUNCOES_AUXILIARES_GERAL_H_INCLUDED
-#define FUNCOES_AUXILIARES_GERAL_H_INCLUDED
+#ifndef UTIL_OUTPUT_H_INCLUDED
+#define UTIL_OUTPUT_H_INCLUDED
 
 namespace dh{
 
@@ -155,4 +155,4 @@ namespace out{
 
 
 //
-#endif // FUNCOES_AUXILIARES_GERAL_H_INCLUDED
+#endif

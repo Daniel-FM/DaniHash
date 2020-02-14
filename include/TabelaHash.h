@@ -9,8 +9,6 @@
 #ifndef TABELAHASH_H_INCLUDED
 #define TABELAHASH_H_INCLUDED
 
-
-
 namespace dh{
 
     class TabelaHash{

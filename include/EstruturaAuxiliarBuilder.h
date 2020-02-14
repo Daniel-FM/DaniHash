@@ -6,8 +6,8 @@
  * Part of the DaniHash project
  */
 
-#ifndef ESTAUXBUILDER
-#define ESTAUXBUILDER
+#ifndef ESTRUTURAAUXILIARBUILDER_H_INCLUDED
+#define ESTRUTURAAUXILIARBUILDER_H_INCLUDED
 
 #include "EstruturaAuxiliar.h"
 #include "Lista.h"

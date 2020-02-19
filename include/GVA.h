@@ -98,8 +98,7 @@ namespace rand {
     }
 
     int getOrdenado(){
-        ord++;
-        return ord;
+        return ord++;
     }
 
     int getRandom(int opc){

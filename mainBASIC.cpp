@@ -116,11 +116,11 @@ int main(){
                 case 6:
                     opcaoTmp = in::pegaRespostaInt("Quantos?\n");
                     for (int i = 0; i < opcaoTmp; i++){
-                        h->inserir(i,false);
-                        arq::acrescentarNoArquivoDeInstrucoesDefault("INS",i);
+                        int num = rand::getOrdenado();
+                        h->inserir(num,false);
+                        arq::acrescentarNoArquivoDeInstrucoesDefault("INS",num);
                     }
                     out::printPause("\nValores inseridos!");
-                    system("pause>0");
                     break;
 
                 case 7:

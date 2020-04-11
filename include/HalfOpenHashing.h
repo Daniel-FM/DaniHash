@@ -81,8 +81,10 @@ class HOhash: public TabelaHash{
     void inserir(int chave, arv_avl* *tabela_, bool PI){
         if (tipo == 6)
             inserir_CTQ(chave, tabela_, PI);
-        else
+        else if (tipo == 7)
             inserir_STQ(chave, tabela_, PI);
+        else
+            throw exc::unhandled_type(tipo,"HalfOpenHashing");
     }
 
 
@@ -276,7 +278,7 @@ class HOhash: public TabelaHash{
         else if (tipo == 7)
             return buscar_STQ(k,PI);
         else
-            return -4;
+            throw exc::unhandled_type(tipo,"HalfOpenHashing");
     }
 
     /************************************************* BUSCAR (SEM TENTATIVA QUADRATICA) *****************************************************************/

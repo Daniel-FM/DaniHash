@@ -145,7 +145,7 @@ class Chash: public TabelaHash{
                 }
 
                 //DUPLO HASHING
-                else{
+                else if (tipo == 5){
 
                     int H2 = r - (k % r);
                     bool printOnce = PI;
@@ -172,6 +172,8 @@ class Chash: public TabelaHash{
                         i++;
                     }
 
+                }else{
+                    throw exc::unhandled_type(tipo, "ClosedHashing");
                 }
 
                 //Despois de realizar um desses metodos, encontramos a posicao da tabela na qual nao

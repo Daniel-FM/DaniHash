@@ -76,7 +76,7 @@ namespace arq{
         else if (tipo == 7)
             fileName += "HalfOpenH (STQ)_";
         else
-            fileName += "ERROR1_";
+            throw exc::unhandled_type(tipo,"utilArquivos");
 
         //Depois a distribuicao das variaveis aleatorias
         if (bmk::querFazerUniforme(opcao_insbmk))

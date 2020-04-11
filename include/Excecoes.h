@@ -71,12 +71,14 @@ namespace exc{
 
     };
 
-    struct unknown_hashtype : public exception {
+    struct unhandled_type : public exception {
 
         string errorMsg;
 
-        unknown_hashtype(int type){
-            errorMsg = "Tipo de hash desconhecido: "+ to_string(type) +"\n";
+        unhandled_type(int type, string location){
+            errorMsg = "\nERRO: Tipo nao-tratado "+ to_string(type) +" localizado em "+ location +".\n";
+            cerr<<errorMsg;
+            system("pause>0");
         }
 
         string what(){

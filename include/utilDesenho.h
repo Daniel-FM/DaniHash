@@ -225,8 +225,10 @@ namespace desenho{
 
         if (h->tipo == 1)
             w = h->TH * 61;
-        else
+        else if (h->tipo == 2)
             w = h->TH * 175;
+        else
+            throw exc::unhandled_type(h->tipo, "utilDesenho");
 
         if (w > sf::VideoMode::getDesktopMode().width)
             w = sf::VideoMode::getDesktopMode().width;

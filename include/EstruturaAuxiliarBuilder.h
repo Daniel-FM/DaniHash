@@ -20,8 +20,10 @@ namespace dh{
         EstruturaAuxiliar* buildEstruturaAuxiliar(int tipo){
             if (tipo == 1)
                 return new lista();
-            else
+            else if (tipo == 2)
                 return new arv_avl();
+            else
+                throw exc::unhandled_type(tipo, "EstruturaAuxiliar");
         }
     }
 }
